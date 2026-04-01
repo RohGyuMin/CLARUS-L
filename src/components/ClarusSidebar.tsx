@@ -97,7 +97,8 @@ export default function ClarusSidebar({
             letterSpacing: "0.45em",
             color: "rgba(96,165,250,0.85)",
             textTransform: "uppercase",
-            fontWeight: 700,
+            fontWeight: 100,
+            fontFamily: "var(--font-bernhard)",
             textShadow: "0 0 15px rgba(96,165,250,0.3)",
           }}>CLARUS-N</span>
         </div>
@@ -158,6 +159,7 @@ export default function ClarusSidebar({
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
+                    fontFamily: "'Inter', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain MRI</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -174,6 +176,7 @@ export default function ClarusSidebar({
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
+                    fontFamily: "'Inter', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain CT</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -248,6 +251,7 @@ function NavBtn({
         color: active ? "#ffffff" : hovered ? "#ffffff" : "rgba(226,232,240,0.9)",
         fontSize: "1.2rem",
         fontWeight: active ? 700 : 500,
+        fontFamily: "'Inter', sans-serif",
         padding: "1rem 1.25rem",
         borderRadius: "0.75rem",
         textAlign: "left",
@@ -291,6 +295,7 @@ function SubBtn({ label }: { label: string }) {
         color: hovered ? "#ffffff" : "rgba(203,213,225,0.8)",
         fontSize: "1.05rem",
         fontWeight: 500,
+        fontFamily: "'Inter', sans-serif",
         padding: "0.625rem 1.15rem",
         borderRadius: "0.375rem",
         textAlign: "left",

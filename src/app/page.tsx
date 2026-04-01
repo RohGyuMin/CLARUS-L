@@ -73,22 +73,13 @@ function HeroSection() {
         <h1
           style={{
             margin: 0,
-            lineHeight: 1,
-            fontSize: "clamp(3rem, 7vw, 6rem)",
-            fontWeight: 300,
-            letterSpacing: "0.12em",
-            fontFamily: "'Inter', sans-serif",
-          }}
-        >
-          <span
-            style={{
-              color: "#ffffff",
-              textShadow:
-                "0 0 30px rgba(255,255,255,0.6), 0 0 60px rgba(180,200,255,0.3)",
-            }}
-          >
-            CLARUS-
-          </span>
+            fontSize: "clamp(3.5rem, 10vw, 8rem)",
+            fontWeight: 100,
+            letterSpacing: "0.2em",
+            fontFamily: "var(--font-bernhard)",
+            color: "#ffffff"
+          }}>
+          CLARUS-
           <span
             style={{
               color: "#a855f7",
@@ -121,8 +112,7 @@ function HeroSection() {
         style={{
           position: "absolute",
           bottom: "2rem",
-          left: "50%",
-          transform: "translateX(-50%)",
+          right: "5rem", // 중앙에서 우측으로 이동하여 로고와의 겹침 방지
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -234,6 +224,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
         color: "#60a5fa",
         marginBottom: "1rem",
         fontWeight: 500,
+        fontFamily: "'Inter', sans-serif",
       }}
     >
       {children}

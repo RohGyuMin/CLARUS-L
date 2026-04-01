@@ -1,10 +1,16 @@
-"use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+interface ClickPulse {
+  id: number;
+  x: number;
+  y: number;
+}
 
 export default function ClarusCursor() {
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const [pulses, setPulses] = useState<ClickPulse[]>([]);
 
   // 마우스 실제 위치
   const mx = useRef(0), my = useRef(0);
@@ -70,9 +76,30 @@ export default function ClarusCursor() {
       el.addEventListener("mouseleave", shrink);
     });
 
+    const onMouseDown = (e: MouseEvent) => {
+      // 펄스 생성
+      const id = Date.now();
+      setPulses(prev => [...prev, { id, x: e.clientX, y: e.clientY }]);
+      
+      // 650ms 후 제거 (애니메이션 시간과 일치)
+      setTimeout(() => {
+        setPulses(prev => prev.filter(p => p.id !== id));
+      }, 650);
+
+      // 커서 반응
+      if (dotRef.current) {
+        dotRef.current.style.transform += " scale(0.7)";
+        setTimeout(() => {
+          if (dotRef.current) dotRef.current.style.transform = dotRef.current.style.transform.replace(" scale(0.7)", "");
+        }, 100);
+      }
+    };
+    window.addEventListener("mousedown", onMouseDown);
+
     return () => {
       document.documentElement.style.cursor = "";
       document.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mousedown", onMouseDown);
       cancelAnimationFrame(raf);
       interactiveEls.forEach(el => {
         el.removeEventListener("mouseenter", grow);
@@ -128,6 +155,20 @@ export default function ClarusCursor() {
           willChange: "transform",
         }}
       />
+
+      {/* 클릭 펄스 잔상들 */}
+      {pulses.map(pulse => (
+        <div
+          key={pulse.id}
+          className="cn-click-ripple"
+          style={{
+            top: pulse.y,
+            left: pulse.x,
+            width: 80,
+            height: 80,
+          }}
+        />
+      ))}
     </>
   );
 }
