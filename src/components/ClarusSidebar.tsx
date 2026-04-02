@@ -9,7 +9,7 @@ interface ClarusSidebarProps {
   onNavClick?: (id: string) => void;
 }
 
-const brainMriItems = ["Vessel 3D", "Aneurysm", "Stenosis", "Infarction", "Carotid Vessel 3D"];
+const brainMriItems = ["Vessel 3D", "Aneurysm", "Stenosis", "Infarction", "Carotid Vessel 3D", "Carotid Stenosis"];
 const brainCtItems = ["Hemorrhage", "Vessel 3D"];
 
 export default function ClarusSidebar({
@@ -94,13 +94,24 @@ export default function ClarusSidebar({
         }}>
           <span style={{
             fontSize: "1rem",
-            letterSpacing: "0.45em",
+            letterSpacing: "0.2em", 
             color: "rgba(96,165,250,0.85)",
             textTransform: "uppercase",
             fontWeight: 100,
             fontFamily: "var(--font-bernhard)",
             textShadow: "0 0 15px rgba(96,165,250,0.3)",
-          }}>CLARUS-N</span>
+            display: "flex",
+            alignItems: "center",
+          }}>
+            C<span style={{ marginLeft: "-0.15em" }}>LARUS</span>
+            <span style={{ 
+              fontFamily: 'HYGraphic, sans-serif',
+              fontSize: "0.8em",
+              margin: "0 0.1em",
+              transform: "translateY(-0.05em)"
+            }}>-</span>
+            N
+          </span>
         </div>
 
         {/* 스크롤 가능한 nav */}

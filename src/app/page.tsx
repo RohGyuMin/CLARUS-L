@@ -75,11 +75,19 @@ function HeroSection() {
             margin: 0,
             fontSize: "clamp(3.5rem, 10vw, 8rem)",
             fontWeight: 100,
-            letterSpacing: "0.2em",
+            letterSpacing: "0.2em", // 전체 자간은 원래대로 복구
             fontFamily: "var(--font-bernhard)",
-            color: "#ffffff"
+            color: "#ffffff",
+            display: "flex",
+            alignItems: "center",
           }}>
-          CLARUS-
+          C<span style={{ marginLeft: "-0.15em" }}>LARUS</span>
+          <span style={{ 
+            fontFamily: 'HYGraphic, sans-serif',
+            fontSize: "0.8em",
+            margin: "0 0.1em",
+            transform: "translateY(-0.05em)" 
+          }}>-</span>
           <span
             style={{
               color: "#a855f7",
@@ -91,10 +99,10 @@ function HeroSection() {
           </span>
         </h1>
 
-        {/* 서브타이틀 */}
+        {/* 서브타이틀 - C의 가운데 지점부터 시작되도록 마진 조정 */}
         <p
           style={{
-            margin: "1rem 0 0",
+            margin: "0.5rem 0 0 2.5em", // 왼쪽 마진을 2.5em으로 대폭 확대
             fontSize: "clamp(1rem, 2vw, 1.4rem)",
             fontWeight: 400,
             letterSpacing: "0.06em",
@@ -368,6 +376,7 @@ function PerformanceSection() {
     { name: "Stenosis",  score: "94.1%", color: "#6ae3af" },
     { name: "Infarction",score: "95.5%", color: "#6ae3af" },
     { name: "Carotid Vessel 3D", score: "93.7%", color: "#6ae3af" },
+    { name: "Carotid Stenosis",  score: "95.2%", color: "#6ae3af" },
   ];
   const ctItems = [
     { name: "Hemorrhage", score: "98.2%", color: "#b29de2" },
