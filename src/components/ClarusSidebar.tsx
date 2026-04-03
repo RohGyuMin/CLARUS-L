@@ -93,22 +93,22 @@ export default function ClarusSidebar({
           justifyContent: "flex-end",
         }}>
           <span style={{
-            fontSize: "1rem",
-            letterSpacing: "0.2em", 
-            color: "rgba(96,165,250,0.85)",
+            fontSize: "1.1rem",
+            letterSpacing: "-0.01em", 
+            color: "rgba(96,165,250,0.95)",
             textTransform: "uppercase",
-            fontWeight: 100,
+            fontWeight: 700,
             fontFamily: "var(--font-bernhard)",
-            textShadow: "0 0 15px rgba(96,165,250,0.3)",
+            textShadow: "0 0 15px rgba(96,165,250,0.4)",
             display: "flex",
             alignItems: "center",
           }}>
-            C<span style={{ marginLeft: "-0.15em" }}>LARUS</span>
+            C<span style={{ marginLeft: "-0.01em" }}>LARUS</span>
             <span style={{ 
               fontFamily: 'HYGraphic, sans-serif',
-              fontSize: "0.8em",
-              margin: "0 0.1em",
-              transform: "translateY(-0.05em)"
+              fontSize: "0.85em",
+              margin: "0 0.02em",
+              transform: "translateY(-0.03em)"
             }}>-</span>
             N
           </span>
@@ -128,12 +128,7 @@ export default function ClarusSidebar({
         >
           <nav style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
 
-            <NavBtn
-              label="About"
-              sectionId="about"
-              active={activeSection === "about"}
-              onClick={onNavClick}
-            />
+
             <NavBtn
               label="Background"
               sectionId="background"
@@ -200,16 +195,17 @@ export default function ClarusSidebar({
             <div style={{ height: "1px", background: "rgba(59,130,246,0.1)", margin: "0.375rem 0" }} />
 
             <NavBtn
-              label="Contact"
-              sectionId="contact"
-              active={activeSection === "contact"}
-              onClick={onNavClick}
-            />
-            <NavBtn
               label="Personal test request"
               sectionId="test-request"
               active={activeSection === "test-request"}
               onClick={onNavClick}
+            />
+            <NavBtn
+              label="Contact"
+              sectionId="contact"
+              active={activeSection === "contact"}
+              onClick={onNavClick}
+              isSpecial
             />
           </nav>
         </div>
@@ -228,12 +224,13 @@ export default function ClarusSidebar({
 
 /* ── 메인 nav 버튼 ── */
 function NavBtn({
-  label, sectionId, active, onClick,
+  label, sectionId, active, onClick, isSpecial
 }: {
   label: string;
   sectionId: string;
   active: boolean;
   onClick?: (id: string) => void;
+  isSpecial?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
   const highlighted = active || hovered;
@@ -281,8 +278,42 @@ function NavBtn({
         boxShadow: active ? "0 0 6px #60a5fa" : "none",
         flexShrink: 0,
         transition: "all 0.25s ease",
+        display: isSpecial ? "none" : "block",
       }} />
-      {label}
+
+      {/* 스페셜 지시자 (이미지 스타일) */}
+      {isSpecial && (
+        <div style={{
+          position: "absolute",
+          top: "8px",
+          left: "8px",
+          width: "14px",
+          height: "14px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <div style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            border: "1px solid rgba(96,165,250,0.5)",
+            boxShadow: "0 0 8px rgba(59,130,246,0.3)",
+          }} />
+          <div style={{
+            width: "5px",
+            height: "5px",
+            borderRadius: "50%",
+            background: "#60a5fa",
+            boxShadow: "0 0 8px #60a5fa",
+          }} />
+        </div>
+      )}
+
+      <span style={{ marginLeft: isSpecial ? "1.25rem" : 0 }}>
+        {label}
+      </span>
     </a>
   );
 }

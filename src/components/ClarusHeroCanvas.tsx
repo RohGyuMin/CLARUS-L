@@ -39,28 +39,11 @@ export default function ClarusHeroCanvas() {
     let W = canvas.width = canvas.offsetWidth;
     let H = canvas.height = canvas.offsetHeight;
 
-    const onResize = () => {
-      W = canvas.width = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
-    };
-
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
-    };
-
-    const ro = new ResizeObserver(onResize);
-    ro.observe(canvas);
-    window.addEventListener("mousemove", onMouseMove);
-
     /* ── 설정 및 초기화 ── */
     const nodeCount = 80; 
-    const brainCenterX = W * 0.75; 
-    const brainCenterY = H * 0.45;
-    const brainBaseScale = Math.min(W, H) * 0.32;
+    let brainCenterX = W * 0.75; 
+    let brainCenterY = H * 0.45;
+    let brainBaseScale = Math.min(W, H) * 0.32;
 
     const nodes: Node[] = Array.from({ length: nodeCount }, (_, i) => {
       const ang = Math.random() * Math.PI * 2;
@@ -75,6 +58,38 @@ export default function ClarusHeroCanvas() {
         hub: i % 8 === 0,
       };
     });
+
+    const onResize = () => {
+      const oldW = W, oldH = H;
+      const oldCenterX = brainCenterX, oldCenterY = brainCenterY;
+      
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+      
+      brainCenterX = W * 0.75; 
+      brainCenterY = H * 0.45;
+      brainBaseScale = Math.min(W, H) * 0.32;
+
+      // 노드 위치를 새로운 중심점에 맞춰 보정 (위치 튀는 현상 방지)
+      const dx = brainCenterX - oldCenterX;
+      const dy = brainCenterY - oldCenterY;
+      nodes.forEach(n => {
+        n.x += dx;
+        n.y += dy;
+      });
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+
+    const ro = new ResizeObserver(onResize);
+    ro.observe(canvas);
+    window.addEventListener("mousemove", onMouseMove);
 
     const pulses: Pulse[] = [];
     const nodeGlows = new Float32Array(nodeCount);

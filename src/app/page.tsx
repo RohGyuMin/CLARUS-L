@@ -64,7 +64,7 @@ function HeroSection() {
         style={{
           position: "absolute",
           bottom: "6rem",
-          left: "5rem",
+          left: "7rem",
           zIndex: 5,
           pointerEvents: "none",
         }}
@@ -74,25 +74,28 @@ function HeroSection() {
           style={{
             margin: 0,
             fontSize: "clamp(3.5rem, 10vw, 8rem)",
-            fontWeight: 100,
-            letterSpacing: "0.2em", // 전체 자간은 원래대로 복구
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
             fontFamily: "var(--font-bernhard)",
             color: "#ffffff",
-            display: "flex",
-            alignItems: "center",
+            whiteSpace: "nowrap",
+            lineHeight: "1.1",
+            textShadow: "0 0 15px rgba(255,255,255,0.2)",
           }}>
-          C<span style={{ marginLeft: "-0.15em" }}>LARUS</span>
+          C<span style={{ marginLeft: "-0.02em" }}>LARUS</span>
           <span style={{ 
             fontFamily: 'HYGraphic, sans-serif',
-            fontSize: "0.8em",
-            margin: "0 0.1em",
+            fontSize: "0.85em",
+            margin: "0 0.02em",
+            display: "inline-block",
             transform: "translateY(-0.05em)" 
           }}>-</span>
           <span
             style={{
               color: "#a855f7",
+              fontWeight: 800,
               textShadow:
-                "0 0 20px rgba(168,85,247,0.9), 0 0 50px rgba(168,85,247,0.5)",
+                "0 0 25px rgba(168,85,247,0.9), 0 0 50px rgba(168,85,247,0.5)",
             }}
           >
             N
@@ -102,12 +105,12 @@ function HeroSection() {
         {/* 서브타이틀 - C의 가운데 지점부터 시작되도록 마진 조정 */}
         <p
           style={{
-            margin: "0.5rem 0 0 2.5em", // 왼쪽 마진을 2.5em으로 대폭 확대
-            fontSize: "clamp(1rem, 2vw, 1.4rem)",
-            fontWeight: 400,
-            letterSpacing: "0.06em",
+            margin: "0.5rem 0 0 1.6em",
+            fontSize: "clamp(1.1rem, 2.2vw, 1.6rem)",
+            fontWeight: 700,
+            letterSpacing: "0.02em",
             color: "#c4813a",
-            textShadow: "0 0 18px rgba(196,129,58,0.6)",
+            textShadow: "0 0 20px rgba(196,129,58,0.7), 0 2px 4px rgba(0,0,0,0.5)",
             fontFamily: "'Inter', sans-serif",
           }}
         >
@@ -223,20 +226,22 @@ function RevealSection({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span
-      style={{
-        display: "inline-block",
-        fontSize: "0.7rem",
-        letterSpacing: "0.25em",
-        textTransform: "uppercase",
-        color: "#60a5fa",
-        marginBottom: "1rem",
-        fontWeight: 500,
-        fontFamily: "'Inter', sans-serif",
-      }}
-    >
-      {children}
-    </span>
+    <div style={{ marginBottom: "1.5rem" }}>
+      <span
+        style={{
+          display: "inline-block",
+          fontSize: "1.25rem",
+          letterSpacing: "0.4em",
+          textTransform: "uppercase",
+          color: "#60a5fa",
+          fontWeight: 700,
+          fontFamily: "'Inter', sans-serif",
+          textShadow: "0 0 15px rgba(96,165,250,0.4)",
+        }}
+      >
+        {children}
+      </span>
+    </div>
   );
 }
 
@@ -261,16 +266,16 @@ function AboutSection() {
           <RevealSection>
             <SectionLabel>About</SectionLabel>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              차세대 신경영상 AI 분석 플랫폼
+              Next-Generation Neuroimaging AI Platform
             </h2>
             <Divider />
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.15s" }}>
             <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "1.25rem" }}>
-              CLARUS-N은 최첨단 딥러닝 알고리즘을 기반으로 뇌 MRI 및 CT 영상을 자동으로 분석하여 임상의의 의사결정을 지원하는 AI 솔루션입니다.
+              CLARUS-N is a state-of-the-art AI solution for neuroimaging based on advanced deep learning algorithms, supporting clinical decision-making by automatically analyzing brain MRI and CT images.
             </p>
             <p style={{ color: "#64748b", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300 }}>
-              혈관 3D 재구성, 동맥류 감지, 협착 분류, 뇌경색 세분화 등 다양한 임상 과제에서 검증된 성능을 제공합니다.
+              It provides proven performance in various clinical tasks such as vascular 3D reconstruction, aneurysm detection, stenosis classification, and stroke segmentation.
             </p>
           </RevealSection>
         </div>
@@ -286,10 +291,10 @@ function AboutSection() {
 
 function BackgroundSection() {
   const stats = [
-    { value: "10K+", label: "학습 데이터셋" },
-    { value: "97.3%", label: "동맥류 감지 정확도" },
-    { value: "0.3s", label: "평균 분석 시간" },
-    { value: "15+", label: "협력 병원" },
+    { value: "10K+", label: "Training Datasets" },
+    { value: "97.3%", label: "Aneurysm Accuracy" },
+    { value: "0.3s", label: "Avg. Analysis Time" },
+    { value: "15+", label: "Collaborating Hospitals" },
   ];
 
   return (
@@ -299,13 +304,13 @@ function BackgroundSection() {
           <RevealSection>
             <SectionLabel>Background</SectionLabel>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              연구 배경 및 개발 동기
+              Research & Motivation
             </h2>
             <Divider />
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
             <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2.5rem" }}>
-              뇌혈관 질환은 빠른 진단이 생존율을 결정하는 핵심 요소입니다. 숙련된 영상의학과 전문의의 부족과 판독 지연 문제를 AI 기반 자동화로 해결합니다.
+              Cerebrovascular diseases require rapid diagnosis, making timing critical for survival. We solve challenges like radiologist shortages and interpretation delays through AI-driven automation.
             </p>
           </RevealSection>
 
@@ -370,119 +375,465 @@ function BackgroundSection() {
 }
 
 function PerformanceSection() {
-  const mriItems = [
-    { name: "Vessel 3D", score: "96.8%", color: "#6ae3af" },
-    { name: "Aneurysm",  score: "97.3%", color: "#6ae3af" },
-    { name: "Stenosis",  score: "94.1%", color: "#6ae3af" },
-    { name: "Infarction",score: "95.5%", color: "#6ae3af" },
-    { name: "Carotid Vessel 3D", score: "93.7%", color: "#6ae3af" },
-    { name: "Carotid Stenosis",  score: "95.2%", color: "#6ae3af" },
-  ];
-  const ctItems = [
-    { name: "Hemorrhage", score: "98.2%", color: "#b29de2" },
-    { name: "Vessel 3D",  score: "95.6%", color: "#b29de2" },
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [hasNudged, setHasNudged] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // 뷰포트 진입 감지 -> 슬라이드 넛지(Nudge) 애니메이션 실행
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !hasNudged) {
+        setHasNudged(true);
+      }
+    }, { threshold: 0.3 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasNudged]);
+
+  const mraCards = [
+    {
+      title: "MRA AI for <span style='color: #facc15'>Vessel</span> reconstruction",
+      description: "Precise reconstruction of even the finest blood vessels.",
+      videoSrc: "/videos/vessel.mp4",
+      theme: "blue",
+      details: [
+        "#Input: TOF images",
+        "#Dice: 0.872, #6.78sec"
+      ]
+    },
+    {
+      title: "MRA AI for <span style='color: #ef4444'>Aneurysm</span> detection",
+      description: "Detects more accurately than a neuro-specialists.",
+      videoSrc: "/videos/aneurysm.mp4",
+      theme: "blue",
+      details: [
+        "#Input: TOF images",
+        "#Sensitivity: 92.0%, #20.25sec"
+      ]
+    },
+    {
+      title: "MRA AI for <span style='color: #38bdf8'>Stenosis</span> detection",
+      description: "Detects stenosis up to the A2 and M2 segments.",
+      videoSrc: "/videos/stenosis.mp4",
+      theme: "blue",
+      details: [
+        "#Input: TOF images",
+        "#Sensitivity: 92.0%, #20.25sec"
+      ]
+    }
   ];
 
+  const infarctCards = [
+    {
+      id: "dwi-1",
+      title: "DWI AI for Infarcted <span style='color: #c084fc'>Region</span> Detection",
+      description: "Accurately identifies even minute infarct lesions",
+      videoSrc: "/videos/infarct_region.mp4",
+      theme: "purple",
+      details: ["#Dice 0.820, #22.0sec", "#6002 cases training data"]
+    },
+    {
+      id: "dwi-2",
+      title: "DWI AI for Mapping <span style='color: #a3e635'>Vascular territories</span>",
+      description: "Mapping the vascular territory that caused the cerebral infarction",
+      videoSrc: "/videos/vascular_territory.mp4",
+      theme: "purple",
+      details: ["#Dice 0.820, #22.0sec", "#Six major vessels"]
+    },
+    {
+      id: "dwi-3",
+      title: "ADC AI for Infarction <span style='color: #fdba74'>Onset</span> Detection",
+      description: "Transferring DWI-predicted lesions to ADC to estimate time since onset.",
+      videoSrc: "/videos/infarct_onset.mp4",
+      theme: "purple",
+      details: ["#Dice 0.820, #22.0sec", "#Acute, Subacute, Chronic stage"]
+    }
+  ];
+
+  const carotidCards = [
+    {
+      id: "carotid-1",
+      title: "MRA AI for <span style='color: #facc15'>Carotid Vessel</span> reconstruction",
+      description: "Rendering CCAs that are difficult to visualize using MIP.",
+      videoSrc: "/videos/carotid_vessel.mp4",
+      theme: "gray",
+      details: ["#Input: Carotid TOF images", "#Dice 0.916, #4.52sec"]
+    },
+    {
+      id: "carotid-2",
+      title: "MRA AI for <span style='color: #22c55e'>Carotid Stenosis & occlusion</span>",
+      description: "Identifies stenotic and occlusive regions.",
+      videoSrc: "/videos/carotid_stenosis.mp4",
+      theme: "gray",
+      details: ["#Input: Carotid TOF images", "#0.00sec"]
+    }
+  ];
+
+  const ctCards = [
+    {
+      id: "ct-1",
+      title: "CT AI for <span style='color: #f472b6'>Hemorrhage</span> Detection",
+      description: "Rendering CCAs that are difficult to visualize using MIP.",
+      videoSrc: "/videos/ct_hemorrhage.mp4",
+      theme: "green",
+      details: ["#Input: Axial CT images", "#Dice 0.928 #4.5sec"]
+    },
+    {
+      id: "ct-2",
+      title: "CTA AI for <span style='color: #facc15'>Vessel</span> Reconstruction",
+      description: "Identifies stenotic and occlusive regions.",
+      videoSrc: "/videos/cta_vessel.mp4",
+      theme: "green",
+      details: ["#Input: CTA source images", "#0.00sec"]
+    }
+  ];
+
+  const cardSets = [mraCards, infarctCards, carotidCards, ctCards];
+
+  const currentCards = cardSets[pageIndex];
+
+  const handleCardClick = (videoSrc: string) => {
+    setActiveVideo(prev => prev === videoSrc ? null : videoSrc);
+  };
+
   return (
-    <section id="performance" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+    <section 
+      id="performance" 
+      ref={sectionRef}
+      style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative" }}
+    >
       <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "42rem", width: "100%" }}>
+        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", overflow: "hidden" }}>
           <RevealSection>
-            <SectionLabel>Performance</SectionLabel>
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              임상 검증 성능 지표
-            </h2>
+            <SectionLabel>Characteristics</SectionLabel>
             <Divider />
           </RevealSection>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", marginTop: "0.5rem" }}>
-            {/* Brain MRI */}
-            <div>
-              <RevealSection style={{ transitionDelay: "0.1s" }}>
-                <h3 style={{ color: "#6ae3af", fontSize: "0.875rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "1rem" }}>Brain MRI</h3>
-              </RevealSection>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {mriItems.map((item, i) => (
-                  <RevealSection key={item.name} style={{ transitionDelay: `${0.15 + i * 0.08}s` }}>
-                    <PerformanceBar item={item} />
-                  </RevealSection>
-                ))}
-              </div>
-            </div>
-
-            {/* Brain CT */}
-            <div>
-              <RevealSection style={{ transitionDelay: "0.1s" }}>
-                <h3 style={{ color: "#b29de2", fontSize: "0.875rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "1rem" }}>Brain CT</h3>
-              </RevealSection>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {ctItems.map((item, i) => (
-                  <RevealSection key={item.name} style={{ transitionDelay: `${0.15 + i * 0.08}s` }}>
-                    <PerformanceBar item={item} />
-                  </RevealSection>
-                ))}
-              </div>
+          {/* 슬라이더 트랙 컨테이너 (진입 시 넛지 효과 포함) */}
+          <div style={{ 
+            position: "relative", 
+            width: "100%",
+            marginTop: "1rem",
+            transform: hasNudged && !pageIndex ? "translateX(15px)" : "none",
+            transition: "transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)"
+          }}>
+            {/* 가로 슬라이딩 트랙 */}
+            <div style={{ 
+              display: "flex", 
+              width: `${cardSets.length * 100}%`,
+              transform: `translateX(-${pageIndex * (100 / cardSets.length)}%)`,
+              transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)"
+            }}>
+              {cardSets.map((set, setIdx) => (
+                <div 
+                  key={setIdx} 
+                  style={{ 
+                    width: `${100 / cardSets.length}%`, 
+                    flexShrink: 0, 
+                    display: "flex", 
+                    flexDirection: "column", 
+                    gap: "1.5rem",
+                    paddingRight: "1.5rem",
+                    opacity: pageIndex === setIdx ? 1 : 0.3,
+                    transform: pageIndex === setIdx ? "scale(1)" : "scale(0.96)",
+                    transition: "all 0.6s ease"
+                  }}
+                >
+                  {set.map((card, i) => (
+                    <RevealSection key={`${setIdx}-${i}`} style={{ transitionDelay: `${0.05 + i * 0.1}s` }}>
+                      <CharacteristicCard 
+                        card={card} 
+                        isActive={activeVideo === card.videoSrc}
+                        onClick={() => handleCardClick(card.videoSrc)}
+                      />
+                    </RevealSection>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+
+          {/* 인디케이터 및 화살표 내비게이션 */}
+          <div style={{ 
+            display: "flex", 
+            alignItems: "center",
+            justifyContent: "flex-start", 
+            gap: "1.75rem", 
+            marginTop: "2.5rem",
+            paddingLeft: "1.5rem"
+          }}>
+            {/* 좌측 화살표 (이전 세트) */}
+            <button 
+              onClick={() => {
+                setPageIndex(p => Math.max(0, p - 1));
+                setActiveVideo(null);
+              }}
+              disabled={pageIndex === 0}
+              style={{
+                background: "none", border: "none", color: "#60a5fa", 
+                cursor: pageIndex === 0 ? "default" : "pointer",
+                opacity: pageIndex === 0 ? 0.1 : 0.6, transition: "all 0.3s ease", padding: 0,
+                display: "flex", alignItems: "center", justifyContent: "center"
+              }}
+              onMouseEnter={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "0.6")}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            {/* 도트 리스트 */}
+            <div style={{ display: "flex", gap: "0.85rem", alignItems: "center" }}>
+              {cardSets.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setPageIndex(idx);
+                    setActiveVideo(null);
+                  }}
+                  style={{
+                    width: idx === pageIndex ? "1.75rem" : "0.5rem",
+                    height: "0.5rem",
+                    borderRadius: "0.25rem",
+                    background: idx === pageIndex ? "#60a5fa" : "rgba(255,255,255,0.15)",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                    padding: 0
+                  }}
+                  aria-label={`Go to card set ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* 우측 화살표 (다음 세트) */}
+            <button 
+              onClick={() => {
+                setPageIndex(p => Math.min(cardSets.length - 1, p + 1));
+                setActiveVideo(null);
+              }}
+              disabled={pageIndex === cardSets.length - 1}
+              style={{
+                background: "none", border: "none", color: "#60a5fa", 
+                cursor: pageIndex === cardSets.length - 1 ? "default" : "pointer",
+                opacity: pageIndex === cardSets.length - 1 ? 0.1 : 0.6, transition: "all 0.3s ease", padding: 0,
+                display: "flex", alignItems: "center", justifyContent: "center"
+              }}
+              onMouseEnter={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "0.6")}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+          </div>
+          </div>
         
-        {/* 우측 뉴런 장식: 성능 섹션은 빠른 신호 전달 느낌 */}
-        <div style={{ flex: 1, height: "400px", position: "relative" }}>
-          <NeuralSynapseVisual mode="fast" color="110, 227, 175" opacity={0.5} />
+        {/* 우측 영역: 평소에는 뉴런만 떠 있다가, 클릭 시 비디오 박스가 활성화됨 */}
+        <div style={{ 
+          flex: 1, 
+          height: "500px", 
+          position: "relative",
+          background: activeVideo ? "rgba(30,58,138,0.15)" : "transparent",
+          borderRadius: "1.5rem",
+          overflow: "hidden",
+          border: activeVideo ? "1px solid rgba(96,165,250,0.2)" : "1px solid transparent",
+          boxShadow: activeVideo ? "0 0 40px rgba(0,0,0,0.4)" : "none",
+          transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}>
+          {/* 뉴런 시각화 (동영상이 없을 때만 혹은 밑에 깔기) */}
+          <div style={{ 
+            position: "absolute", inset: 0, 
+            opacity: activeVideo ? 0.3 : 1,
+            transition: "opacity 0.8s ease",
+            filter: activeVideo ? "blur(4px)" : "none",
+          }}>
+            <NeuralSynapseVisual mode="fast" color="110, 227, 175" opacity={0.5} />
+          </div>
+
+          {/* 동영상 플레이어 - 모든 카드 세트 통합 관리 */}
+          {[...mraCards, ...infarctCards, ...carotidCards, ...ctCards].map(card => (
+            <div 
+              key={card.videoSrc}
+              style={{
+                position: "absolute",
+                inset: 0,
+                opacity: activeVideo === card.videoSrc ? 1 : 0,
+                transition: "opacity 0.6s cubic-bezier(0.4,0,0.2,1)",
+                pointerEvents: activeVideo === card.videoSrc ? "auto" : "none",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "black",
+              }}
+            >
+              {activeVideo === card.videoSrc && (
+                <video
+                  src={card.videoSrc}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              )}
+            </div>
+          ))}
+
+          {/* 안내 오버레이 (비디오 없을 때) */}
+          {!activeVideo && (
+            <div style={{
+              position: "absolute",
+              bottom: "2rem",
+              left: "0",
+              width: "100%",
+              textAlign: "center",
+              color: "rgba(148,163,184,0.6)",
+              fontSize: "0.85rem",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              pointerEvents: "none",
+            }}>
+              Select a characteristic to view AI analysis
+            </div>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function PerformanceBar({ item }: { item: { name: string; score: string; color: string } }) {
-  const percent = parseFloat(item.score);
-  const barRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = barRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => { el.style.width = item.score; }, 100);
-      }
-    }, { threshold: 0.5 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [item.score]);
+function CharacteristicCard({ card, isActive, onClick }: { card: any; isActive: boolean; onClick: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  const highlighted = hovered || isActive;
+  
+  // 테마 색상 결정
+  let themeColor = "rgba(96,165,250,0.8)";
+  let themeBg = highlighted ? "rgba(30,58,138,0.25)" : "rgba(30,58,138,0.12)";
+  let themeShadow = isActive ? "rgba(59,130,246,0.3)" : "transparent";
+
+  if (card.theme === "purple") {
+    themeColor = "rgba(168, 85, 247, 0.8)";
+    themeBg = highlighted ? "rgba(88, 28, 135, 0.3)" : "rgba(88, 28, 135, 0.15)";
+    themeShadow = isActive ? "rgba(168, 85, 247, 0.3)" : "transparent";
+  } else if (card.theme === "gray") {
+    themeColor = "rgba(148, 163, 184, 0.8)";
+    themeBg = highlighted ? "rgba(55, 65, 81, 0.4)" : "rgba(55, 65, 81, 0.25)";
+    themeShadow = isActive ? "rgba(148, 163, 184, 0.3)" : "transparent";
+  } else if (card.theme === "green") {
+    themeColor = "rgba(34, 197, 94, 0.8)";
+    themeBg = highlighted ? "rgba(20, 83, 45, 0.4)" : "rgba(20, 83, 45, 0.25)";
+    themeShadow = isActive ? "rgba(34, 197, 94, 0.3)" : "transparent";
+  }
+
+  const themeBorder = isActive ? themeColor : (hovered ? themeColor : "rgba(255,255,255,0.1)");
+  const insetShadowColor = card.theme === "purple" ? "rgba(168, 85, 247, 0.2)" : 
+                         card.theme === "gray" ? "rgba(148, 163, 184, 0.2)" :
+                         card.theme === "green" ? "rgba(34, 197, 94, 0.2)" : "rgba(59,130,246,0.2)";
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.35rem" }}>
-        <span style={{ color: "#cbd5e1", fontSize: "0.875rem" }}>{item.name}</span>
-        <span style={{ color: item.color, fontSize: "0.875rem", fontWeight: 500 }}>{item.score}</span>
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        padding: "1.75rem 2rem",
+        borderRadius: "1.5rem",
+        background: themeBg,
+        border: `1px solid ${themeBorder}`,
+        boxShadow: isActive ? `0 0 25px ${themeShadow}, inset 0 0 10px ${insetShadowColor}` : "none",
+        backdropFilter: "blur(12px)",
+        transition: "all 0.4s cubic-bezier(0.4,0,0.2,1)",
+        cursor: "pointer",
+        position: "relative",
+        overflow: "hidden",
+        transform: highlighted ? "translateX(5px)" : "translateX(0)",
+      }}
+    >
+      {/* 타이틀 */}
+      <h3 
+        dangerouslySetInnerHTML={{ __html: card.title }}
+        style={{
+          color: "rgba(226,232,240,0.95)",
+          fontSize: "1.4rem",
+          fontWeight: 600,
+          marginBottom: "0.75rem",
+          letterSpacing: "-0.01em",
+          fontFamily: "'Inter', sans-serif",
+        }}
+      />
+      
+      {/* 기본 설명 */}
+      <p style={{
+        color: "rgba(148,163,184,0.85)",
+        fontSize: "1.2rem",
+        lineHeight: 1.6,
+        fontWeight: 300,
+        fontFamily: "'Cormorant', Georgia, serif",
+        fontStyle: "italic",
+        letterSpacing: "0.01em",
+      }}>
+        {card.description}
+      </p>
+
+      {/* 호버 시 나타나는 상세 정보 */}
+      <div style={{
+        maxHeight: hovered ? "120px" : "0",
+        opacity: hovered ? 1 : 0,
+        overflow: "hidden",
+        transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        marginTop: hovered ? "1.5rem" : "0",
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.6rem",
+      }}>
+        {card.details.map((detail: string, idx: number) => (
+          <div key={idx} style={{
+            color: "rgba(96,165,250,0.9)",
+            fontSize: "0.9rem",
+            fontFamily: "'Inter', sans-serif",
+            letterSpacing: "0.05em",
+            fontWeight: 500,
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem"
+          }}>
+            <span style={{ 
+              width: "4px", 
+              height: "4px", 
+              borderRadius: "50%", 
+              backgroundColor: "currentColor",
+              opacity: 0.6
+            }} />
+            {detail}
+          </div>
+        ))}
       </div>
-      <div style={{ height: 4, borderRadius: 2, background: "rgba(255,255,255,0.04)", overflow: "hidden", position: "relative" }}>
-        <div
-          ref={barRef}
-          style={{
-            height: "100%",
-            width: "0%",
-            borderRadius: 2,
-            background: `linear-gradient(to right, ${item.color}40, ${item.color})`,
-            transition: "width 1.5s cubic-bezier(0.4,0,0.2,1)",
-            boxShadow: `0 0 12px ${item.color}60`,
-            position: "relative",
-          }}
-        >
-          {/* 바 위의 이동하는 빛줄기 효과 */}
-          <div 
-            style={{
-              position: "absolute",
-              top: 0, left: 0, bottom: 0, width: "30%",
-              background: "linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent)",
-              animation: "cn-bar-shine 3s infinite linear",
-            }}
-          />
-        </div>
-      </div>
+
+      {/* 호버 시 배경 글로우 */}
+      <div style={{
+        position: "absolute",
+        top: "-50%", left: "-50%",
+        width: "200%", height: "200%",
+        background: "radial-gradient(circle at center, rgba(59,130,246,0.06) 0%, transparent 60%)",
+        pointerEvents: "none",
+        opacity: hovered ? 1 : 0,
+        transition: "opacity 0.6s ease",
+      }} />
     </div>
   );
 }
+
+
 
 function TestRequestSection() {
   return (
@@ -492,7 +843,7 @@ function TestRequestSection() {
           <RevealSection>
             <SectionLabel>Personal Test Request</SectionLabel>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              개인용 AI 신경영상 분석 신청
+              Submit for AI Analysis
             </h2>
             <Divider />
           </RevealSection>
@@ -512,16 +863,16 @@ function TestRequestSection() {
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
                 </svg>
               </div>
-              <p style={{ color: "#e2e8f0", fontSize: "1.1rem", marginBottom: "0.5rem" }}>MRI 또는 CT 데이터를 드래그하세요</p>
-              <p style={{ color: "#64748b", fontSize: "0.9rem" }}>DICOM, NIfTI 형식 지원 (최대 500MB)</p>
+              <p style={{ color: "#e2e8f0", fontSize: "1.1rem", marginBottom: "0.5rem" }}>Drag and drop MRI or CT data here</p>
+              <p style={{ color: "#64748b", fontSize: "0.9rem" }}>Supports DICOM, NIfTI formats (Max 500MB)</p>
             </div>
           </RevealSection>
 
           <RevealSection style={{ transitionDelay: "0.2s" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div style={{ display: "flex", gap: "1rem" }}>
-                <input type="text" placeholder="이름" style={{ flex: 1, padding: "0.875rem 1.25rem", borderRadius: "0.75rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none" }} />
-                <input type="email" placeholder="이메일" style={{ flex: 1, padding: "0.875rem 1.25rem", borderRadius: "0.75rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none" }} />
+                <input type="text" placeholder="Name" style={{ flex: 1, padding: "0.875rem 1.25rem", borderRadius: "0.75rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none" }} />
+                <input type="email" placeholder="Email" style={{ flex: 1, padding: "0.875rem 1.25rem", borderRadius: "0.75rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none" }} />
               </div>
               <button style={{
                 padding: "1rem", borderRadius: "0.75rem",
@@ -529,7 +880,7 @@ function TestRequestSection() {
                 color: "white", fontWeight: 600, border: "none", cursor: "pointer",
                 boxShadow: "0 0 20px rgba(37,99,235,0.3)"
               }}>
-                분석 요청하기
+                Request Analysis
               </button>
             </div>
           </RevealSection>
@@ -552,13 +903,13 @@ function ContactSection() {
           <RevealSection>
             <SectionLabel>Contact</SectionLabel>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              도입 문의 및 시연 요청
+              Partnership & Demo Requests
             </h2>
             <Divider />
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
             <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem" }}>
-              병원 및 연구기관을 대상으로 파일럿 프로그램을 운영 중입니다. 데모 신청 및 기술 협력 문의는 아래로 연락해 주세요.
+              We are currently running pilot programs for hospitals and research institutions. Please contact us below for demo applications and technical collaboration inquiries.
             </p>
             <a
               href="mailto:contact@clarus-n.ai"
@@ -601,10 +952,12 @@ function ContactSection() {
 /* ─────────────────────────────────────────────
    메인 페이지
 ───────────────────────────────────────────── */
-const NAV_SECTIONS = ["about", "background", "performance", "test-request", "contact"] as const;
+const NAV_SECTIONS = ["background", "performance", "test-request", "contact"] as const;
 type SectionId = typeof NAV_SECTIONS[number];
 
 export default function ClarusNPage() {
+  const [showIntro, setShowIntro] = useState(true);
+  const [isIntroEnding, setIsIntroEnding] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState<SectionId | "">("");
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -641,6 +994,17 @@ export default function ClarusNPage() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
+  // 인트로 종료 핸들러
+  const handleIntroEnd = useCallback(() => {
+    setIsIntroEnding(true);
+    setTimeout(() => {
+      setShowIntro(false);
+    }, 1200); //globals.css의 cn-intro-fade-out 시간과 일치
+  }, []);
+
+
+
+
   return (
     <div
       style={{
@@ -655,76 +1019,146 @@ export default function ClarusNPage() {
     >
       <ClarusCursor />
 
-      {/* 스크롤 영역 */}
+      {/* 인트로 영상 오버레이 */}
+      {showIntro && (
+        <div 
+          className={`cn-intro-overlay ${isIntroEnding ? 'ending' : ''}`}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 10000,
+            backgroundColor: "#030712",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden"
+          }}
+        >
+          <video
+            src="/다운로드.mp4"
+            autoPlay
+            muted
+            playsInline
+            onEnded={handleIntroEnd}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover"
+            }}
+          />
+          {/* Skip 버튼 */}
+          <button
+            onClick={handleIntroEnd}
+            style={{
+              position: "absolute",
+              bottom: "3rem",
+              right: "3rem",
+              padding: "0.6rem 1.5rem",
+              borderRadius: "2rem",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              color: "rgba(255,255,255,0.6)",
+              fontSize: "0.8rem",
+              letterSpacing: "0.2em",
+              cursor: "pointer",
+              backdropFilter: "blur(10px)",
+              transition: "all 0.3s ease",
+              zIndex: 10001
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = "rgba(255,255,255,0.1)";
+              e.currentTarget.style.color = "#fff";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+              e.currentTarget.style.color = "rgba(255,255,255,0.6)";
+            }}
+          >
+            SKIP INTRO
+          </button>
+        </div>
+      )}
+
+      {/* 메인 콘텐츠 (인트로가 아직 안 끝났어도 렌더링은 해둬서 자원 로드 미리 수행) */}
       <div
-        ref={scrollRef}
-        className="cn-sidebar-scroll"
+        className={isIntroEnding ? "cn-main-reveal" : ""}
         style={{
           position: "absolute",
-          top: 0, bottom: 0, right: 0,
-          left: isSidebarOpen ? "340px" : "0px",
-          overflowY: "scroll",
-          overflowX: "hidden",
-          zIndex: 10,
-          backgroundColor: "#030712",
-          transition: "left 500ms cubic-bezier(0.4,0,0.2,1)",
+          inset: 0,
+          opacity: isIntroEnding ? 1 : 0,
+          pointerEvents: showIntro ? "none" : "auto",
         }}
       >
-        <HeroSection />
-        <div style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
-          <AboutSection />
-          <BackgroundSection />
-          <PerformanceSection />
-          <TestRequestSection />
-          <ContactSection />
-          <footer style={{
-            padding: "2rem 0",
-            borderTop: "1px solid rgba(255,255,255,0.06)",
-            color: "#334155",
-            fontSize: "0.8rem",
-            letterSpacing: "0.08em",
-          }}>
-            © 2024 CLARUS-N · AI for Unlocking Neuroimages
-          </footer>
+        {/* 스크롤 영역 */}
+        <div
+          ref={scrollRef}
+          className="cn-sidebar-scroll"
+          style={{
+            position: "absolute",
+            top: 0, bottom: 0, right: 0,
+            left: isSidebarOpen ? "340px" : "0px",
+            overflowY: "scroll",
+            overflowX: "hidden",
+            zIndex: 10,
+            backgroundColor: "#030712",
+            transition: "left 500ms cubic-bezier(0.4,0,0.2,1)",
+          }}
+        >
+          <HeroSection />
+          <div style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
+            <BackgroundSection />
+            <PerformanceSection />
+            <TestRequestSection />
+            <ContactSection />
+            <footer style={{
+              padding: "2rem 0",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              color: "#334155",
+              fontSize: "0.8rem",
+              letterSpacing: "0.08em",
+            }}>
+              © 2024 CLARUS-N · AI for Unlocking Neuroimages
+            </footer>
+          </div>
         </div>
+
+        {/* 메뉴 열기 버튼 */}
+        <button
+          onClick={toggleSidebar}
+          aria-label="메뉴 열기"
+          style={{
+            position: "fixed",
+            top: "2rem", left: "2rem",
+            zIndex: 40,
+            padding: "0.75rem",
+            borderRadius: "0.75rem",
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            backdropFilter: "blur(12px)",
+            color: "white",
+            cursor: "none",
+            opacity: isSidebarOpen ? 0 : 1,
+            pointerEvents: isSidebarOpen ? "none" : "auto",
+            transition: "opacity 0.3s ease, background 0.2s ease",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+
+        {/* 사이드바 */}
+        <ClarusSidebar
+          isOpen={isSidebarOpen}
+          onToggle={toggleSidebar}
+          activeSection={activeSection}
+          onNavClick={handleNavClick}
+        />
       </div>
-
-      {/* 메뉴 열기 버튼 */}
-      <button
-        onClick={toggleSidebar}
-        aria-label="메뉴 열기"
-        style={{
-          position: "fixed",
-          top: "2rem", left: "2rem",
-          zIndex: 40,
-          padding: "0.75rem",
-          borderRadius: "0.75rem",
-          background: "rgba(255,255,255,0.05)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          backdropFilter: "blur(12px)",
-          color: "white",
-          cursor: "none",
-          opacity: isSidebarOpen ? 0 : 1,
-          pointerEvents: isSidebarOpen ? "none" : "auto",
-          transition: "opacity 0.3s ease, background 0.2s ease",
-        }}
-        onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
-        onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-      </button>
-
-      {/* 사이드바 */}
-      <ClarusSidebar
-        isOpen={isSidebarOpen}
-        onToggle={toggleSidebar}
-        activeSection={activeSection}
-        onNavClick={handleNavClick}
-      />
     </div>
   );
 }
