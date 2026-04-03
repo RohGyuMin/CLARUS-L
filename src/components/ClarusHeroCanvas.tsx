@@ -18,6 +18,13 @@ interface Pulse {
   speed: number;
 }
 
+interface Spark {
+  x: number; y: number;
+  vx: number; vy: number;
+  alpha: number;
+  size: number;
+}
+
 function rand(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
@@ -40,37 +47,44 @@ export default function ClarusHeroCanvas() {
     let H = canvas.height = canvas.offsetHeight;
 
     /* ── 설정 및 초기화 ── */
-    const nodeCount = 80; 
+    const nodeCount = 150; // 노드 수 상향 (공간 채우기용)
     let brainCenterX = W * 0.75; 
     let brainCenterY = H * 0.45;
     let brainBaseScale = Math.min(W, H) * 0.32;
 
     const nodes: Node[] = Array.from({ length: nodeCount }, (_, i) => {
       const ang = Math.random() * Math.PI * 2;
-      const dist = i < 50 ? Math.random() * brainBaseScale * 0.95 : Math.random() * brainBaseScale * 2.5;
+      let dist, nx, ny;
+      
+      if (i < 80) {
+        // 메인 브레인 클러스터
+        dist = i < 50 ? Math.random() * brainBaseScale * 0.95 : Math.random() * brainBaseScale * 2.2;
+        nx = brainCenterX + Math.cos(ang) * dist;
+        ny = brainCenterY + Math.sin(ang) * dist;
+      } else {
+        // 화면 전역에 퍼진 앰비언트 노드
+        nx = Math.random() * W;
+        ny = Math.random() * H;
+      }
+
       return {
-        x: brainCenterX + Math.cos(ang) * dist,
-        y: brainCenterY + Math.sin(ang) * dist,
-        vx: rand(-0.15, 0.15), vy: rand(-0.12, 0.12),
-        radius: i % 8 === 0 ? rand(3, 5) : rand(1.2, 2.5),
-        alpha: rand(0.4, 0.9),
-        hue: rand(195, 230),
-        hub: i % 8 === 0,
+        x: nx, y: ny,
+        vx: rand(-0.12, 0.12), vy: rand(-0.10, 0.10),
+        radius: i % 10 === 0 ? rand(3.5, 5.5) : rand(1.2, 2.8),
+        alpha: i < 80 ? rand(0.5, 0.95) : rand(0.2, 0.5), // 배경 노드는 더 투명하게
+        hue: rand(195, 235),
+        hub: i % 10 === 0,
       };
     });
 
     const onResize = () => {
-      const oldW = W, oldH = H;
       const oldCenterX = brainCenterX, oldCenterY = brainCenterY;
-      
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
-      
       brainCenterX = W * 0.75; 
       brainCenterY = H * 0.45;
       brainBaseScale = Math.min(W, H) * 0.32;
 
-      // 노드 위치를 새로운 중심점에 맞춰 보정 (위치 튀는 현상 방지)
       const dx = brainCenterX - oldCenterX;
       const dy = brainCenterY - oldCenterY;
       nodes.forEach(n => {
@@ -81,10 +95,7 @@ export default function ClarusHeroCanvas() {
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
+      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
 
     const ro = new ResizeObserver(onResize);
@@ -93,11 +104,31 @@ export default function ClarusHeroCanvas() {
 
     const pulses: Pulse[] = [];
     const nodeGlows = new Float32Array(nodeCount);
+    const sparks: Spark[] = [];
+
+    function spawnSpark(x: number, y: number) {
+      const count = 6;
+      for (let i = 0; i < count; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const speed = rand(1.5, 4.0);
+        sparks.push({
+          x, y,
+          vx: Math.cos(ang) * speed,
+          vy: Math.sin(ang) * speed,
+          alpha: 1.0,
+          size: rand(0.6, 1.4),
+        });
+      }
+    }
 
     function spawnPulse() {
-      const startIdx = Math.floor(Math.random() * nodes.length);
+      const isAmbientPulse = Math.random() > 0.85; // 15% 확률로 배경 앰비언트 펄스 발생
+      const startIdx = isAmbientPulse 
+        ? 80 + Math.floor(Math.random() * (nodes.length - 80)) 
+        : Math.floor(Math.random() * 80);
+        
       const possibleEnds = [];
-      const searchDist = 220;
+      const searchDist = isAmbientPulse ? 400 : 250;
       for (let i = 0; i < nodes.length; i++) {
         if (i === startIdx) continue;
         const d = Math.sqrt((nodes[startIdx].x - nodes[i].x)**2 + (nodes[startIdx].y - nodes[i].y)**2);
@@ -108,7 +139,7 @@ export default function ClarusHeroCanvas() {
           start: startIdx,
           end: possibleEnds[Math.floor(Math.random() * possibleEnds.length)],
           progress: 0,
-          speed: rand(0.012, 0.032),
+          speed: isAmbientPulse ? rand(0.008, 0.02) : rand(0.012, 0.035),
         });
       }
     }
@@ -135,6 +166,27 @@ export default function ClarusHeroCanvas() {
       ctx.restore();
     }
 
+    function drawSparks() {
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.x += s.vx; s.y += s.vy;
+        s.alpha -= 0.04;
+        if (s.alpha <= 0) {
+          sparks.splice(i, 1);
+          continue;
+        }
+        ctx.strokeStyle = `rgba(147, 197, 253, ${s.alpha})`;
+        ctx.lineWidth = s.size;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 1.5, s.y - s.vy * 1.5);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
     // 2. 신경 코어 (링 & 가로지르는 섬유)
     function drawNeuralCore(t: number) {
       const t_ = t * 0.002;
@@ -144,7 +196,6 @@ export default function ClarusHeroCanvas() {
       ctx.save();
       ctx.translate(brainCenterX, brainCenterY);
 
-      // (A) 외부 글로우 링 레이어
       for (let i = 0; i < 4; i++) {
         ctx.beginPath();
         const r = scale * (1.1 + i * 0.03); 
@@ -154,7 +205,6 @@ export default function ClarusHeroCanvas() {
         ctx.stroke();
       }
 
-      // 메인 샤프 링
       ctx.beginPath();
       ctx.arc(0, 0, scale, 0, Math.PI * 2);
       ctx.strokeStyle = "rgba(168, 200, 255, 0.85)";
@@ -163,7 +213,6 @@ export default function ClarusHeroCanvas() {
       ctx.shadowColor = "rgba(59, 130, 246, 0.9)";
       ctx.stroke();
 
-      // (B) 링 내부 유기적 섬유 망상 (고밀도)
       ctx.shadowBlur = 0;
       const coreNodeCount = 50;
       for (let i = 0; i < 45; i++) {
@@ -184,50 +233,8 @@ export default function ClarusHeroCanvas() {
       ctx.restore();
     }
 
-    // 3. 방사형 신경 섬유 (Radial Dendrites/Axons)
-    function drawRadialFibers(t: number) {
-      const t_ = t * 0.0012;
-      ctx.save();
-      ctx.translate(brainCenterX, brainCenterY);
-
-      const fiberCount = 16;
-      for (let i = 0; i < fiberCount; i++) {
-        const angle = (i / fiberCount) * Math.PI * 2 + Math.sin(t_ * 0.4 + i) * 0.15;
-        const length = brainBaseScale * (1.8 + Math.sin(t_ + i) * 0.5);
-        
-        ctx.beginPath();
-        ctx.moveTo(Math.cos(angle) * brainBaseScale, Math.sin(angle) * brainBaseScale);
-
-        const cp1x = Math.cos(angle + 0.25) * length * 0.45;
-        const cp1y = Math.sin(angle + 0.25) * length * 0.45;
-        const cp2x = Math.cos(angle - 0.15) * length * 0.8;
-        const cp2y = Math.sin(angle - 0.15) * length * 0.8;
-        const ex = Math.cos(angle) * length;
-        const ey = Math.sin(angle) * length;
-
-        ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, ex, ey);
-
-        const grad = ctx.createLinearGradient(0, 0, ex, ey);
-        grad.addColorStop(0, "rgba(96, 165, 250, 0.45)");
-        grad.addColorStop(0.6, "rgba(59, 130, 246, 0.1)");
-        grad.addColorStop(1, "rgba(59, 130, 246, 0)");
-
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.4;
-        ctx.stroke();
-
-        // 섬유 끝 지점 미세 글로우
-        ctx.beginPath();
-        ctx.arc(ex, ey, 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(147, 197, 253, 0.4)";
-        ctx.fill();
-      }
-      ctx.restore();
-    }
-
     // 4. 일반 신경망 & 펄스 효과
     function drawNeuralNetwork(t: number) {
-      // (A) 기본 대형 연결망
       ctx.save();
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
@@ -238,22 +245,22 @@ export default function ClarusHeroCanvas() {
             ctx.beginPath();
             ctx.moveTo(n.x, n.y);
             ctx.lineTo(m.x, m.y);
-            ctx.strokeStyle = `rgba(147, 197, 253, ${(1 - d / 170) * 0.18})`;
-            ctx.lineWidth = 0.6;
+            ctx.strokeStyle = `rgba(168, 204, 255, ${(1 - d / 170) * 0.22})`;
+            ctx.lineWidth = 0.7;
             ctx.stroke();
           }
         }
       }
       ctx.restore();
 
-      // (B) 전기 펄스 (Spikes)
-      if (t % 7 === 0 && Math.random() > 0.45 && pulses.length < 50) spawnPulse();
+      if (t % 7 === 0 && Math.random() > 0.4 && pulses.length < 60) spawnPulse();
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i];
         const n = nodes[p.start], m = nodes[p.end];
         p.progress += p.speed;
         if (p.progress >= 1) {
           nodeGlows[p.end] = 1.0;
+          if (p.speed > 0.01) spawnSpark(m.x, m.y); // 아주 느린 펄스는 스파크 생략하거나 줄임
           pulses.splice(i, 1);
           continue;
         }
@@ -261,13 +268,15 @@ export default function ClarusHeroCanvas() {
         const py = lerp(n.y, m.y, p.progress);
 
         ctx.save();
-        ctx.shadowBlur = 18; ctx.shadowColor = "#60a5fa";
-        ctx.beginPath(); ctx.arc(px, py, 2.2, 0, Math.PI * 2);
-        ctx.fillStyle = "#fff"; ctx.fill();
+        const isAmbient = p.start >= 80;
+        ctx.shadowBlur = isAmbient ? 10 : 18; 
+        ctx.shadowColor = "#60a5fa";
+        ctx.beginPath(); ctx.arc(px, py, isAmbient ? 1.5 : 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = isAmbient ? "rgba(255,255,255,0.6)" : "#fff"; 
+        ctx.fill();
         ctx.restore();
       }
 
-      // (C) 노드 물리 및 드로잉
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
         n.x += n.vx; n.y += n.vy;
@@ -278,15 +287,15 @@ export default function ClarusHeroCanvas() {
         if (glow > 0) nodeGlows[i] -= 0.028;
 
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.hub ? 2.5 : 1.4, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(147, 197, 253, ${0.35 + glow * 0.65})`;
+        ctx.arc(n.x, n.y, n.hub ? 3.0 : 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(168, 204, 255, ${0.45 + glow * 0.55})`;
         ctx.fill();
 
         if (glow > 0) {
           ctx.save();
-          ctx.shadowBlur = 18 * glow; ctx.shadowColor = "#60a5fa";
-          ctx.beginPath(); ctx.arc(n.x, n.y, 4.5 * glow, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(96, 165, 250, ${glow})`;
+          ctx.shadowBlur = 22 * glow; ctx.shadowColor = "#60a5fa";
+          ctx.beginPath(); ctx.arc(n.x, n.y, 5.5 * glow, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${glow * 0.85})`;
           ctx.fill();
           ctx.restore();
         }
@@ -329,11 +338,10 @@ export default function ClarusHeroCanvas() {
       ctx.globalCompositeOperation = "screen";
       drawStars(frame);
       drawAurora(frame);
-      drawRadialFibers(frame);
       drawNeuralCore(frame);
       drawNeuralNetwork(frame);
+      drawSparks(frame);
       
-      // 하단 마감 페이드
       ctx.globalCompositeOperation = "source-over";
       const fadeGrad = ctx.createLinearGradient(0, H * 0.82, 0, H);
       fadeGrad.addColorStop(0, "rgba(3,7,18,0)");

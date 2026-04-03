@@ -75,14 +75,15 @@ function HeroSection() {
             margin: 0,
             fontSize: "clamp(3.5rem, 10vw, 8rem)",
             fontWeight: 700,
-            letterSpacing: "-0.02em",
+            letterSpacing: "0.08em",
             fontFamily: "var(--font-bernhard)",
             color: "#ffffff",
             whiteSpace: "nowrap",
             lineHeight: "1.1",
             textShadow: "0 0 15px rgba(255,255,255,0.2)",
+            pointerEvents: "none", // 마우스 반응 제외
           }}>
-          C<span style={{ marginLeft: "-0.02em" }}>LARUS</span>
+          C<span>LARUS</span>
           <span style={{ 
             fontFamily: 'HYGraphic, sans-serif',
             fontSize: "0.85em",
@@ -230,13 +231,13 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
       <span
         style={{
           display: "inline-block",
-          fontSize: "1.25rem",
-          letterSpacing: "0.4em",
-          textTransform: "uppercase",
+          fontSize: "1.5rem",
+          letterSpacing: "-0.01em",
+          textTransform: "none", // 이미지처럼 대소문자 허용
           color: "#60a5fa",
-          fontWeight: 700,
+          fontWeight: 800,
           fontFamily: "'Inter', sans-serif",
-          textShadow: "0 0 15px rgba(96,165,250,0.4)",
+          textShadow: "0 0 20px rgba(96,165,250,0.3)",
         }}
       >
         {children}
@@ -374,9 +375,11 @@ function BackgroundSection() {
   );
 }
 
-function PerformanceSection() {
+function PerformanceSection({ pageIndex, setPageIndex }: { 
+  pageIndex: number; 
+  setPageIndex: React.Dispatch<React.SetStateAction<number>>;
+}) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [pageIndex, setPageIndex] = useState(0);
   const [hasNudged, setHasNudged] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -397,7 +400,7 @@ function PerformanceSection() {
     {
       title: "MRA AI for <span style='color: #facc15'>Vessel</span> reconstruction",
       description: "Precise reconstruction of even the finest blood vessels.",
-      videoSrc: "/videos/vessel.mp4",
+      videoSrc: "/videos/1.Vessel 3D-cube.mp4",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -407,7 +410,7 @@ function PerformanceSection() {
     {
       title: "MRA AI for <span style='color: #ef4444'>Aneurysm</span> detection",
       description: "Detects more accurately than a neuro-specialists.",
-      videoSrc: "/videos/aneurysm.mp4",
+      videoSrc: "/videos/2.Aneurysm 3D-cube.mp4",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -417,7 +420,7 @@ function PerformanceSection() {
     {
       title: "MRA AI for <span style='color: #38bdf8'>Stenosis</span> detection",
       description: "Detects stenosis up to the A2 and M2 segments.",
-      videoSrc: "/videos/stenosis.mp4",
+      videoSrc: "/videos/3.Stenosis 3D-cube.mp4",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -431,7 +434,7 @@ function PerformanceSection() {
       id: "dwi-1",
       title: "DWI AI for Infarcted <span style='color: #c084fc'>Region</span> Detection",
       description: "Accurately identifies even minute infarct lesions",
-      videoSrc: "/videos/infarct_region.mp4",
+      videoSrc: "/videos/4. Infarction region.mp4",
       theme: "purple",
       details: ["#Dice 0.820, #22.0sec", "#6002 cases training data"]
     },
@@ -439,7 +442,7 @@ function PerformanceSection() {
       id: "dwi-2",
       title: "DWI AI for Mapping <span style='color: #a3e635'>Vascular territories</span>",
       description: "Mapping the vascular territory that caused the cerebral infarction",
-      videoSrc: "/videos/vascular_territory.mp4",
+      videoSrc: "/videos/5. infarction territory.mp4",
       theme: "purple",
       details: ["#Dice 0.820, #22.0sec", "#Six major vessels"]
     },
@@ -447,7 +450,7 @@ function PerformanceSection() {
       id: "dwi-3",
       title: "ADC AI for Infarction <span style='color: #fdba74'>Onset</span> Detection",
       description: "Transferring DWI-predicted lesions to ADC to estimate time since onset.",
-      videoSrc: "/videos/infarct_onset.mp4",
+      videoSrc: "/videos/6. Infarction onset-ADC.mp4",
       theme: "purple",
       details: ["#Dice 0.820, #22.0sec", "#Acute, Subacute, Chronic stage"]
     }
@@ -458,7 +461,7 @@ function PerformanceSection() {
       id: "carotid-1",
       title: "MRA AI for <span style='color: #facc15'>Carotid Vessel</span> reconstruction",
       description: "Rendering CCAs that are difficult to visualize using MIP.",
-      videoSrc: "/videos/carotid_vessel.mp4",
+      videoSrc: "/videos/7.Carotid 3D-cube.mp4",
       theme: "gray",
       details: ["#Input: Carotid TOF images", "#Dice 0.916, #4.52sec"]
     },
@@ -466,7 +469,7 @@ function PerformanceSection() {
       id: "carotid-2",
       title: "MRA AI for <span style='color: #22c55e'>Carotid Stenosis & occlusion</span>",
       description: "Identifies stenotic and occlusive regions.",
-      videoSrc: "/videos/carotid_stenosis.mp4",
+      videoSrc: "/videos/8.Carotid Stenosis-cube.mp4",
       theme: "gray",
       details: ["#Input: Carotid TOF images", "#0.00sec"]
     }
@@ -477,7 +480,7 @@ function PerformanceSection() {
       id: "ct-1",
       title: "CT AI for <span style='color: #f472b6'>Hemorrhage</span> Detection",
       description: "Rendering CCAs that are difficult to visualize using MIP.",
-      videoSrc: "/videos/ct_hemorrhage.mp4",
+      videoSrc: "/videos/9. CT hemorrhage.mp4",
       theme: "green",
       details: ["#Input: Axial CT images", "#Dice 0.928 #4.5sec"]
     },
@@ -485,7 +488,7 @@ function PerformanceSection() {
       id: "ct-2",
       title: "CTA AI for <span style='color: #facc15'>Vessel</span> Reconstruction",
       description: "Identifies stenotic and occlusive regions.",
-      videoSrc: "/videos/cta_vessel.mp4",
+      videoSrc: "/videos/10.CTA vessel 3D-cube.mp4",
       theme: "green",
       details: ["#Input: CTA source images", "#0.00sec"]
     }
@@ -718,20 +721,20 @@ function CharacteristicCard({ card, isActive, onClick }: { card: any; isActive: 
   
   // 테마 색상 결정
   let themeColor = "rgba(96,165,250,0.8)";
-  let themeBg = highlighted ? "rgba(30,58,138,0.25)" : "rgba(30,58,138,0.12)";
+  let themeBg = highlighted ? "rgba(30,58,138,0.32)" : "rgba(30,58,138,0.18)";
   let themeShadow = isActive ? "rgba(59,130,246,0.3)" : "transparent";
 
   if (card.theme === "purple") {
     themeColor = "rgba(168, 85, 247, 0.8)";
-    themeBg = highlighted ? "rgba(88, 28, 135, 0.3)" : "rgba(88, 28, 135, 0.15)";
+    themeBg = highlighted ? "rgba(88, 28, 135, 0.38)" : "rgba(88, 28, 135, 0.22)";
     themeShadow = isActive ? "rgba(168, 85, 247, 0.3)" : "transparent";
   } else if (card.theme === "gray") {
     themeColor = "rgba(148, 163, 184, 0.8)";
-    themeBg = highlighted ? "rgba(55, 65, 81, 0.4)" : "rgba(55, 65, 81, 0.25)";
+    themeBg = highlighted ? "rgba(55, 65, 81, 0.45)" : "rgba(55, 65, 81, 0.3)";
     themeShadow = isActive ? "rgba(148, 163, 184, 0.3)" : "transparent";
   } else if (card.theme === "green") {
     themeColor = "rgba(34, 197, 94, 0.8)";
-    themeBg = highlighted ? "rgba(20, 83, 45, 0.4)" : "rgba(20, 83, 45, 0.25)";
+    themeBg = highlighted ? "rgba(20, 83, 45, 0.45)" : "rgba(20, 83, 45, 0.3)";
     themeShadow = isActive ? "rgba(34, 197, 94, 0.3)" : "transparent";
   }
 
@@ -785,38 +788,61 @@ function CharacteristicCard({ card, isActive, onClick }: { card: any; isActive: 
         {card.description}
       </p>
 
-      {/* 호버 시 나타나는 상세 정보 */}
+      {/* 호버 시 나타나는 상세 정보 - 테크니컬 뱃지 스타일 */}
       <div style={{
-        maxHeight: hovered ? "120px" : "0",
-        opacity: hovered ? 1 : 0,
+        maxHeight: highlighted ? "140px" : "0",
+        opacity: highlighted ? 1 : 0,
         overflow: "hidden",
-        transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-        marginTop: hovered ? "1.5rem" : "0",
+        transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+        marginTop: highlighted ? "1.5rem" : "0",
         display: "flex",
-        flexDirection: "column",
-        gap: "0.6rem",
+        flexWrap: "wrap",
+        gap: "0.5rem",
       }}>
-        {card.details.map((detail: string, idx: number) => (
-          <div key={idx} style={{
-            color: "rgba(96,165,250,0.9)",
-            fontSize: "0.9rem",
-            fontFamily: "'Inter', sans-serif",
-            letterSpacing: "0.05em",
-            fontWeight: 500,
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem"
-          }}>
-            <span style={{ 
-              width: "4px", 
-              height: "4px", 
-              borderRadius: "50%", 
-              backgroundColor: "currentColor",
-              opacity: 0.6
-            }} />
-            {detail}
-          </div>
-        ))}
+        {card.details.map((detailStr: string, idx: number) => {
+          // # 을 기준으로 파싱하여 개별 뱃지로 생성
+          const parts = detailStr.split('#').filter(p => p.trim() !== '');
+          return parts.map((part, pIdx) => {
+            // 끝에 붙은 쉼표 제거 및 공백 정리
+            const cleanPart = part.trim().replace(/,$/, '');
+            const [label, ...val] = cleanPart.split(':');
+            return (
+              <div key={`${idx}-${pIdx}`} style={{
+                background: "rgba(255,255,255,0.03)",
+                border: `1px solid ${themeColor.replace('0.8', '0.15')}`,
+                padding: "0.35rem 0.75rem",
+                borderRadius: "0.5rem",
+                fontSize: "0.85rem",
+                fontFamily: "'Inter', sans-serif",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                transition: "all 0.3s ease",
+              }}>
+                <span style={{ 
+                  color: themeColor, 
+                  fontWeight: 700, 
+                  fontSize: "0.75rem", 
+                  letterSpacing: "0.05em",
+                  textTransform: "uppercase",
+                  opacity: 0.9 
+                }}>
+                  {label.trim()}
+                </span>
+                {val.length > 0 && (
+                  <span style={{ 
+                    color: "rgba(255,255,255,0.75)", 
+                    fontWeight: 400,
+                    borderLeft: "1px solid rgba(255,255,255,0.1)",
+                    paddingLeft: "0.5rem"
+                  }}>
+                    {val.join(':').trim()}
+                  </span>
+                )}
+              </div>
+            );
+          });
+        })}
       </div>
 
       {/* 호버 시 배경 글로우 */}
@@ -960,6 +986,7 @@ export default function ClarusNPage() {
   const [isIntroEnding, setIsIntroEnding] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState<SectionId | "">("");
+  const [performancePageIndex, setPerformancePageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
@@ -993,6 +1020,12 @@ export default function ClarusNPage() {
     const el = container.querySelector(`#${id}`);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
+
+  // 서브 메뉴 클릭 → 퍼포먼스 탭 인덱스 변경 및 스크롤
+  const handleSubNavClick = useCallback((index: number) => {
+    setPerformancePageIndex(index);
+    handleNavClick("performance");
+  }, [handleNavClick]);
 
   // 인트로 종료 핸들러
   const handleIntroEnd = useCallback(() => {
@@ -1107,7 +1140,7 @@ export default function ClarusNPage() {
           <HeroSection />
           <div style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
             <BackgroundSection />
-            <PerformanceSection />
+            <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} />
             <TestRequestSection />
             <ContactSection />
             <footer style={{
@@ -1157,6 +1190,7 @@ export default function ClarusNPage() {
           onToggle={toggleSidebar}
           activeSection={activeSection}
           onNavClick={handleNavClick}
+          onSubNavClick={handleSubNavClick}
         />
       </div>
     </div>

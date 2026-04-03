@@ -120,7 +120,7 @@ export default function ClarusCursor() {
           borderRadius: "50%",
           background: "radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)",
           pointerEvents: "none",
-          zIndex: 9995,
+          zIndex: 20000,
           willChange: "transform",
         }}
       />
@@ -135,7 +135,7 @@ export default function ClarusCursor() {
           border: "1px solid rgba(147,197,253,0.6)",
           boxShadow: "0 0 8px rgba(96,165,250,0.3)",
           pointerEvents: "none",
-          zIndex: 9997,
+          zIndex: 20001,
           willChange: "transform",
           transition: "width 0.2s ease, height 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease",
         }}
@@ -151,7 +151,7 @@ export default function ClarusCursor() {
           background: "#60a5fa",
           boxShadow: "0 0 10px rgba(96,165,250,0.8), 0 0 20px rgba(96,165,250,0.4)",
           pointerEvents: "none",
-          zIndex: 9999,
+          zIndex: 20002,
           willChange: "transform",
         }}
       />

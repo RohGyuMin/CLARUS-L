@@ -7,6 +7,7 @@ interface ClarusSidebarProps {
   onToggle: () => void;
   activeSection?: string;
   onNavClick?: (id: string) => void;
+  onSubNavClick?: (index: number) => void;
 }
 
 const brainMriItems = ["Vessel 3D", "Aneurysm", "Stenosis", "Infarction", "Carotid Vessel 3D", "Carotid Stenosis"];
@@ -17,6 +18,7 @@ export default function ClarusSidebar({
   onToggle,
   activeSection = "",
   onNavClick,
+  onSubNavClick,
 }: ClarusSidebarProps) {
   return (
     <aside
@@ -103,11 +105,11 @@ export default function ClarusSidebar({
             display: "flex",
             alignItems: "center",
           }}>
-            C<span style={{ marginLeft: "-0.01em" }}>LARUS</span>
+            C<span style={{ letterSpacing: "0.08em" }}>LARUS</span>
             <span style={{ 
               fontFamily: 'HYGraphic, sans-serif',
               fontSize: "0.85em",
-              margin: "0 0.02em",
+              margin: "0 0.1em",
               transform: "translateY(-0.03em)"
             }}>-</span>
             N
@@ -169,7 +171,18 @@ export default function ClarusSidebar({
                     transition: "color 0.3s ease",
                   }}>Brain MRI</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
-                    {brainMriItems.map(item => <SubBtn key={item} label={item} />)}
+                    {brainMriItems.map(item => {
+                      let targetIdx = 0;
+                      if (item === "Infarction") targetIdx = 1;
+                      if (item.includes("Carotid")) targetIdx = 2;
+                      return (
+                        <SubBtn 
+                          key={item} 
+                          label={item} 
+                          onClick={() => onSubNavClick?.(targetIdx)}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -186,7 +199,13 @@ export default function ClarusSidebar({
                     transition: "color 0.3s ease",
                   }}>Brain CT</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
-                    {brainCtItems.map(item => <SubBtn key={item} label={item} />)}
+                    {brainCtItems.map(item => (
+                      <SubBtn 
+                        key={item} 
+                        label={item} 
+                        onClick={() => onSubNavClick?.(3)}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
@@ -281,37 +300,7 @@ function NavBtn({
         display: isSpecial ? "none" : "block",
       }} />
 
-      {/* 스페셜 지시자 (이미지 스타일) */}
-      {isSpecial && (
-        <div style={{
-          position: "absolute",
-          top: "8px",
-          left: "8px",
-          width: "14px",
-          height: "14px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
-          <div style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%",
-            border: "1px solid rgba(96,165,250,0.5)",
-            boxShadow: "0 0 8px rgba(59,130,246,0.3)",
-          }} />
-          <div style={{
-            width: "5px",
-            height: "5px",
-            borderRadius: "50%",
-            background: "#60a5fa",
-            boxShadow: "0 0 8px #60a5fa",
-          }} />
-        </div>
-      )}
-
-      <span style={{ marginLeft: isSpecial ? "1.25rem" : 0 }}>
+      <span>
         {label}
       </span>
     </a>
@@ -319,12 +308,15 @@ function NavBtn({
 }
 
 /* ── 서브 버튼 ── */
-function SubBtn({ label }: { label: string }) {
+function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
   const [hovered, setHovered] = useState(false);
   return (
     <a
       href="#"
-      onClick={e => e.preventDefault()}
+      onClick={e => {
+        e.preventDefault();
+        onClick?.();
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
