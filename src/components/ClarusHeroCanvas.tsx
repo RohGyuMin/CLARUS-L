@@ -340,7 +340,7 @@ export default function ClarusHeroCanvas() {
       drawAurora(frame);
       drawNeuralCore(frame);
       drawNeuralNetwork(frame);
-      drawSparks(frame);
+      drawSparks();
       
       ctx.globalCompositeOperation = "source-over";
       const fadeGrad = ctx.createLinearGradient(0, H * 0.82, 0, H);

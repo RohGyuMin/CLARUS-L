@@ -36,6 +36,7 @@ function useReveal(threshold = 0.15) {
 function HeroSection() {
   return (
     <section
+      id="about"
       style={{
         height: "100vh",
         position: "relative",
@@ -227,15 +228,15 @@ function RevealSection({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ marginBottom: "1.5rem" }}>
+    <div style={{ marginBottom: "0.5rem" }}>
       <span
         style={{
           display: "inline-block",
-          fontSize: "1.5rem",
-          letterSpacing: "-0.01em",
+          fontSize: "1.2rem",
+          letterSpacing: "0.05em",
           textTransform: "none", // 이미지처럼 대소문자 허용
           color: "#60a5fa",
-          fontWeight: 800,
+          fontWeight: 600,
           fontFamily: "'Inter', sans-serif",
           textShadow: "0 0 20px rgba(96,165,250,0.3)",
         }}
@@ -256,37 +257,6 @@ function Divider() {
         margin: "1.5rem 0",
       }}
     />
-  );
-}
-
-function AboutSection() {
-  return (
-    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "38rem" }}>
-          <RevealSection>
-            <SectionLabel>About</SectionLabel>
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              Next-Generation Neuroimaging AI Platform
-            </h2>
-            <Divider />
-          </RevealSection>
-          <RevealSection style={{ transitionDelay: "0.15s" }}>
-            <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "1.25rem" }}>
-              CLARUS-N is a state-of-the-art AI solution for neuroimaging based on advanced deep learning algorithms, supporting clinical decision-making by automatically analyzing brain MRI and CT images.
-            </p>
-            <p style={{ color: "#64748b", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300 }}>
-              It provides proven performance in various clinical tasks such as vascular 3D reconstruction, aneurysm detection, stenosis classification, and stroke segmentation.
-            </p>
-          </RevealSection>
-        </div>
-        
-        {/* 우측 뉴런 장식 */}
-        <div style={{ flex: 1, height: "400px", position: "relative" }}>
-          <NeuralSynapseVisual mode="dense" />
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -380,8 +350,10 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
   setPageIndex: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [hasNudged, setHasNudged] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // 뷰포트 진입 감지 -> 슬라이드 넛지(Nudge) 애니메이션 실행
   useEffect(() => {
@@ -450,7 +422,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "dwi-3",
       title: "ADC AI for Infarction <span style='color: #fdba74'>Onset</span> Detection",
       description: "Transferring DWI-predicted lesions to ADC to estimate time since onset.",
-      videoSrc: "/videos/6. Infarction onset-ADC.mp4",
+      videoSrc: "/videos/KakaoTalk_20260406_122852533.mp4",
       theme: "purple",
       details: ["#Dice 0.820, #22.0sec", "#Acute, Subacute, Chronic stage"]
     }
@@ -496,10 +468,25 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
 
   const cardSets = [mraCards, infarctCards, carotidCards, ctCards];
 
-  const currentCards = cardSets[pageIndex];
-
   const handleCardClick = (videoSrc: string) => {
-    setActiveVideo(prev => prev === videoSrc ? null : videoSrc);
+    if (activeVideo === videoSrc) {
+      setActiveVideo(null);
+      setIsPlaying(false);
+    } else {
+      setActiveVideo(videoSrc);
+      setIsPlaying(false); // 카드를 바꿀 때는 일단 정지 상태로 시작
+    }
+  };
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
   };
 
   return (
@@ -509,9 +496,9 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative" }}
     >
       <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", overflow: "hidden" }}>
+        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", position: "relative" }}>
           <RevealSection>
-            <SectionLabel>Characteristics</SectionLabel>
+            <SectionLabel>Pipeline Characteristics</SectionLabel>
             <Divider />
           </RevealSection>
 
@@ -523,43 +510,97 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
             transform: hasNudged && !pageIndex ? "translateX(15px)" : "none",
             transition: "transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)"
           }}>
-            {/* 가로 슬라이딩 트랙 */}
-            <div style={{ 
-              display: "flex", 
-              width: `${cardSets.length * 100}%`,
-              transform: `translateX(-${pageIndex * (100 / cardSets.length)}%)`,
-              transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)"
-            }}>
-              {cardSets.map((set, setIdx) => (
-                <div 
-                  key={setIdx} 
-                  style={{ 
-                    width: `${100 / cardSets.length}%`, 
-                    flexShrink: 0, 
-                    display: "flex", 
-                    flexDirection: "column", 
-                    gap: "1.5rem",
-                    paddingRight: "1.5rem",
-                    opacity: pageIndex === setIdx ? 1 : 0.3,
-                    transform: pageIndex === setIdx ? "scale(1)" : "scale(0.96)",
-                    transition: "all 0.6s ease"
-                  }}
-                >
-                  {set.map((card, i) => (
-                    <RevealSection key={`${setIdx}-${i}`} style={{ transitionDelay: `${0.05 + i * 0.1}s` }}>
-                      <CharacteristicCard 
-                        card={card} 
-                        isActive={activeVideo === card.videoSrc}
-                        onClick={() => handleCardClick(card.videoSrc)}
-                      />
-                    </RevealSection>
-                  ))}
-                </div>
-              ))}
+            {/* 좌측 화살표 (이전 세트) - 사이드 이동 */}
+            <button 
+              onClick={() => {
+                setPageIndex(p => Math.max(0, p - 1));
+                setActiveVideo(null);
+              }}
+              disabled={pageIndex === 0}
+              style={{
+                position: "absolute",
+                left: "-3.5rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10,
+                background: "none", border: "none", color: "#60a5fa", 
+                cursor: pageIndex === 0 ? "default" : "pointer",
+                opacity: pageIndex === 0 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: "1rem",
+                display: "flex", alignItems: "center", justifyContent: "center"
+              }}
+              onMouseEnter={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "0.6")}
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            {/* 우측 화살표 (다음 세트) - 사이드 이동 */}
+            <button 
+              onClick={() => {
+                setPageIndex(p => Math.min(cardSets.length - 1, p + 1));
+                setActiveVideo(null);
+              }}
+              disabled={pageIndex === cardSets.length - 1}
+              style={{
+                position: "absolute",
+                right: "-2.5rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10,
+                background: "none", border: "none", color: "#60a5fa", 
+                cursor: pageIndex === cardSets.length - 1 ? "default" : "pointer",
+                opacity: pageIndex === cardSets.length - 1 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: "1rem",
+                display: "flex", alignItems: "center", justifyContent: "center"
+              }}
+              onMouseEnter={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "0.6")}
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+            {/* 가로 슬라이딩 트랙 - overflow hidden을 여기로 이동 */}
+            <div style={{ overflow: "hidden", width: "100%" }}>
+              <div style={{ 
+                display: "flex", 
+                width: `${cardSets.length * 100}%`,
+                transform: `translateX(-${pageIndex * (100 / cardSets.length)}%)`,
+                transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)"
+              }}>
+                {cardSets.map((set, setIdx) => (
+                  <div 
+                    key={setIdx} 
+                    style={{ 
+                      width: `${100 / cardSets.length}%`, 
+                      flexShrink: 0, 
+                      display: "flex", 
+                      flexDirection: "column", 
+                      gap: "1.5rem",
+                      paddingRight: "1.5rem",
+                      opacity: pageIndex === setIdx ? 1 : 0.3,
+                      transform: pageIndex === setIdx ? "scale(1)" : "scale(0.96)",
+                      transition: "all 0.6s ease"
+                    }}
+                  >
+                    {set.map((card, i) => (
+                      <RevealSection key={`${setIdx}-${i}`} style={{ transitionDelay: `${0.05 + i * 0.1}s` }}>
+                        <CharacteristicCard 
+                          card={card} 
+                          isActive={activeVideo === card.videoSrc}
+                          onClick={() => handleCardClick(card.videoSrc)}
+                        />
+                      </RevealSection>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* 인디케이터 및 화살표 내비게이션 */}
+          {/* 인디케이터 - 화살표 제거됨 */}
           <div style={{ 
             display: "flex", 
             alignItems: "center",
@@ -568,27 +609,6 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
             marginTop: "2.5rem",
             paddingLeft: "1.5rem"
           }}>
-            {/* 좌측 화살표 (이전 세트) */}
-            <button 
-              onClick={() => {
-                setPageIndex(p => Math.max(0, p - 1));
-                setActiveVideo(null);
-              }}
-              disabled={pageIndex === 0}
-              style={{
-                background: "none", border: "none", color: "#60a5fa", 
-                cursor: pageIndex === 0 ? "default" : "pointer",
-                opacity: pageIndex === 0 ? 0.1 : 0.6, transition: "all 0.3s ease", padding: 0,
-                display: "flex", alignItems: "center", justifyContent: "center"
-              }}
-              onMouseEnter={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "1")}
-              onMouseLeave={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "0.6")}
-            >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-
             {/* 도트 리스트 */}
             <div style={{ display: "flex", gap: "0.85rem", alignItems: "center" }}>
               {cardSets.map((_, idx) => (
@@ -597,6 +617,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                   onClick={() => {
                     setPageIndex(idx);
                     setActiveVideo(null);
+                    setIsPlaying(false);
                   }}
                   style={{
                     width: idx === pageIndex ? "1.75rem" : "0.5rem",
@@ -612,34 +633,12 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                 />
               ))}
             </div>
-
-            {/* 우측 화살표 (다음 세트) */}
-            <button 
-              onClick={() => {
-                setPageIndex(p => Math.min(cardSets.length - 1, p + 1));
-                setActiveVideo(null);
-              }}
-              disabled={pageIndex === cardSets.length - 1}
-              style={{
-                background: "none", border: "none", color: "#60a5fa", 
-                cursor: pageIndex === cardSets.length - 1 ? "default" : "pointer",
-                opacity: pageIndex === cardSets.length - 1 ? 0.1 : 0.6, transition: "all 0.3s ease", padding: 0,
-                display: "flex", alignItems: "center", justifyContent: "center"
-              }}
-              onMouseEnter={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "1")}
-              onMouseLeave={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "0.6")}
-            >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-
           </div>
           </div>
         
         {/* 우측 영역: 평소에는 뉴런만 떠 있다가, 클릭 시 비디오 박스가 활성화됨 */}
         <div style={{ 
-          flex: 1, 
+          flex: 1.4, 
           height: "500px", 
           position: "relative",
           background: activeVideo ? "rgba(30,58,138,0.15)" : "transparent",
@@ -648,7 +647,101 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
           border: activeVideo ? "1px solid rgba(96,165,250,0.2)" : "1px solid transparent",
           boxShadow: activeVideo ? "0 0 40px rgba(0,0,0,0.4)" : "none",
           transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}>
+          cursor: activeVideo ? "pointer" : "default"
+        }}
+        onClick={activeVideo ? togglePlay : undefined}
+        >
+          {/* 범례 오버레이 (특정 비디오일 때만 표시) */}
+          {activeVideo && (activeVideo.includes('territory') || activeVideo.includes('onset') || activeVideo.includes('KakaoTalk')) && (
+            <div style={{
+              position: "absolute",
+              bottom: "1.5rem",
+              left: "1.5rem",
+              zIndex: 30,
+              width: "220px",
+              background: "rgba(15, 23, 42, 0.8)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "4px",
+              overflow: "hidden",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+              pointerEvents: "none",
+              backdropFilter: "blur(4px)",
+            }}>
+              {/* Vascular Legend (Card 2) */}
+              {activeVideo === "/videos/5. infarction territory.mp4" && (
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {[
+                    { label: "ACA", color: "#d946ef" },
+                    { label: "MCA", color: "#22c55e" },
+                    { label: "Lenticulostriatal A.", color: "#2dd4bf" },
+                    { label: "Ant. choroidal A.", color: "#60a5fa" },
+                    { label: "PCA", color: "#fb923c" },
+                    { label: "BA & VA", color: "#a855f7" },
+                  ].map((item, i) => (
+                    <div key={i} style={{ 
+                      display: "flex", 
+                      alignItems: "center", 
+                      height: "26px",
+                      borderBottom: i === 5 ? "none" : "1px solid rgba(255, 255, 255, 0.05)",
+                      background: i % 2 === 0 ? "transparent" : "rgba(255, 255, 255, 0.02)"
+                    }}>
+                      <div style={{ 
+                        width: "26px", 
+                        height: "100%", 
+                        background: item.color,
+                        borderRight: "1px solid rgba(255, 255, 255, 0.1)"
+                      }} />
+                      <span style={{ 
+                        paddingLeft: "10px", 
+                        color: "#f1f5f9", 
+                        fontSize: "0.75rem", 
+                        fontWeight: 500,
+                        fontFamily: "'Inter', sans-serif"
+                      }}>
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Onset Legend (Card 3) */}
+              {activeVideo === "/videos/KakaoTalk_20260406_122852533.mp4" && (
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {[
+                    { label: "Acute stage", color: "#ef4444" },
+                    { label: "Subacute stage", color: "#f97316" },
+                    { label: "Chronic stage", color: "#eab308" },
+                  ].map((item, i) => (
+                    <div key={i} style={{ 
+                      display: "flex", 
+                      alignItems: "center", 
+                      height: "26px",
+                      borderBottom: i === 2 ? "none" : "1px solid rgba(255, 255, 255, 0.05)",
+                      background: i % 2 === 0 ? "transparent" : "rgba(255, 255, 255, 0.02)"
+                    }}>
+                      <div style={{ 
+                        width: "26px", 
+                        height: "100%", 
+                        background: item.color,
+                        borderRight: "1px solid rgba(255, 255, 255, 0.1)"
+                      }} />
+                      <span style={{ 
+                        paddingLeft: "10px", 
+                        color: "#f1f5f9", 
+                        fontSize: "0.75rem", 
+                        fontWeight: 500,
+                        fontFamily: "'Inter', sans-serif"
+                      }}>
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* 뉴런 시각화 (동영상이 없을 때만 혹은 밑에 깔기) */}
           <div style={{ 
             position: "absolute", inset: 0, 
@@ -659,38 +752,66 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
             <NeuralSynapseVisual mode="fast" color="110, 227, 175" opacity={0.5} />
           </div>
 
-          {/* 동영상 플레이어 - 모든 카드 세트 통합 관리 */}
-          {[...mraCards, ...infarctCards, ...carotidCards, ...ctCards].map(card => (
+          {/* 동영상 플레이어 */}
+          {activeVideo && (
             <div 
-              key={card.videoSrc}
               style={{
                 position: "absolute",
                 inset: 0,
-                opacity: activeVideo === card.videoSrc ? 1 : 0,
-                transition: "opacity 0.6s cubic-bezier(0.4,0,0.2,1)",
-                pointerEvents: activeVideo === card.videoSrc ? "auto" : "none",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 background: "black",
               }}
             >
-              {activeVideo === card.videoSrc && (
-                <video
-                  src={card.videoSrc}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                  }}
-                />
+              <video
+                ref={videoRef}
+                src={activeVideo}
+                loop
+                muted
+                playsInline
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                }}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+              />
+              
+              {/* 재생 버튼 오버레이 */}
+              {!isPlaying && (
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "rgba(0,0,0,0.3)",
+                  backdropFilter: "blur(4px)",
+                  transition: "all 0.4s ease",
+                  zIndex: 2,
+                }}>
+                  <div style={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.15)",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 0 30px rgba(96,165,250,0.4)",
+                    color: "white",
+                  }}>
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
               )}
             </div>
-          ))}
+          )}
 
           {/* 안내 오버레이 (비디오 없을 때) */}
           {!activeVideo && (
@@ -700,13 +821,15 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
               left: "0",
               width: "100%",
               textAlign: "center",
-              color: "rgba(148,163,184,0.6)",
+              color: "rgba(186, 215, 255, 0.9)", // 더 밝은 파란색 계열
               fontSize: "0.85rem",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
+              fontWeight: 500,
+              letterSpacing: "0.05em",
+              textTransform: "none", // 대소문자 유지
               pointerEvents: "none",
+              textShadow: "0 0 10px rgba(186, 215, 255, 0.3)"
             }}>
-              Select a characteristic to view AI analysis
+              Click a pipeline to view the AI analysis results
             </div>
           )}
         </div>
@@ -762,6 +885,8 @@ function CharacteristicCard({ card, isActive, onClick }: { card: any; isActive: 
         transform: highlighted ? "translateX(5px)" : "translateX(0)",
       }}
     >
+
+
       {/* 타이틀 */}
       <h3 
         dangerouslySetInnerHTML={{ __html: card.title }}
@@ -862,14 +987,26 @@ function CharacteristicCard({ card, isActive, onClick }: { card: any; isActive: 
 
 
 function TestRequestSection() {
+  const [isUploadHovered, setIsUploadHovered] = useState(false);
+  const [requestCount, setRequestCount] = useState(231);
+  
+  const infoPointsKR = [
+    "파일 형식 지원 (최대 500MB)",
+    "전송된 영상은 NIfTI 파일형식으로 모두 전환됩니다",
+    "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다",
+    "원본 파일도 NIfTI 전환 후 모두 삭제됩니다",
+    "분석된 영상은 이메일로 24시간 이내로 보내드립니다",
+    "빠른 영상분석이 필요시에는 파일 업로드 후 contact의 연락처로 문의 바랍니다."
+  ];
+
   return (
     <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "42rem" }}>
+      <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
+        <div style={{ flex: 1, maxWidth: "46rem" }}>
           <RevealSection>
-            <SectionLabel>Personal Test Request</SectionLabel>
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              Submit for AI Analysis
+            <SectionLabel>Research Analysis Request</SectionLabel>
+            <h2 style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.2rem)", fontWeight: 700, color: "#ffffff", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "-0.01em" }}>
+              연구용 데이터 AI 분석 의뢰
             </h2>
             <Divider />
           </RevealSection>
@@ -877,44 +1014,213 @@ function TestRequestSection() {
           <RevealSection style={{ transitionDelay: "0.1s" }}>
             <div style={{
               background: "rgba(255,255,255,0.02)",
-              border: "1px dashed rgba(96,165,250,0.3)",
-              borderRadius: "1.25rem",
-              padding: "3rem 2rem",
-              textAlign: "center",
-              marginBottom: "2rem",
-              cursor: "pointer",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              borderRadius: "1.5rem",
+              padding: "2rem",
+              marginBottom: "1.5rem",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
             }}>
-              <div style={{ color: "#60a5fa", marginBottom: "1rem" }}>
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-                </svg>
+              {/* 업로드 영역 */}
+              <div 
+                onMouseEnter={() => setIsUploadHovered(true)}
+                onMouseLeave={() => setIsUploadHovered(false)}
+                style={{
+                  background: isUploadHovered ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.01)",
+                  border: `1px ${isUploadHovered ? 'solid' : 'dashed'} ${isUploadHovered ? 'rgba(96,165,250,0.5)' : 'rgba(96,165,250,0.25)'}`,
+                  borderRadius: "1rem",
+                  padding: "2.5rem 1.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  cursor: "pointer",
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                  marginBottom: "2rem",
+                  position: "relative",
+                  overflow: "hidden"
+                }}
+              >
+                <div style={{ 
+                  color: "#60a5fa", 
+                  marginBottom: "1rem",
+                  transform: isUploadHovered ? "translateY(-5px)" : "translateY(0)",
+                  transition: "transform 0.4s ease"
+                }}>
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <p style={{ color: "#ffffff", fontSize: "1.15rem", fontWeight: 500, marginBottom: "0.4rem" }}>
+                  MRI 또는 CT 데이터를 첨부하세요
+                </p>
+                <p style={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>
+                  클릭하거나 파일을 여기로 끌어다 놓으세요
+                </p>
+                {isUploadHovered && (
+                  <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'radial-gradient(circle at center, rgba(59,130,246,0.1) 0%, transparent 70%)',
+                    pointerEvents: 'none'
+                  }} />
+                )}
               </div>
-              <p style={{ color: "#e2e8f0", fontSize: "1.1rem", marginBottom: "0.5rem" }}>Drag and drop MRI or CT data here</p>
-              <p style={{ color: "#64748b", fontSize: "0.9rem" }}>Supports DICOM, NIfTI formats (Max 500MB)</p>
+
+              {/* 상세 안내 리스트 */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+                {infoPointsKR.map((point, idx) => (
+                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                    <span style={{ 
+                      color: "#60a5fa", 
+                      fontSize: "1.1rem", 
+                      lineHeight: "1.5rem",
+                      fontWeight: 800
+                    }}>•</span>
+                    <p style={{ 
+                      color: "rgba(226,232,240,0.75)", 
+                      fontSize: "0.95rem", 
+                      lineHeight: 1.6,
+                      fontWeight: 300,
+                      wordBreak: "keep-all"
+                    }}>
+                      {point}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </RevealSection>
 
           <RevealSection style={{ transitionDelay: "0.2s" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ display: "flex", gap: "1rem" }}>
-                <input type="text" placeholder="Name" style={{ flex: 1, padding: "0.875rem 1.25rem", borderRadius: "0.75rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none" }} />
-                <input type="email" placeholder="Email" style={{ flex: 1, padding: "0.875rem 1.25rem", borderRadius: "0.75rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", outline: "none" }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              <div style={{ display: "flex", gap: "1.25rem" }}>
+                {/* 이메일 입력 */}
+                <div style={{ flex: 1, position: "relative" }}>
+                  <input 
+                    type="email" 
+                    placeholder="이메일 주소 (결과 수신용)" 
+                    style={{ 
+                      width: "100%",
+                      padding: "1.1rem 1.5rem", 
+                      borderRadius: "0.85rem", 
+                      background: "rgba(255,255,255,0.03)", 
+                      border: "1px solid rgba(255,255,255,0.08)", 
+                      color: "#ffffff", 
+                      outline: "none",
+                      fontSize: "1rem",
+                      transition: "all 0.3s ease",
+                      boxShadow: "inset 0 2px 4px rgba(0,0,0,0.2)"
+                    }} 
+                    onFocus={e => {
+                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.4)";
+                      e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                    }}
+                    onBlur={e => {
+                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                      e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                    }}
+                  />
+                </div>
+                {/* 파일 내용 선택 */}
+                <div style={{ flex: 1 }}>
+                  <select 
+                    defaultValue=""
+                    style={{ 
+                      width: "100%",
+                      padding: "1.1rem 1.5rem", 
+                      borderRadius: "0.85rem", 
+                      background: "rgba(15,23,42,0.8)", 
+                      border: "1px solid rgba(255,255,255,0.08)", 
+                      color: "#ffffff", 
+                      outline: "none",
+                      fontSize: "1rem",
+                      cursor: "pointer",
+                      appearance: "none",
+                      backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\")",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 1rem center",
+                      backgroundSize: "1.2rem",
+                      transition: "all 0.3s ease"
+                    }}
+                    onFocus={e => e.currentTarget.style.borderColor = "rgba(96,165,250,0.4)"}
+                    onBlur={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"}
+                  >
+                    <option value="" disabled>파일 내용 선택</option>
+                    <option value="brain-mra-tof">Brain MRA: TOF</option>
+                    <option value="mri-dwi-adc">MRI: DWI &amp; ADC</option>
+                    <option value="carotid-mra-tof">Carotid MRA: TOF</option>
+                    <option value="brain-ct-axial">Brain CT: axial</option>
+                    <option value="brain-cta-source">Brain CTA: source</option>
+                  </select>
+                </div>
               </div>
+              
+              {/* 분석 요청하기 버튼 */}
               <button style={{
-                padding: "1rem", borderRadius: "0.75rem",
-                background: "linear-gradient(to right, #2563eb, #7c3aed)",
-                color: "white", fontWeight: 600, border: "none", cursor: "pointer",
-                boxShadow: "0 0 20px rgba(37,99,235,0.3)"
-              }}>
-                Request Analysis
+                padding: "1.2rem", 
+                borderRadius: "1rem",
+                background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
+                color: "#ffffff", 
+                fontWeight: 700, 
+                fontSize: "1.15rem",
+                border: "none", 
+                cursor: "pointer",
+                boxShadow: "0 10px 25px -5px rgba(59,130,246,0.5), 0 8px 10px -6px rgba(139,92,246,0.3)",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                letterSpacing: "0.05em"
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 20px 30px -5px rgba(59,130,246,0.6), 0 15px 15px -6px rgba(139,92,246,0.4)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 10px 25px -5px rgba(59,130,246,0.5), 0 8px 10px -6px rgba(139,92,246,0.3)";
+              }}
+              onClick={() => setRequestCount(prev => prev + 1)}
+              >
+                분석 요청하기
               </button>
+
+              {/* 분석 요청 카운터: 화려하게 강조 */}
+              <div style={{ textAlign: "left", marginTop: "1.2rem" }}>
+                <span style={{ 
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "0.4rem 1rem",
+                  borderRadius: "2rem",
+                  background: "rgba(59,130,246,0.08)",
+                  border: "1px solid rgba(59,130,246,0.3)",
+                  color: "#60a5fa", 
+                  fontSize: "0.95rem", 
+                  fontFamily: "'Inter', sans-serif", 
+                  fontWeight: 600, 
+                  letterSpacing: "0.08em",
+                  textShadow: "0 0 12px rgba(96,165,250,0.4)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
+                }}>
+                  <span style={{ 
+                    display: "inline-block", 
+                    width: "8px", 
+                    height: "8px", 
+                    borderRadius: "50%", 
+                    background: "#60a5fa", 
+                    marginRight: "0.75rem",
+                    boxShadow: "0 0 8px #60a5fa"
+                  }} />
+                  ANALYSIS REQUEST: {String(requestCount).padStart(4, '0')}
+                </span>
+              </div>
             </div>
           </RevealSection>
         </div>
 
         {/* 우측 뉴런 장식: 분석 완료 시의 활발한 뇌 활동 느낌 */}
         <div style={{ flex: 1, height: "500px", position: "relative" }}>
-          <NeuralSynapseVisual mode="fast" color="124, 58, 237" opacity={0.6} />
+          <NeuralSynapseVisual mode="fast" color="236, 72, 153" opacity={0.9} />
         </div>
       </div>
     </section>
@@ -923,19 +1229,21 @@ function TestRequestSection() {
 
 function ContactSection() {
   return (
-    <section id="contact" style={{ minHeight: "60vh", display: "flex", alignItems: "center" }}>
+    <section id="contact" style={{ minHeight: "60vh", display: "flex", alignItems: "flex-start", paddingTop: "8rem" }}>
       <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
         <div style={{ flex: 1, maxWidth: "38rem" }}>
           <RevealSection>
             <SectionLabel>Contact</SectionLabel>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              Partnership & Demo Requests
+              <span style={{ whiteSpace: "nowrap" }}>Research Collaboration</span><br />
+              <span style={{ whiteSpace: "nowrap" }}>& Technical Partnerships</span>
             </h2>
             <Divider />
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
             <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem" }}>
-              We are currently running pilot programs for hospitals and research institutions. Please contact us below for demo applications and technical collaboration inquiries.
+              <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>의 다양한 AI solution에 대해 관심을 주셔서 감사합니다. 현재 <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
+              저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 언제든 아래의 연락처로 문의해 주세요.
             </p>
             <a
               href="mailto:contact@clarus-n.ai"
@@ -967,8 +1275,8 @@ function ContactSection() {
           </RevealSection>
         </div>
         
-        <div style={{ flex: 1, height: "300px", position: "relative" }}>
-          <NeuralSynapseVisual mode="calm" color="148, 163, 184" opacity={0.3} />
+        <div style={{ flex: 1, height: "350px", position: "relative" }}>
+          <NeuralSynapseVisual mode="fast" color="96, 165, 250" opacity={0.65} />
         </div>
       </div>
     </section>
@@ -978,7 +1286,7 @@ function ContactSection() {
 /* ─────────────────────────────────────────────
    메인 페이지
 ───────────────────────────────────────────── */
-const NAV_SECTIONS = ["background", "performance", "test-request", "contact"] as const;
+const NAV_SECTIONS = ["about", "background", "performance", "test-request", "contact"] as const;
 type SectionId = typeof NAV_SECTIONS[number];
 
 export default function ClarusNPage() {
@@ -1004,7 +1312,7 @@ export default function ClarusNPage() {
         ([entry]) => {
           if (entry.isIntersecting) setActiveSection(id);
         },
-        { root: container, threshold: 0.35 }
+        { root: container, threshold: 0.15 }
       );
       io.observe(el);
       observers.push(io);
@@ -1027,15 +1335,48 @@ export default function ClarusNPage() {
     handleNavClick("performance");
   }, [handleNavClick]);
 
-  // 인트로 종료 핸들러
-  const handleIntroEnd = useCallback(() => {
+  const introVideoRef = useRef<HTMLVideoElement>(null);
+  const hasTriggeredTransition = useRef(false);
+
+  // 인트로 종료 프로세스 (2초 대기 후 페이드 아웃)
+  const startIntroTransition = useCallback(() => {
+    if (hasTriggeredTransition.current) return;
+    hasTriggeredTransition.current = true;
+    
+    console.log("[Intro] Starting 2s pause before transition...");
+    
+    const video = introVideoRef.current;
+    if (video) video.pause();
+
+    setTimeout(() => {
+      console.log("[Intro] Transitioning to dashboard");
+      setIsIntroEnding(true);
+      setTimeout(() => {
+        setShowIntro(false);
+      }, 1200);
+    }, 2000);
+  }, []);
+
+  // 즉시 종료 (Skip 버튼용)
+  const handleSkipIntro = useCallback(() => {
+    console.log("[Intro] Skip clicked");
     setIsIntroEnding(true);
     setTimeout(() => {
       setShowIntro(false);
-    }, 1200); //globals.css의 cn-intro-fade-out 시간과 일치
+    }, 1200);
   }, []);
 
+  // 비디오 타임 업데이트 핸들러
+  const handleTimeUpdate = () => {
+    const video = introVideoRef.current;
+    if (!video || hasTriggeredTransition.current) return;
 
+    // 8초 도달 시 트랜지션 시작
+    if (video.currentTime >= 8) {
+      console.log("[Intro] Reached 8s mark");
+      startIntroTransition();
+    }
+  };
 
 
   return (
@@ -1068,11 +1409,16 @@ export default function ClarusNPage() {
           }}
         >
           <video
-            src="/다운로드.mp4"
+            ref={introVideoRef}
+            src="/intro_new.mp4"
             autoPlay
             muted
             playsInline
-            onEnded={handleIntroEnd}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={() => {
+              console.log("[Intro] Video ended naturally");
+              startIntroTransition();
+            }}
             style={{
               width: "100%",
               height: "100%",
@@ -1081,7 +1427,7 @@ export default function ClarusNPage() {
           />
           {/* Skip 버튼 */}
           <button
-            onClick={handleIntroEnd}
+            onClick={handleSkipIntro}
             style={{
               position: "absolute",
               bottom: "3rem",

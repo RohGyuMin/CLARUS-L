@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ClarusSidebarProps {
   isOpen: boolean;
@@ -20,6 +20,15 @@ export default function ClarusSidebar({
   onNavClick,
   onSubNavClick,
 }: ClarusSidebarProps) {
+  const [isPerformanceOpen, setIsPerformanceOpen] = useState(activeSection === "performance");
+
+  // activeSection이 변경될 때 Performance 메뉴 자동 열림 처리
+  useEffect(() => {
+    if (activeSection === "performance") {
+      setIsPerformanceOpen(true);
+    }
+  }, [activeSection]);
+
   return (
     <aside
       style={{
@@ -94,17 +103,33 @@ export default function ClarusSidebar({
           alignItems: "center",
           justifyContent: "flex-end",
         }}>
-          <span style={{
-            fontSize: "1.1rem",
-            letterSpacing: "-0.01em", 
-            color: "rgba(96,165,250,0.95)",
-            textTransform: "uppercase",
-            fontWeight: 700,
-            fontFamily: "var(--font-bernhard)",
-            textShadow: "0 0 15px rgba(96,165,250,0.4)",
-            display: "flex",
-            alignItems: "center",
-          }}>
+          <button 
+            onClick={() => onNavClick?.("about")}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              fontSize: "1.1rem",
+              letterSpacing: "-0.01em", 
+              color: "rgba(96,165,250,0.95)",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              fontFamily: "var(--font-bernhard)",
+              textShadow: "0 0 15px rgba(96,165,250,0.4)",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src="/logo.png"
+              alt="CLARUS-N Logo"
+              style={{
+                height: "1.1em",
+                width: "auto",
+                marginRight: "0.25em",
+              }}
+            />
             C<span style={{ letterSpacing: "0.08em" }}>LARUS</span>
             <span style={{ 
               fontFamily: 'HYGraphic, sans-serif',
@@ -112,8 +137,8 @@ export default function ClarusSidebar({
               margin: "0 0.1em",
               transform: "translateY(-0.03em)"
             }}>-</span>
-            N
-          </span>
+            <span style={{ color: "#a855f7", textShadow: "0 0 15px rgba(168,85,247,0.5)" }}>N</span>
+          </button>
         </div>
 
         {/* 스크롤 가능한 nav */}
@@ -129,8 +154,12 @@ export default function ClarusSidebar({
           }}
         >
           <nav style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-
-
+            <NavBtn
+              label="About"
+              sectionId="about"
+              active={activeSection === "about"}
+              onClick={onNavClick}
+            />
             <NavBtn
               label="Background"
               sectionId="background"
@@ -144,24 +173,35 @@ export default function ClarusSidebar({
                 label="Performance"
                 sectionId="performance"
                 active={activeSection === "performance"}
-                onClick={onNavClick}
+                hasDropdown
+                isDropdownOpen={isPerformanceOpen}
+                onClick={(id) => {
+                  onNavClick?.(id);
+                  setIsPerformanceOpen(!isPerformanceOpen);
+                }}
               />
               <div style={{
                 marginLeft: "0.75rem",
                 marginTop: "0.375rem",
                 paddingLeft: "0.75rem",
-                borderLeft: `1px solid ${activeSection === "performance" ? "rgba(96,165,250,0.4)" : "rgba(59,130,246,0.18)"}`,
+                borderLeft: `1px solid ${isPerformanceOpen ? "rgba(96,165,250,0.4)" : "rgba(59,130,246,0.18)"}`,
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.875rem",
-                paddingTop: "0.5rem",
-                paddingBottom: "0.25rem",
-                transition: "border-color 0.3s ease",
+                paddingTop: isPerformanceOpen ? "0.5rem" : "0",
+                paddingBottom: isPerformanceOpen ? "0.25rem" : "0",
+                maxHeight: isPerformanceOpen ? "1000px" : "0",
+                opacity: isPerformanceOpen ? 1 : 0,
+                overflow: "hidden",
+                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
               }}>
                 {/* Brain MRI */}
-                <div>
+                <div style={{ 
+                  transform: isPerformanceOpen ? "translateY(0)" : "translateY(-10px)",
+                  transition: "transform 0.4s ease",
+                }}>
                   <h3 style={{
-                    color: activeSection === "performance" ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
+                    color: isPerformanceOpen ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
                     fontWeight: 700,
                     fontSize: "0.85rem",
                     marginBottom: "0.625rem",
@@ -187,9 +227,12 @@ export default function ClarusSidebar({
                 </div>
 
                 {/* Brain CT */}
-                <div>
+                <div style={{ 
+                  transform: isPerformanceOpen ? "translateY(0)" : "translateY(-10px)",
+                  transition: "transform 0.5s ease",
+                }}>
                   <h3 style={{
-                    color: activeSection === "performance" ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
+                    color: isPerformanceOpen ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
                     fontWeight: 700,
                     fontSize: "0.85rem",
                     marginBottom: "0.625rem",
@@ -214,7 +257,7 @@ export default function ClarusSidebar({
             <div style={{ height: "1px", background: "rgba(59,130,246,0.1)", margin: "0.375rem 0" }} />
 
             <NavBtn
-              label="Personal test request"
+              label="Analysis Request"
               sectionId="test-request"
               active={activeSection === "test-request"}
               onClick={onNavClick}
@@ -224,7 +267,6 @@ export default function ClarusSidebar({
               sectionId="contact"
               active={activeSection === "contact"}
               onClick={onNavClick}
-              isSpecial
             />
           </nav>
         </div>
@@ -243,13 +285,14 @@ export default function ClarusSidebar({
 
 /* ── 메인 nav 버튼 ── */
 function NavBtn({
-  label, sectionId, active, onClick, isSpecial
+  label, sectionId, active, onClick, hasDropdown, isDropdownOpen
 }: {
   label: string;
   sectionId: string;
   active: boolean;
   onClick?: (id: string) => void;
-  isSpecial?: boolean;
+  hasDropdown?: boolean;
+  isDropdownOpen?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
   const highlighted = active || hovered;
@@ -266,43 +309,44 @@ function NavBtn({
       style={{
         display: "flex",
         alignItems: "center",
-        gap: "0.625rem",
+        justifyContent: "space-between",
         width: "100%",
         background: highlighted
-          ? "linear-gradient(105deg, rgba(59,130,246,0.2) 0%, rgba(37,99,235,0.1) 50%, rgba(96,165,250,0.04) 100%)"
-          : "rgba(255,255,255,0.02)",
-        border: `1px solid ${highlighted ? "rgba(96,165,250,0.35)" : "rgba(255,255,255,0.05)"}`,
+          ? "rgba(59,130,246,0.12)"
+          : "rgba(255,255,255,0.03)",
+        border: `1px solid ${highlighted ? "rgba(96,165,250,0.3)" : "rgba(255,255,255,0.05)"}`,
         boxShadow: highlighted
-          ? "inset 3px 0 0 rgba(96,165,250,0.85), 0 0 20px rgba(59,130,246,0.1)"
+          ? "0 4px 15px rgba(0,0,0,0.3)"
           : "none",
-        color: active ? "#ffffff" : hovered ? "#ffffff" : "rgba(226,232,240,0.9)",
+        color: active ? "#ffffff" : hovered ? "#ffffff" : "rgba(226,232,240,0.85)",
         fontSize: "1.2rem",
-        fontWeight: active ? 700 : 500,
+        fontWeight: active ? 600 : 500,
         fontFamily: "'Inter', sans-serif",
-        padding: "1rem 1.25rem",
+        padding: "1rem 1.5rem",
         borderRadius: "0.75rem",
         textAlign: "left",
-        letterSpacing: active ? "0.08em" : "0.05em",
+        letterSpacing: "0.03em",
         textDecoration: "none",
         transform: highlighted ? "translateX(3px)" : "translateX(0)",
         transition: "all 0.22s cubic-bezier(0.4,0,0.2,1)",
         cursor: "pointer",
+        margin: "0.2rem 0",
       }}
     >
-      {/* 활성 dot */}
-      <span style={{
-        width: 4, height: 4,
-        borderRadius: "50%",
-        background: active ? "#60a5fa" : "transparent",
-        boxShadow: active ? "0 0 6px #60a5fa" : "none",
-        flexShrink: 0,
-        transition: "all 0.25s ease",
-        display: isSpecial ? "none" : "block",
-      }} />
-
-      <span>
-        {label}
-      </span>
+      <span>{label}</span>
+      {hasDropdown && (
+        <svg 
+          width="18" height="18" viewBox="0 0 24 24" fill="none" 
+          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          style={{
+            transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 0.3s ease",
+            opacity: highlighted ? 1 : 0.5
+          }}
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      )}
     </a>
   );
 }
@@ -323,10 +367,10 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
         display: "block",
         width: "100%",
         background: hovered
-          ? "linear-gradient(105deg, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.07) 60%, transparent 100%)"
+          ? "linear-gradient(105deg, rgba(59,130,246,0.1) 0%, rgba(37,99,235,0.05) 60%, transparent 100%)"
           : "transparent",
-        boxShadow: hovered ? "inset 2px 0 0 rgba(96,165,250,0.55)" : "none",
-        color: hovered ? "#ffffff" : "rgba(203,213,225,0.8)",
+        boxShadow: hovered ? "inset 2px 0 0 rgba(96,165,250,0.4)" : "none",
+        color: hovered ? "#ffffff" : "rgba(203,213,225,0.75)",
         fontSize: "1.05rem",
         fontWeight: 500,
         fontFamily: "'Inter', sans-serif",
@@ -337,7 +381,7 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
         transform: hovered ? "translateX(4px)" : "translateX(0)",
         transition: "all 0.2s cubic-bezier(0.4,0,0.2,1)",
         cursor: "pointer",
-        letterSpacing: "0.03em",
+        letterSpacing: "0.02em",
       }}
     >
       {label}
