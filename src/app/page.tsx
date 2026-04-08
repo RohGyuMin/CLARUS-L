@@ -336,8 +336,8 @@ function AboutSection() {
         </div>
 
         {/* 우측: CEO 사진 흑백 */}
-        <RevealSection style={{ flex: 1, transitionDelay: "0.15s" }}>
-          <div style={{ position: "relative", borderRadius: "1rem", overflow: "hidden", maxHeight: "600px" }}>
+        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s" }}>
+          <div style={{ position: "relative", borderRadius: "1rem", overflow: "hidden", width: "280px", height: "420px" }}>
             <img
               src="/ceo-photo.png"
               alt="CEO Sion Kim"
