@@ -55,8 +55,19 @@ export default function NeuralSynapseVisual({
     }));
 
     let raf: number;
+    let isVisible = true;
+
+    // IntersectionObserver로 화면 밖이면 애니메이션 정지
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisible = entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    observer.observe(canvas);
 
     function draw() {
+      raf = requestAnimationFrame(draw);
+      if (!isVisible) return; // 화면 밖이면 렌더링 스킵
+
       ctx.clearRect(0, 0, W, H);
       ctx.globalCompositeOperation = "screen";
 
@@ -72,7 +83,7 @@ export default function NeuralSynapseVisual({
         // 노드 (뉴런 세포체)
         const pulseVal = (Math.sin(n.pulse) + 1) * 0.5;
         const r = n.radius * (1 + pulseVal * 0.5);
-        
+
         ctx.beginPath();
         ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${color}, ${opacity * (0.3 + pulseVal * 0.4)})`;
@@ -106,8 +117,6 @@ export default function NeuralSynapseVisual({
           }
         }
       }
-
-      raf = requestAnimationFrame(draw);
     }
 
     raf = requestAnimationFrame(draw);
@@ -115,6 +124,7 @@ export default function NeuralSynapseVisual({
     return () => {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
+      observer.disconnect();
     };
   }, [mode, color, opacity]);
 

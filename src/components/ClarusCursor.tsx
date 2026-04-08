@@ -51,9 +51,8 @@ export default function ClarusCursor() {
     };
     raf = requestAnimationFrame(tick);
 
-    // 클릭 가능한 요소 위에서 커서 확대
+    // 이벤트 위임: document 레벨에서 interactive 요소 hover 감지
     const grow = () => {
-      if (dotRef.current)  dotRef.current.style.transform  += " scale(2)";
       if (ringRef.current) {
         ringRef.current.style.width   = "48px";
         ringRef.current.style.height  = "48px";
@@ -70,11 +69,14 @@ export default function ClarusCursor() {
       }
     };
 
-    const interactiveEls = document.querySelectorAll("a, button, [role='button']");
-    interactiveEls.forEach(el => {
-      el.addEventListener("mouseenter", grow);
-      el.addEventListener("mouseleave", shrink);
-    });
+    const onMouseOver = (e: MouseEvent) => {
+      if ((e.target as Element).closest("a, button, [role='button']")) grow();
+    };
+    const onMouseOut = (e: MouseEvent) => {
+      if ((e.target as Element).closest("a, button, [role='button']")) shrink();
+    };
+    document.addEventListener("mouseover", onMouseOver);
+    document.addEventListener("mouseout", onMouseOut);
 
     const onMouseDown = (e: MouseEvent) => {
       // 펄스 생성
@@ -99,12 +101,10 @@ export default function ClarusCursor() {
     return () => {
       document.documentElement.style.cursor = "";
       document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onMouseOver);
+      document.removeEventListener("mouseout", onMouseOut);
       window.removeEventListener("mousedown", onMouseDown);
       cancelAnimationFrame(raf);
-      interactiveEls.forEach(el => {
-        el.removeEventListener("mouseenter", grow);
-        el.removeEventListener("mouseleave", shrink);
-      });
     };
   }, []);
 

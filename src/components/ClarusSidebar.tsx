@@ -103,13 +103,8 @@ export default function ClarusSidebar({
           alignItems: "center",
           justifyContent: "flex-end",
         }}>
-          <button 
-            onClick={() => onNavClick?.("about")}
+          <div 
             style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
               fontSize: "1.1rem",
               letterSpacing: "-0.01em", 
               color: "rgba(96,165,250,0.95)",
@@ -124,21 +119,28 @@ export default function ClarusSidebar({
             <img
               src="/logo.png"
               alt="CLARUS-N Logo"
+              onClick={() => onNavClick?.("contact")}
               style={{
                 height: "1.1em",
                 width: "auto",
                 marginRight: "0.25em",
+                cursor: "pointer",
               }}
             />
-            C<span style={{ letterSpacing: "0.08em" }}>LARUS</span>
-            <span style={{ 
-              fontFamily: 'HYGraphic, sans-serif',
-              fontSize: "0.85em",
-              margin: "0 0.1em",
-              transform: "translateY(-0.03em)"
-            }}>-</span>
-            <span style={{ color: "#a855f7", textShadow: "0 0 15px rgba(168,85,247,0.5)" }}>N</span>
-          </button>
+            <span 
+              onClick={() => onNavClick?.("about")}
+              style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+            >
+              C<span style={{ letterSpacing: "0.08em" }}>LARUS</span>
+              <span style={{ 
+                fontFamily: 'HYGraphic, sans-serif',
+                fontSize: "0.85em",
+                margin: "0 0.1em",
+                transform: "translateY(-0.03em)"
+              }}>-</span>
+              <span style={{ color: "#a855f7", textShadow: "0 0 15px rgba(168,85,247,0.5)" }}>N</span>
+            </span>
+          </div>
         </div>
 
         {/* 스크롤 가능한 nav */}

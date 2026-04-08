@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
+import emailjs from "@emailjs/browser";
 import ClarusSidebar from "@/components/ClarusSidebar";
 import ClarusCursor from "@/components/ClarusCursor";
 import ClarusHeroCanvas from "@/components/ClarusHeroCanvas";
@@ -62,6 +64,7 @@ function HeroSection() {
 
       {/* 타이틀 텍스트 – 하단 좌측 */}
       <div
+        className="cn-hero-title"
         style={{
           position: "absolute",
           bottom: "6rem",
@@ -122,10 +125,11 @@ function HeroSection() {
 
       {/* 스크롤 힌트 */}
       <div
+        className="cn-scroll-hint"
         style={{
           position: "absolute",
           bottom: "2rem",
-          right: "5rem", // 중앙에서 우측으로 이동하여 로고와의 겹침 방지
+          right: "5rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -270,7 +274,7 @@ function BackgroundSection() {
 
   return (
     <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
         <div style={{ flex: 1, maxWidth: "42rem", width: "100%" }}>
           <RevealSection>
             <SectionLabel>Background</SectionLabel>
@@ -286,7 +290,7 @@ function BackgroundSection() {
           </RevealSection>
 
           {/* 통계 카드 */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+          <div className="cn-stat-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
             {stats.map((s, i) => (
               <RevealSection key={s.label} style={{ transitionDelay: `${0.15 + i * 0.1}s` }}>
                 <div
@@ -368,7 +372,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     return () => observer.disconnect();
   }, [hasNudged]);
 
-  const mraCards = [
+  const mraCards: CardData[] = [
     {
       title: "MRA AI for <span style='color: #facc15'>Vessel</span> reconstruction",
       description: "Precise reconstruction of even the finest blood vessels.",
@@ -401,7 +405,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     }
   ];
 
-  const infarctCards = [
+  const infarctCards: CardData[] = [
     {
       id: "dwi-1",
       title: "DWI AI for Infarcted <span style='color: #c084fc'>Region</span> Detection",
@@ -428,7 +432,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     }
   ];
 
-  const carotidCards = [
+  const carotidCards: CardData[] = [
     {
       id: "carotid-1",
       title: "MRA AI for <span style='color: #facc15'>Carotid Vessel</span> reconstruction",
@@ -447,7 +451,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     }
   ];
 
-  const ctCards = [
+  const ctCards: CardData[] = [
     {
       id: "ct-1",
       title: "CT AI for <span style='color: #f472b6'>Hemorrhage</span> Detection",
@@ -495,7 +499,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       ref={sectionRef}
       style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative" }}
     >
-      <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
         <div style={{ flex: 1, maxWidth: "42rem", width: "100%", position: "relative" }}>
           <RevealSection>
             <SectionLabel>Pipeline Characteristics</SectionLabel>
@@ -652,95 +656,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
         onClick={activeVideo ? togglePlay : undefined}
         >
           {/* 범례 오버레이 (특정 비디오일 때만 표시) */}
-          {activeVideo && (activeVideo.includes('territory') || activeVideo.includes('onset') || activeVideo.includes('KakaoTalk')) && (
-            <div style={{
-              position: "absolute",
-              bottom: "1.5rem",
-              left: "1.5rem",
-              zIndex: 30,
-              width: "220px",
-              background: "rgba(15, 23, 42, 0.8)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              borderRadius: "4px",
-              overflow: "hidden",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
-              pointerEvents: "none",
-              backdropFilter: "blur(4px)",
-            }}>
-              {/* Vascular Legend (Card 2) */}
-              {activeVideo === "/videos/5. infarction territory.mp4" && (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {[
-                    { label: "ACA", color: "#d946ef" },
-                    { label: "MCA", color: "#22c55e" },
-                    { label: "Lenticulostriatal A.", color: "#2dd4bf" },
-                    { label: "Ant. choroidal A.", color: "#60a5fa" },
-                    { label: "PCA", color: "#fb923c" },
-                    { label: "BA & VA", color: "#a855f7" },
-                  ].map((item, i) => (
-                    <div key={i} style={{ 
-                      display: "flex", 
-                      alignItems: "center", 
-                      height: "26px",
-                      borderBottom: i === 5 ? "none" : "1px solid rgba(255, 255, 255, 0.05)",
-                      background: i % 2 === 0 ? "transparent" : "rgba(255, 255, 255, 0.02)"
-                    }}>
-                      <div style={{ 
-                        width: "26px", 
-                        height: "100%", 
-                        background: item.color,
-                        borderRight: "1px solid rgba(255, 255, 255, 0.1)"
-                      }} />
-                      <span style={{ 
-                        paddingLeft: "10px", 
-                        color: "#f1f5f9", 
-                        fontSize: "0.75rem", 
-                        fontWeight: 500,
-                        fontFamily: "'Inter', sans-serif"
-                      }}>
-                        {item.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Onset Legend (Card 3) */}
-              {activeVideo === "/videos/KakaoTalk_20260406_122852533.mp4" && (
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {[
-                    { label: "Acute stage", color: "#ef4444" },
-                    { label: "Subacute stage", color: "#f97316" },
-                    { label: "Chronic stage", color: "#eab308" },
-                  ].map((item, i) => (
-                    <div key={i} style={{ 
-                      display: "flex", 
-                      alignItems: "center", 
-                      height: "26px",
-                      borderBottom: i === 2 ? "none" : "1px solid rgba(255, 255, 255, 0.05)",
-                      background: i % 2 === 0 ? "transparent" : "rgba(255, 255, 255, 0.02)"
-                    }}>
-                      <div style={{ 
-                        width: "26px", 
-                        height: "100%", 
-                        background: item.color,
-                        borderRight: "1px solid rgba(255, 255, 255, 0.1)"
-                      }} />
-                      <span style={{ 
-                        paddingLeft: "10px", 
-                        color: "#f1f5f9", 
-                        fontSize: "0.75rem", 
-                        fontWeight: 500,
-                        fontFamily: "'Inter', sans-serif"
-                      }}>
-                        {item.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+          <ClinicalLegend activeVideo={activeVideo} />
 
           {/* 뉴런 시각화 (동영상이 없을 때만 혹은 밑에 깔기) */}
           <div style={{ 
@@ -838,7 +754,16 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
   );
 }
 
-function CharacteristicCard({ card, isActive, onClick }: { card: any; isActive: boolean; onClick: () => void }) {
+interface CardData {
+  title: string;
+  description: string;
+  videoSrc: string;
+  theme: "blue" | "purple" | "gray" | "green";
+  details: string[];
+  id?: string;
+}
+
+function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isActive: boolean; onClick: () => void }) {
   const [hovered, setHovered] = useState(false);
   const highlighted = hovered || isActive;
   
@@ -1001,8 +926,8 @@ function TestRequestSection() {
 
   return (
     <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
-        <div style={{ flex: 1, maxWidth: "46rem" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
+        <div style={{ flex: 1, maxWidth: "38rem" }}>
           <RevealSection>
             <SectionLabel>Research Analysis Request</SectionLabel>
             <h2 style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.2rem)", fontWeight: 700, color: "#ffffff", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "-0.01em" }}>
@@ -1017,7 +942,7 @@ function TestRequestSection() {
               backdropFilter: "blur(20px)",
               border: "1px solid rgba(255,255,255,0.06)",
               borderRadius: "1.5rem",
-              padding: "2rem",
+              padding: "1.25rem",
               marginBottom: "1.5rem",
               boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
             }}>
@@ -1029,7 +954,7 @@ function TestRequestSection() {
                   background: isUploadHovered ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.01)",
                   border: `1px ${isUploadHovered ? 'solid' : 'dashed'} ${isUploadHovered ? 'rgba(96,165,250,0.5)' : 'rgba(96,165,250,0.25)'}`,
                   borderRadius: "1rem",
-                  padding: "2.5rem 1.5rem",
+                  padding: "1.5rem 1.25rem",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -1096,11 +1021,13 @@ function TestRequestSection() {
 
           <RevealSection style={{ transitionDelay: "0.2s" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-              <div style={{ display: "flex", gap: "1.25rem" }}>
+              <div className="cn-form-row" style={{ display: "flex", gap: "1.25rem" }}>
                 {/* 이메일 입력 */}
                 <div style={{ flex: 1, position: "relative" }}>
-                  <input 
-                    type="email" 
+                  <label htmlFor="email-input" className="sr-only">이메일 주소</label>
+                  <input
+                    id="email-input"
+                    type="email"
                     placeholder="이메일 주소 (결과 수신용)" 
                     style={{ 
                       width: "100%",
@@ -1126,7 +1053,9 @@ function TestRequestSection() {
                 </div>
                 {/* 파일 내용 선택 */}
                 <div style={{ flex: 1 }}>
-                  <select 
+                  <label htmlFor="file-type-select" className="sr-only">파일 내용 선택</label>
+                  <select
+                    id="file-type-select"
                     defaultValue=""
                     style={{ 
                       width: "100%",
@@ -1228,10 +1157,46 @@ function TestRequestSection() {
 }
 
 function ContactSection() {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
+  const [formData, setFormData] = useState({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
+  const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleField = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setFormData(prev => ({ ...prev, [field]: e.target.value }));
+
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!privacyAgreed) { alert("개인정보 처리방침에 동의해주세요."); return; }
+    if (!formData.name || !formData.email || !formData.message) { alert("이름, 이메일, 문의내용은 필수입니다."); return; }
+    setSubmitState("loading");
+    try {
+      await emailjs.send(
+        "service_2re1thn",
+        "template_27njzpm",
+        { ...formData },
+        { publicKey: "Pu-bX2-LpjT--gmfG" }
+      );
+      setSubmitState("success");
+      setFormData({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
+      setPrivacyAgreed(false);
+    } catch {
+      setSubmitState("error");
+    }
+  };
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('clarusnai@gmail.com');
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
   return (
-    <section id="contact" style={{ minHeight: "60vh", display: "flex", alignItems: "flex-start", paddingTop: "8rem" }}>
-      <div style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "38rem" }}>
+    <section id="contact" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "4rem" }}>
+        <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <RevealSection>
             <SectionLabel>Contact</SectionLabel>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
@@ -1242,41 +1207,377 @@ function ContactSection() {
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
             <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem" }}>
-              <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>의 다양한 AI solution에 대해 관심을 주셔서 감사합니다. 현재 <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
-              저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 언제든 아래의 연락처로 문의해 주세요.
+              <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
+              저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
             </p>
-            <a
-              href="mailto:contact@clarus-n.ai"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                padding: "0.875rem 2rem",
-                borderRadius: "0.75rem",
-                background: "rgba(59,130,246,0.15)",
-                border: "1px solid rgba(96,165,250,0.3)",
-                color: "#93c5fd",
-                fontSize: "0.95rem",
-                textDecoration: "none",
-                letterSpacing: "0.05em",
-                transition: "background 0.2s ease, border-color 0.2s ease",
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = "rgba(59,130,246,0.25)";
-                e.currentTarget.style.borderColor = "rgba(96,165,250,0.6)";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = "rgba(59,130,246,0.15)";
-                e.currentTarget.style.borderColor = "rgba(96,165,250,0.3)";
-              }}
-            >
-              contact@clarus-n.ai
-            </a>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", maxWidth: "420px" }}>
+              
+              {/* 타이틀 버튼 스타일 - 팝업 트리거 버튼으로 변경 */}
+              <button 
+                onClick={() => setIsFormOpen(true)}
+                style={{
+                  position: "relative",
+                  padding: "1.2rem 1.5rem",
+                  borderRadius: "1.25rem",
+                  background: "linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.3) 100%)",
+                  border: "1px solid rgba(96,165,250,0.5)",
+                  boxShadow: "0 4px 20px rgba(59,130,246,0.2), inset 0 0 10px rgba(255,255,255,0.05)",
+                  backdropFilter: "blur(12px)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  textAlign: "left",
+                  width: "100%",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 12px 30px rgba(59,130,246,0.35), inset 0 0 15px rgba(255,255,255,0.15)";
+                  e.currentTarget.style.background = "linear-gradient(135deg, rgba(59,130,246,0.25) 0%, rgba(37,99,235,0.45) 100%)";
+                  e.currentTarget.style.borderColor = "rgba(96,165,250,0.8)";
+                  const arrow = e.currentTarget.querySelector('.btn-arrow') as HTMLElement;
+                  if (arrow) arrow.style.transform = "translateX(5px)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(59,130,246,0.2), inset 0 0 10px rgba(255,255,255,0.05)";
+                  e.currentTarget.style.background = "linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.3) 100%)";
+                  e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
+                  const arrow = e.currentTarget.querySelector('.btn-arrow') as HTMLElement;
+                  if (arrow) arrow.style.transform = "translateX(0)";
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+                  <div style={{ background: "rgba(255,255,255,0.05)", padding: "0.6rem", borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)" }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <span style={{ color: "#ffffff", fontSize: "1.3rem", fontWeight: 700, letterSpacing: "0.02em" }}>Contact</span>
+                    <span style={{ color: "rgba(147,197,253,0.8)", fontSize: "0.8rem", marginTop: "0.2rem" }}>버튼을 클릭하여 온라인 문의 폼 열기</span>
+                  </div>
+                </div>
+                <div className="btn-arrow" style={{ transition: "transform 0.3s ease", display: "flex", alignItems: "center" }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </div>
+              </button>
+
+              {/* 하위 항목 리스트 */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", paddingLeft: "0.75rem" }}>
+                <div 
+                  onClick={handleCopyEmail}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1.25rem",
+                    padding: "1rem 1.25rem",
+                    borderRadius: "0.875rem",
+                    background: isCopied ? "rgba(59,130,246,0.15)" : "rgba(30,58,138,0.08)",
+                    border: isCopied ? "1px solid rgba(96,165,250,0.6)" : "1px solid rgba(148,163,184,0.1)",
+                    backdropFilter: "blur(4px)",
+                    cursor: "pointer",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    position: "relative"
+                  }}
+                  onMouseEnter={e => {
+                    if (!isCopied) {
+                      e.currentTarget.style.background = "rgba(30,58,138,0.15)";
+                      e.currentTarget.style.borderColor = "rgba(148,163,184,0.2)";
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (!isCopied) {
+                      e.currentTarget.style.background = "rgba(30,58,138,0.08)";
+                      e.currentTarget.style.borderColor = "rgba(148,163,184,0.1)";
+                    }
+                  }}
+                >
+                  <div style={{ background: isCopied ? "rgba(96,165,250,0.3)" : "rgba(148,163,184,0.1)", padding: "0.6rem", borderRadius: "50%", display: "flex", transition: "all 0.3s" }}>
+                    {isCopied ? (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    ) : (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                    )}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "0.75rem", color: isCopied ? "#93c5fd" : "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.15rem", fontWeight: isCopied ? 700 : 400 }}>
+                      {isCopied ? "COPIED!" : "E-mail"}
+                    </div>
+                    <div style={{ color: isCopied ? "#ffffff" : "#cbd5e1", fontSize: "1.05rem", fontWeight: isCopied ? 600 : 400, letterSpacing: "0.02em" }}>clarusnai@gmail.com</div>
+                  </div>
+                  {/* 클릭 유도 툴팁 (작게) */}
+                  {!isCopied && (
+                    <div style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", fontSize: "0.7rem", color: "#475569", opacity: 0.6 }}>
+                      Click to Copy
+                    </div>
+                  )}
+                </div>
+
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1.25rem",
+                  padding: "1rem 1.25rem",
+                  borderRadius: "0.875rem",
+                  background: "rgba(30,58,138,0.08)",
+                  border: "1px solid rgba(148,163,184,0.1)",
+                  backdropFilter: "blur(4px)",
+                }}>
+                  <div style={{ background: "rgba(148,163,184,0.1)", padding: "0.6rem", borderRadius: "50%", display: "flex" }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "0.75rem", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.15rem" }}>Tel</div>
+                    <div style={{ color: "#cbd5e1", fontSize: "1.05rem", fontWeight: 400, letterSpacing: "0.05em" }}>+82-2-****-****</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </RevealSection>
         </div>
         
-        <div style={{ flex: 1, height: "350px", position: "relative" }}>
-          <NeuralSynapseVisual mode="fast" color="96, 165, 250" opacity={0.65} />
+        {/* 우측 영역: 기본 Visual 또는 Form 팝업 오버레이 */}
+        <div style={{ flex: 1, position: "relative", minHeight: "600px", display: "flex", alignItems: "center", transition: "all 0.5s ease" }}>
+          
+          {/* Background Visual (폼이 열리면 배경으로 희미해짐) */}
+          <div style={{ 
+            position: "absolute", inset: 0, height: "100%", 
+            opacity: isFormOpen ? 0.05 : 1, 
+            transition: "opacity 0.6s ease",
+            transform: isFormOpen ? "scale(0.95)" : "scale(1)",
+          }}>
+            <NeuralSynapseVisual mode="fast" color="96, 165, 250" opacity={0.65} />
+          </div>
+
+          {/* Contact Form Popup */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            opacity: isFormOpen ? 1 : 0,
+            pointerEvents: isFormOpen ? "auto" : "none",
+            transform: isFormOpen ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+            background: "rgba(15, 23, 42, 0.75)",
+            backdropFilter: "blur(20px)",
+            borderRadius: "1.5rem",
+            border: "1px solid rgba(96,165,250,0.25)",
+            boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5), 0 0 30px rgba(59,130,246,0.15)",
+            padding: "2.5rem",
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto"
+          }}>
+             {/* Header */}
+             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+               <h3 style={{ color: "#e2e8f0", fontSize: "1.75rem", fontWeight: 500, margin: 0, letterSpacing: "0.02em" }}>
+                 Contact
+               </h3>
+               <button 
+                 onClick={() => setIsFormOpen(false)}
+                 style={{ 
+                   background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", 
+                   color: "#94a3b8", cursor: "pointer", padding: "0.5rem", borderRadius: "50%",
+                   display: "flex", alignItems: "center", justifyContent: "center",
+                   transition: "all 0.2s"
+                 }}
+                 onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "#ffffff"; }}
+                 onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#94a3b8"; }}
+               >
+                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                   <line x1="18" y1="6" x2="6" y2="18"></line>
+                   <line x1="6" y1="6" x2="18" y2="18"></line>
+                 </svg>
+               </button>
+             </div>
+             
+             {/* Form Description */}
+             <div style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "2rem", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "1.5rem" }}>
+               <span style={{ color: "#e2e8f0", fontWeight: 600 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>에 관심 가져주셔서 감사합니다.<br/>
+               제품에 관한 사항, 기술제휴 및 협력 등의 문의를 남겨주시면 확인 후 빠르게 연락 드리겠습니다.
+             </div>
+
+             {/* Form Fields */}
+             <form style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }} onSubmit={handleSubmit}>
+
+               {[
+                 { id: "name", label: "이름", ph: "ex. 홍길동" },
+                 { id: "region", label: "지역", ph: "ex. 서울시 서초구" },
+                 { id: "company", label: "기관명/병원명", ph: "ex. 클라루스엔" },
+                 { id: "job", label: "직함", ph: "ex. 신경외과 과장" },
+                 { id: "email", label: "이메일", ph: "ex. clarusnai@gmail.com", type: "email" },
+                 { id: "phone", label: "연락처", ph: "ex. 010-****-****", type: "tel" },
+               ].map((field) => (
+                 <div key={field.id} style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                   <label htmlFor={field.id} style={{ color: "#cbd5e1", fontSize: "0.85rem", fontWeight: 500 }}>
+                     {field.label}
+                   </label>
+                   <input
+                     id={field.id}
+                     type={field.type || "text"}
+                     placeholder={field.ph}
+                     value={formData[field.id as keyof typeof formData]}
+                     onChange={handleField(field.id)}
+                     style={{
+                       width: "100%", padding: "1rem 1.25rem", borderRadius: "0.75rem",
+                       background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
+                       color: "#f8fafc", fontSize: "0.95rem", outline: "none", transition: "all 0.3s ease",
+                       boxShadow: "inset 0 2px 4px rgba(0,0,0,0.2)"
+                     }}
+                     onFocus={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.8)"; e.currentTarget.style.background = "rgba(59,130,246,0.08)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(59,130,246,0.2)"; }}
+                     onBlur={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.boxShadow = "inset 0 2px 4px rgba(0,0,0,0.2)"; }}
+                   />
+                 </div>
+               ))}
+
+               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                 <label htmlFor="message" style={{ color: "#cbd5e1", fontSize: "0.85rem", fontWeight: 500 }}>
+                   문의내용
+                 </label>
+                 <textarea
+                   id="message"
+                   rows={5}
+                   value={formData.message}
+                   onChange={handleField("message")}
+                   style={{
+                     width: "100%", padding: "1rem 1.25rem", borderRadius: "0.75rem",
+                     background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)",
+                     color: "#f8fafc", fontSize: "0.95rem", outline: "none", resize: "none", transition: "all 0.3s ease",
+                     boxShadow: "inset 0 2px 4px rgba(0,0,0,0.2)"
+                   }}
+                   placeholder="문의 내용을 입력해 주세요..."
+                   onFocus={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.8)"; e.currentTarget.style.background = "rgba(59,130,246,0.08)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(59,130,246,0.2)"; }}
+                   onBlur={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.boxShadow = "inset 0 2px 4px rgba(0,0,0,0.2)"; }}
+                 />
+               </div>
+
+               {/* 개인정보 동의 */}
+               <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                 <input type="checkbox" id="privacy-agree" checked={privacyAgreed} onChange={e => setPrivacyAgreed(e.target.checked)} style={{ width: "1rem", height: "1rem", accentColor: "#3b82f6" }} />
+                 <label htmlFor="privacy-agree" style={{ color: "#94a3b8", fontSize: "0.85rem", lineHeight: 1.5 }}>
+                   <button
+                     type="button"
+                     onClick={() => setIsPrivacyOpen(true)}
+                     style={{ color: "#60a5fa", textDecoration: "underline", background: "none", border: "none", cursor: "pointer", fontSize: "inherit", padding: 0 }}
+                   >
+                     개인정보 처리방침
+                   </button>에 동의합니다 (필수)
+                 </label>
+               </div>
+
+               {isPrivacyOpen && typeof document !== "undefined" && createPortal(
+                 <div
+                   onClick={() => setIsPrivacyOpen(false)}
+                   style={{
+                     position: "fixed", inset: 0, zIndex: 9999,
+                     display: "flex", alignItems: "center", justifyContent: "center",
+                     background: "rgba(0,0,0,0.7)", backdropFilter: "blur(4px)"
+                   }}>
+                   <div
+                     onClick={e => e.stopPropagation()}
+                     style={{
+                       background: "rgba(15,23,42,0.97)", border: "1px solid rgba(96,165,250,0.2)",
+                       borderRadius: "1.25rem", padding: "2rem",
+                       maxWidth: "560px", width: "90%", maxHeight: "80vh",
+                       display: "flex", flexDirection: "column",
+                       boxShadow: "0 25px 50px rgba(0,0,0,0.6)",
+                       fontFamily: "'Noto Sans KR', 'HYGraphic', 'Inter', sans-serif"
+                     }}>
+                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+                       <h4 style={{ color: "#e2e8f0", fontSize: "1.25rem", fontWeight: 600, margin: 0 }}>개인정보 처리방침</h4>
+                       <button
+                         onClick={() => setIsPrivacyOpen(false)}
+                         style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", cursor: "pointer", padding: "0.4rem", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}
+                         onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.12)"; e.currentTarget.style.color = "#fff"; }}
+                         onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#94a3b8"; }}
+                       >
+                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                           <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                         </svg>
+                       </button>
+                     </div>
+                     <div style={{ overflowY: "auto", fontSize: "0.9rem", color: "#94a3b8", lineHeight: 1.7, paddingRight: "0.5rem" }}>
+                       <p style={{ marginTop: 0 }}>CLARUS-N은 고객님의 소중한 개인정보를 보호하기 위해 최선을 다하고 있습니다.</p>
+
+                       <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>1. 수집하는 개인정보 항목</h5>
+                       <p style={{ marginBottom: "1.25rem" }}>이름, 지역, 기관명/병원명, 직함, 이메일 주소, 연락처, 문의내용</p>
+
+                       <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>2. 수집 및 이용목적</h5>
+                       <p style={{ marginBottom: "1.25rem" }}>서비스 이용에 따른 본인확인, 원활한 의사소통 경로 확보, 최신 정보 안내 및 문의사항 응대</p>
+
+                       <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>3. 보유 및 이용기간</h5>
+                       <p style={{ marginBottom: "1.25rem" }}>수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. (단, 관련 법령의 규정에 의하여 보존할 필요가 있는 경우 해당 기간 동안 보관)</p>
+
+                       <p style={{ marginBottom: 0 }}>위와 같은 개인정보 수집 및 이용에 대하여 동의를 거부할 권리가 있으며, 거부 시 문의 서비스 이용이 제한될 수 있습니다.</p>
+                     </div>
+                     <button
+                       onClick={() => { setPrivacyAgreed(true); setIsPrivacyOpen(false); }}
+                       style={{
+                         marginTop: "2rem",
+                         padding: "1.1rem",
+                         borderRadius: "0.875rem",
+                         background: "rgba(59,130,246,0.15)",
+                         border: "1px solid rgba(96,165,250,0.3)",
+                         color: "#93c5fd",
+                         fontSize: "1rem",
+                         fontWeight: 600,
+                         cursor: "pointer",
+                         transition: "all 0.2s"
+                       }}
+                       onMouseEnter={e => { e.currentTarget.style.background = "rgba(59,130,246,0.25)"; e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)"; }}
+                       onMouseLeave={e => { e.currentTarget.style.background = "rgba(59,130,246,0.15)"; e.currentTarget.style.borderColor = "rgba(96,165,250,0.3)"; }}
+                     >
+                       확인했습니다
+                     </button>
+                   </div>
+                 </div>,
+                 document.body
+               )}
+
+               {submitState === "success" && (
+                 <div style={{ padding: "1rem", borderRadius: "0.75rem", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", color: "#86efac", fontSize: "0.95rem", textAlign: "center" }}>
+                   문의가 성공적으로 전송되었습니다. 빠른 시일 내에 연락드리겠습니다.
+                 </div>
+               )}
+               {submitState === "error" && (
+                 <div style={{ padding: "1rem", borderRadius: "0.75rem", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5", fontSize: "0.95rem", textAlign: "center" }}>
+                   전송에 실패했습니다. 잠시 후 다시 시도해주세요.
+                 </div>
+               )}
+
+               {/* Submit Button */}
+               <button
+                 type="submit"
+                 disabled={submitState === "loading"}
+                 style={{
+                   marginTop: "1rem", width: "100%", padding: "1.1rem", borderRadius: "0.75rem",
+                   background: submitState === "loading"
+                     ? "rgba(59,130,246,0.4)"
+                     : "linear-gradient(135deg, rgba(59,130,246,0.8) 0%, rgba(37,99,235,0.9) 100%)",
+                   border: "1px solid rgba(96,165,250,0.5)",
+                   color: "white", fontSize: "1.05rem", fontWeight: 600,
+                   cursor: submitState === "loading" ? "not-allowed" : "pointer",
+                   letterSpacing: "0.05em",
+                   boxShadow: "0 4px 15px rgba(37,99,235,0.3)", transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                 }}
+                 onMouseEnter={e => { if (submitState !== "loading") { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(37,99,235,0.5)"; } }}
+                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 15px rgba(37,99,235,0.3)"; }}
+               >
+                 {submitState === "loading" ? "전송 중..." : "제출하기"}
+               </button>
+             </form>
+          </div>
         </div>
       </div>
     </section>
@@ -1337,33 +1638,34 @@ export default function ClarusNPage() {
 
   const introVideoRef = useRef<HTMLVideoElement>(null);
   const hasTriggeredTransition = useRef(false);
+  const introTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => { introTimers.current.forEach(clearTimeout); };
+  }, []);
 
   // 인트로 종료 프로세스 (2초 대기 후 페이드 아웃)
   const startIntroTransition = useCallback(() => {
     if (hasTriggeredTransition.current) return;
     hasTriggeredTransition.current = true;
-    
-    console.log("[Intro] Starting 2s pause before transition...");
-    
+
     const video = introVideoRef.current;
     if (video) video.pause();
 
-    setTimeout(() => {
-      console.log("[Intro] Transitioning to dashboard");
+    const t1 = setTimeout(() => {
       setIsIntroEnding(true);
-      setTimeout(() => {
-        setShowIntro(false);
-      }, 1200);
+      const t2 = setTimeout(() => setShowIntro(false), 1200);
+      introTimers.current.push(t2);
     }, 2000);
+    introTimers.current.push(t1);
   }, []);
 
   // 즉시 종료 (Skip 버튼용)
   const handleSkipIntro = useCallback(() => {
-    console.log("[Intro] Skip clicked");
     setIsIntroEnding(true);
-    setTimeout(() => {
-      setShowIntro(false);
-    }, 1200);
+    const t = setTimeout(() => setShowIntro(false), 1200);
+    introTimers.current.push(t);
   }, []);
 
   // 비디오 타임 업데이트 핸들러
@@ -1373,7 +1675,6 @@ export default function ClarusNPage() {
 
     // 8초 도달 시 트랜지션 시작
     if (video.currentTime >= 8) {
-      console.log("[Intro] Reached 8s mark");
       startIntroTransition();
     }
   };
@@ -1415,9 +1716,11 @@ export default function ClarusNPage() {
             muted
             playsInline
             onTimeUpdate={handleTimeUpdate}
-            onEnded={() => {
-              console.log("[Intro] Video ended naturally");
-              startIntroTransition();
+            onEnded={startIntroTransition}
+            onError={handleSkipIntro}
+            onCanPlayThrough={() => {
+              // 재생 시작 실패 시 fallback
+              introVideoRef.current?.play().catch(handleSkipIntro);
             }}
             style={{
               width: "100%",
@@ -1484,19 +1787,45 @@ export default function ClarusNPage() {
           }}
         >
           <HeroSection />
-          <div style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
+          <div className="cn-content-padding" style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
             <BackgroundSection />
             <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} />
             <TestRequestSection />
             <ContactSection />
             <footer style={{
-              padding: "2rem 0",
+              padding: "3rem 0 4rem 0",
               borderTop: "1px solid rgba(255,255,255,0.06)",
-              color: "#334155",
-              fontSize: "0.8rem",
-              letterSpacing: "0.08em",
+              color: "rgba(148, 163, 184, 0.6)",
+              fontSize: "0.85rem",
+              fontFamily: "'Inter', sans-serif",
+              lineHeight: "1.8",
+              letterSpacing: "0.02em",
             }}>
-              © 2024 CLARUS-N · AI for Unlocking Neuroimages
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                {/* 상단: 회사 기본 정보 (가로 배열) */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
+                  <span>대표자: 김시온</span>
+                  <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+                  <span>사업자등록번호: 811-87-03349</span>
+                  <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+                  <span>연락처: +82-2-****-****</span>
+                  <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+                  <span>이메일: clarusnai@gmail.com</span>
+                </div>
+                {/* 중단: 주소 */}
+                <div>
+                  <span>주소: 서울특별시 금천구 가산디지털1로 168, A동 10층 1012호 (가산동, 우림라이온스밸리)</span>
+                </div>
+              </div>
+              {/* 하단: 카피라이트 */}
+              <div style={{ 
+                marginTop: "2rem", 
+                color: "rgba(148, 163, 184, 0.4)", 
+                fontWeight: 500,
+                fontSize: "0.8rem",
+              }}>
+                Copyright 2026. CLARUS-N Co., Ltd. All rights reserved.
+              </div>
             </footer>
           </div>
         </div>
@@ -1540,5 +1869,180 @@ export default function ClarusNPage() {
         />
       </div>
     </div>
+  );
+}
+
+function ClinicalLegend({ activeVideo }: { activeVideo: string | null }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  if (!activeVideo || (!activeVideo.includes('territory') && !activeVideo.includes('onset') && !activeVideo.includes('KakaoTalk'))) {
+    return null;
+  }
+
+  let items: { label: string, color: string }[] = [];
+  let title = "Legend";
+
+  if (activeVideo === "/videos/5. infarction territory.mp4") {
+    title = "Infarction Territory";
+    items = [
+      { label: "ACA", color: "#d946ef" },
+      { label: "MCA", color: "#22c55e" },
+      { label: "Lenticulostriatal A.", color: "#2dd4bf" },
+      { label: "Ant. choroidal A.", color: "#60a5fa" },
+      { label: "PCA", color: "#fb923c" },
+      { label: "BA & VA", color: "#a855f7" },
+    ];
+  } else if (activeVideo === "/videos/KakaoTalk_20260406_122852533.mp4") {
+    title = "Onset Stage";
+    items = [
+      { label: "Acute stage", color: "#ef4444" },
+      { label: "Subacute stage", color: "#f97316" },
+      { label: "Chronic stage", color: "#eab308" },
+    ];
+  }
+
+  return (
+    <>
+      {/* 둥근 형태가 아닌, 좀 더 명확한 레이어 아이콘과 Legend 텍스트를 가진 필(Pill) 버튼 */}
+      <div 
+        onClick={(e) => { e.stopPropagation(); setIsOpen(true); }}
+        style={{
+          position: "absolute",
+          bottom: "1.5rem",
+          left: "1.5rem",
+          zIndex: 39,
+          padding: "0 1.2rem",
+          height: "40px",
+          background: "rgba(15, 23, 42, 0.85)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          backdropFilter: "blur(8px)",
+          boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
+          opacity: isOpen ? 0 : 1, // 열려있으면 숨김
+          pointerEvents: isOpen ? "none" : "auto",
+          transform: isOpen ? "scale(0.8) translateY(10px)" : "scale(1) translateY(0)",
+          transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = "rgba(30, 41, 59, 0.9)"}
+        onMouseLeave={e => e.currentTarget.style.background = "rgba(15, 23, 42, 0.85)"}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          {/* 레이어(Layers) 아이콘 */}
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 12 12 17 22 12"></polyline>
+          <polyline points="2 17 12 22 22 17"></polyline>
+        </svg>
+        <span style={{ 
+          marginLeft: "8px", 
+          fontSize: "0.8rem", 
+          fontWeight: 600, 
+          color: "#f8fafc", 
+          letterSpacing: "0.05em",
+          fontFamily: "'Inter', sans-serif"
+        }}>
+          Legend
+        </span>
+      </div>
+
+      {/* 펼쳐지는 범례 패널 */}
+      <div 
+        style={{
+          position: "absolute",
+          bottom: "1.5rem",
+          left: "1.5rem",
+          zIndex: 40,
+          width: "220px",
+          background: "rgba(15, 23, 42, 0.85)",
+          border: "1px solid rgba(255, 255, 255, 0.15)",
+          borderRadius: "8px", // 다시 둥글게 원복
+          overflow: "hidden",
+          boxShadow: isOpen ? "0 10px 30px rgba(0,0,0,0.6)" : "none",
+          cursor: "default",
+          backdropFilter: "blur(8px)",
+          transformOrigin: "bottom left",
+          transform: isOpen ? "scale(1)" : "scale(0.5)", // 크기를 줄이면서 완전히 숨김
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? "auto" : "none",
+          transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+        onClick={(e) => e.stopPropagation()} 
+      >
+      {/* Header / Toggle Button */}
+      <div 
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0.6rem 0.8rem",
+          background: "rgba(255, 255, 255, 0.05)",
+          cursor: "pointer",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"}
+        onMouseLeave={e => e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)"}
+      >
+        <span style={{ 
+          color: "#e2e8f0", 
+          fontWeight: 600, 
+          fontSize: "0.85rem", 
+          letterSpacing: "0.05em",
+          whiteSpace: "nowrap"
+        }}>
+          {title}
+        </span>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          width: "24px",
+        }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {/* 닫음 의미 화살표: 아래쪽 */}
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      {/* Expanded Content (항상 그려두되 통째로 슬라이드 됨) */}
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        pointerEvents: isOpen ? "auto" : "none"
+      }}>
+        {items.map((item, i) => (
+          <div key={i} style={{ 
+            display: "flex", 
+            alignItems: "center", 
+            height: "44px", // 사진처럼 큼직하고 시원하게 높이 증가
+            borderBottom: i === items.length - 1 ? "none" : "1px solid rgba(255, 255, 255, 0.05)",
+            background: i % 2 === 0 ? "transparent" : "rgba(255, 255, 255, 0.02)",
+          }}>
+            <div style={{ 
+              width: "48px", // 색상 박스를 직사각형에 가깝게 넓혀서 확 띄게 만듦
+              height: "100%", 
+              background: item.color,
+              flexShrink: 0,
+              borderRight: "1px solid rgba(255, 255, 255, 0.15)"
+            }} />
+            <span style={{ 
+              paddingLeft: "16px", 
+              color: "#f8fafc", 
+              fontSize: "0.85rem", 
+              fontWeight: 600, // 글씨도 살짝 더 또렷하게
+              fontFamily: "'Inter', sans-serif",
+              whiteSpace: "nowrap"
+            }} >
+              {item.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+    </>
   );
 }
