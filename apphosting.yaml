@@ -1,0 +1,12 @@
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: MAIL_USER
+    secret: MAIL_USER
+  - variable: MAIL_PASS
+    secret: MAIL_PASS

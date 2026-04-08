@@ -913,7 +913,43 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
 
 function TestRequestSection() {
   const [isUploadHovered, setIsUploadHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [emailValue, setEmailValue] = useState("");
+  const [fileType, setFileType] = useState("");
+  const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [requestCount, setRequestCount] = useState(231);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (file: File) => {
+    if (file.size > 25 * 1024 * 1024) {
+      alert("파일 크기는 25MB 이하여야 합니다.");
+      return;
+    }
+    setSelectedFile(file);
+  };
+
+  const handleAnalysisSubmit = async () => {
+    if (!selectedFile) { alert("파일을 선택해주세요."); return; }
+    if (!emailValue) { alert("이메일을 입력해주세요."); return; }
+    if (!fileType) { alert("파일 내용을 선택해주세요."); return; }
+    setSubmitState("loading");
+    try {
+      const form = new FormData();
+      form.append("file", selectedFile);
+      form.append("email", emailValue);
+      form.append("fileType", fileType);
+      const res = await fetch("/api/analysis", { method: "POST", body: form });
+      if (!res.ok) throw new Error();
+      setSubmitState("success");
+      setRequestCount(prev => prev + 1);
+      setSelectedFile(null);
+      setEmailValue("");
+      setFileType("");
+    } catch {
+      setSubmitState("error");
+    }
+  };
   
   const infoPointsKR = [
     "파일 형식 지원 (최대 500MB)",
@@ -946,13 +982,29 @@ function TestRequestSection() {
               marginBottom: "1.5rem",
               boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
             }}>
+              {/* 숨겨진 파일 입력 */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                style={{ display: "none" }}
+                onChange={e => { if (e.target.files?.[0]) handleFileSelect(e.target.files[0]); }}
+              />
+
               {/* 업로드 영역 */}
-              <div 
+              <div
+                onClick={() => fileInputRef.current?.click()}
                 onMouseEnter={() => setIsUploadHovered(true)}
                 onMouseLeave={() => setIsUploadHovered(false)}
+                onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={e => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  if (e.dataTransfer.files?.[0]) handleFileSelect(e.dataTransfer.files[0]);
+                }}
                 style={{
-                  background: isUploadHovered ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.01)",
-                  border: `1px ${isUploadHovered ? 'solid' : 'dashed'} ${isUploadHovered ? 'rgba(96,165,250,0.5)' : 'rgba(96,165,250,0.25)'}`,
+                  background: isDragging ? "rgba(96,165,250,0.12)" : isUploadHovered ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.01)",
+                  border: `1px ${isDragging || isUploadHovered ? 'solid' : 'dashed'} ${isDragging ? 'rgba(96,165,250,0.8)' : isUploadHovered ? 'rgba(96,165,250,0.5)' : 'rgba(96,165,250,0.25)'}`,
                   borderRadius: "1rem",
                   padding: "1.5rem 1.25rem",
                   display: "flex",
@@ -967,25 +1019,51 @@ function TestRequestSection() {
                   overflow: "hidden"
                 }}
               >
-                <div style={{ 
-                  color: "#60a5fa", 
-                  marginBottom: "1rem",
-                  transform: isUploadHovered ? "translateY(-5px)" : "translateY(0)",
-                  transition: "transform 0.4s ease"
-                }}>
-                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="17 8 12 3 7 8" />
-                    <line x1="12" y1="3" x2="12" y2="15" />
-                  </svg>
-                </div>
-                <p style={{ color: "#ffffff", fontSize: "1.15rem", fontWeight: 500, marginBottom: "0.4rem" }}>
-                  MRI 또는 CT 데이터를 첨부하세요
-                </p>
-                <p style={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>
-                  클릭하거나 파일을 여기로 끌어다 놓으세요
-                </p>
-                {isUploadHovered && (
+                {selectedFile ? (
+                  <>
+                    <div style={{ color: "#34d399", marginBottom: "0.75rem" }}>
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <polyline points="9 15 11 17 15 13" />
+                      </svg>
+                    </div>
+                    <p style={{ color: "#e2e8f0", fontSize: "1rem", fontWeight: 600, marginBottom: "0.3rem", wordBreak: "break-all" }}>
+                      {selectedFile.name}
+                    </p>
+                    <p style={{ color: "#64748b", fontSize: "0.8rem" }}>
+                      {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                    <button
+                      onClick={e => { e.stopPropagation(); setSelectedFile(null); }}
+                      style={{ marginTop: "0.75rem", fontSize: "0.8rem", color: "#f87171", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
+                    >
+                      파일 제거
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div style={{
+                      color: isDragging ? "#60a5fa" : "#60a5fa",
+                      marginBottom: "1rem",
+                      transform: isUploadHovered ? "translateY(-5px)" : "translateY(0)",
+                      transition: "transform 0.4s ease"
+                    }}>
+                      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                    </div>
+                    <p style={{ color: "#ffffff", fontSize: "1.15rem", fontWeight: 500, marginBottom: "0.4rem" }}>
+                      {isDragging ? "파일을 여기에 놓으세요" : "MRI 또는 CT 데이터를 첨부하세요"}
+                    </p>
+                    <p style={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>
+                      클릭하거나 파일을 여기로 끌어다 놓으세요 (최대 25MB)
+                    </p>
+                  </>
+                )}
+                {(isUploadHovered || isDragging) && (
                   <div style={{
                     position: 'absolute', inset: 0,
                     background: 'radial-gradient(circle at center, rgba(59,130,246,0.1) 0%, transparent 70%)',
@@ -1028,7 +1106,9 @@ function TestRequestSection() {
                   <input
                     id="email-input"
                     type="email"
-                    placeholder="이메일 주소 (결과 수신용)" 
+                    placeholder="이메일 주소 (결과 수신용)"
+                    value={emailValue}
+                    onChange={e => setEmailValue(e.target.value)}
                     style={{ 
                       width: "100%",
                       padding: "1.1rem 1.5rem", 
@@ -1056,7 +1136,8 @@ function TestRequestSection() {
                   <label htmlFor="file-type-select" className="sr-only">파일 내용 선택</label>
                   <select
                     id="file-type-select"
-                    defaultValue=""
+                    value={fileType}
+                    onChange={e => setFileType(e.target.value)}
                     style={{ 
                       width: "100%",
                       padding: "1.1rem 1.5rem", 
