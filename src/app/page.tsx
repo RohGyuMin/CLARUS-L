@@ -1195,6 +1195,17 @@ function TestRequestSection() {
                 {submitState === "loading" ? "전송 중..." : "분석 요청하기"}
               </button>
 
+              {submitState === "success" && (
+                <div style={{ marginTop: "1rem", padding: "0.9rem 1.2rem", borderRadius: "0.75rem", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.4)", color: "#4ade80", fontSize: "0.95rem", fontWeight: 600 }}>
+                  ✓ 분석 의뢰가 성공적으로 접수되었습니다. 결과는 입력하신 이메일로 발송됩니다.
+                </div>
+              )}
+              {submitState === "error" && (
+                <div style={{ marginTop: "1rem", padding: "0.9rem 1.2rem", borderRadius: "0.75rem", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.4)", color: "#f87171", fontSize: "0.95rem", fontWeight: 600 }}>
+                  ✕ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.
+                </div>
+              )}
+
               {/* 분석 요청 카운터: 화려하게 강조 */}
               <div style={{ textAlign: "left", marginTop: "1.2rem" }}>
                 <span style={{ 
