@@ -38,7 +38,6 @@ function useReveal(threshold = 0.15) {
 function HeroSection() {
   return (
     <section
-      id="about"
       style={{
         height: "100vh",
         position: "relative",
@@ -261,6 +260,99 @@ function Divider() {
         margin: "1.5rem 0",
       }}
     />
+  );
+}
+
+function AboutSection() {
+  return (
+    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
+        {/* 좌측: 카드 두 개 */}
+        <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          <RevealSection>
+            <SectionLabel>About</SectionLabel>
+          </RevealSection>
+
+          {/* CLARUS-N 의미 카드 */}
+          <RevealSection style={{ transitionDelay: "0.1s" }}>
+            <div style={{
+              padding: "2rem 2.2rem",
+              borderRadius: "1rem",
+              background: "rgba(15,23,42,0.7)",
+              border: "1px solid rgba(96,165,250,0.15)",
+              backdropFilter: "blur(12px)",
+            }}>
+              <div style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.2em", color: "#60a5fa", marginBottom: "1.2rem" }}>
+                <span style={{ color: "#ffffff" }}>CLARUS</span>
+                <span style={{ color: "#a855f7" }}>-N</span>
+              </div>
+              <div style={{ marginBottom: "1rem" }}>
+                <span style={{ fontSize: "1.5rem", fontWeight: 300, color: "#e2e8f0", fontStyle: "italic" }}>Clārus</span>
+                <span style={{ fontSize: "1rem", color: "#94a3b8", marginLeft: "0.75rem" }}>: 명확한, 분명한</span>
+              </div>
+              <div style={{ color: "#64748b", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "0.5rem" }}>
+                Comes from Latin, and its meaning includes:
+              </div>
+              <div style={{ color: "#94a3b8", fontSize: "0.9rem", textAlign: "center", marginBottom: "1.2rem" }}>
+                Clear, Bright, Distinguished, Easily understood
+              </div>
+              <div style={{ color: "#64748b", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "1.2rem" }}>
+                "Clarus" reflects the goal of making complex brain imaging "Clear, accurate, and accessible
+              </div>
+              <div style={{ fontSize: "0.95rem", color: "#94a3b8" }}>
+                <span style={{ color: "#a855f7", fontWeight: 700 }}>-N</span>
+                <span style={{ color: "#64748b" }}> : "hyphen N" means </span>
+                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>AI (</span>
+                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#a855f7" }}>N</span>
+                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>)</span>
+              </div>
+            </div>
+          </RevealSection>
+
+          {/* CEO 카드 */}
+          <RevealSection style={{ transitionDelay: "0.2s" }}>
+            <div style={{
+              padding: "2rem 2.2rem",
+              borderRadius: "1rem",
+              background: "rgba(15,23,42,0.7)",
+              border: "1px solid rgba(96,165,250,0.15)",
+              backdropFilter: "blur(12px)",
+            }}>
+              <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "#e2e8f0", marginBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "0.75rem" }}>
+                CEO 김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.95rem" }}>(Sion Kim, M.D)</span>
+              </div>
+              <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.9 }}>
+                <div style={{ color: "#64748b", marginBottom: "0.25rem" }}>Board-Certified</div>
+                <div style={{ paddingLeft: "1rem", display: "flex", flexDirection: "column", gap: "0.15rem" }}>
+                  <span>Neurosurgeon</span>
+                  <span>Critical Care Specialist</span>
+                  <span>Specialist in Endovascular Neurosurgery</span>
+                  <span>Specialist by the Korean Society of Cerebrovascular</span>
+                </div>
+                <div style={{ marginTop: "0.25rem" }}>Surgery</div>
+              </div>
+            </div>
+          </RevealSection>
+        </div>
+
+        {/* 우측: CEO 사진 흑백 */}
+        <RevealSection style={{ flex: 1, transitionDelay: "0.15s" }}>
+          <div style={{ position: "relative", borderRadius: "1rem", overflow: "hidden", maxHeight: "600px" }}>
+            <img
+              src="/ceo-photo.png"
+              alt="CEO Sion Kim"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                filter: "grayscale(100%)",
+                display: "block",
+              }}
+            />
+          </div>
+        </RevealSection>
+      </div>
+    </section>
   );
 }
 
@@ -1880,6 +1972,7 @@ export default function ClarusNPage() {
         >
           <HeroSection />
           <div className="cn-content-padding" style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
+            <AboutSection />
             <BackgroundSection />
             <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} />
             <TestRequestSection />
