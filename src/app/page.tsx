@@ -386,8 +386,8 @@ function AboutSection() {
             position: "relative",
             borderRadius: "1.2rem",
             overflow: "hidden",
-            width: "260px",
-            height: "480px",
+            width: "360px",
+            height: "580px",
             boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
           }}>
             <img
