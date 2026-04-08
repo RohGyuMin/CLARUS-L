@@ -17,9 +17,10 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  try {
   await transporter.sendMail({
     from: `"CLARUS-N 문의" <${process.env.MAIL_USER}>`,
-    to: "clarusnai@gmail.com",
+    to: "kkimsion@hanmail.net",
     subject: `[CLARUS-N 문의] ${name} (${company ?? ""})`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f8fafc; border-radius: 12px;">
@@ -40,6 +41,10 @@ export async function POST(req: NextRequest) {
     `,
     replyTo: email,
   });
+  } catch (err) {
+    console.error("[contact API error]", err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }
