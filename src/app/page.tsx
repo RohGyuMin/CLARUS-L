@@ -287,57 +287,40 @@ function AboutSection() {
               flexDirection: "column",
               gap: "1rem",
             }}>
-              {/* 배지 */}
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.15rem", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em" }}>
+                {/* 배지 */}
+              <div style={{ fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
                 <span style={{ color: "#ffffff" }}>CLARUS</span>
                 <span style={{ color: "#a855f7" }}>-N</span>
               </div>
 
               {/* 타이틀 */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
-                <span style={{ fontSize: "1.6rem", fontWeight: 300, color: "#e2e8f0", fontStyle: "italic", letterSpacing: "0.02em" }}>Clārus</span>
-                <span style={{ fontSize: "0.95rem", color: "#64748b" }}>: 명확한, 분명한</span>
+              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#e2e8f0" }}>
+                <span style={{ fontStyle: "italic", fontWeight: 300 }}>Clārus</span>
+                <span> : 명확한, 분명한</span>
               </div>
 
               {/* 설명 */}
-              <div style={{ color: "#64748b", fontSize: "0.85rem", lineHeight: 1.6 }}>
-                Comes from Latin, and its meaning includes:
-              </div>
-              <div style={{
-                display: "flex", flexWrap: "wrap", gap: "0.5rem",
-              }}>
-                {["Clear", "Bright", "Distinguished", "Easily understood"].map(w => (
-                  <span key={w} style={{
-                    padding: "0.25rem 0.75rem",
-                    borderRadius: "2rem",
-                    background: "rgba(96,165,250,0.08)",
-                    border: "1px solid rgba(96,165,250,0.2)",
-                    color: "#93c5fd",
-                    fontSize: "0.8rem",
-                    fontWeight: 500,
-                    letterSpacing: "0.03em",
-                  }}>{w}</span>
-                ))}
+              <div style={{ paddingLeft: "1.5rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.7 }}>
+                  Comes from Latin, and its meaning includes:
+                </div>
+                <div style={{ color: "#94a3b8", fontSize: "0.9rem", textAlign: "center" }}>
+                  Clear, Bright, Distinguished, Easily understood
+                </div>
               </div>
 
-              <div style={{ color: "#64748b", fontSize: "0.85rem", lineHeight: 1.7, fontStyle: "italic" }}>
-                "Clarus" reflects the goal of making complex brain imaging Clear, accurate, and accessible.
+              <div style={{ paddingLeft: "1.5rem", color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.7 }}>
+                "Clarus" reflects the goal of making complex brain imaging<br />
+                "Clear, accurate, and accessible
               </div>
 
               {/* -N 설명 */}
-              <div style={{
-                marginTop: "auto",
-                padding: "0.85rem 1.2rem",
-                borderRadius: "0.75rem",
-                background: "rgba(168,85,247,0.07)",
-                border: "1px solid rgba(168,85,247,0.2)",
-                display: "flex", alignItems: "center", gap: "0.5rem",
-              }}>
-                <span style={{ color: "#a855f7", fontWeight: 700, fontSize: "1rem" }}>-N</span>
-                <span style={{ color: "#64748b", fontSize: "0.85rem" }}>"hyphen N" means</span>
-                <span style={{ color: "#ffffff", fontWeight: 700, fontSize: "1.1rem", marginLeft: "auto" }}>
-                  AI&nbsp;<span style={{ color: "#a855f7" }}>(N)</span>
-                </span>
+              <div style={{ fontSize: "0.95rem" }}>
+                <span style={{ color: "#a855f7", fontWeight: 700 }}>-N</span>
+                <span style={{ color: "#94a3b8" }}> : "hyphen N" means </span>
+                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>AI (</span>
+                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#a855f7" }}>N</span>
+                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>)</span>
               </div>
             </div>
           </RevealSection>
