@@ -1254,12 +1254,12 @@ function ContactSection() {
     if (!formData.name || !formData.email || !formData.message) { alert("이름, 이메일, 문의내용은 필수입니다."); return; }
     setSubmitState("loading");
     try {
-      await emailjs.send(
-        "service_2re1thn",
-        "template_27njzpm",
-        { ...formData },
-        { publicKey: "Pu-bX2-LpjT--gmfG" }
-      );
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error();
       setSubmitState("success");
       setFormData({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
       setPrivacyAgreed(false);
