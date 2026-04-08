@@ -266,78 +266,130 @@ function Divider() {
 function AboutSection() {
   return (
     <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "4rem" }}>
+
         {/* 좌측: 카드 두 개 */}
-        <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           <RevealSection>
             <SectionLabel>About</SectionLabel>
           </RevealSection>
 
           {/* CLARUS-N 의미 카드 */}
-          <RevealSection style={{ transitionDelay: "0.1s" }}>
+          <RevealSection style={{ transitionDelay: "0.1s", flex: 1 }}>
             <div style={{
+              height: "100%",
               padding: "2rem 2.2rem",
-              borderRadius: "1rem",
-              background: "rgba(15,23,42,0.7)",
-              border: "1px solid rgba(96,165,250,0.15)",
-              backdropFilter: "blur(12px)",
+              borderRadius: "1.2rem",
+              background: "rgba(15,23,42,0.6)",
+              border: "1px solid rgba(96,165,250,0.12)",
+              backdropFilter: "blur(16px)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
             }}>
-              <div style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.2em", color: "#60a5fa", marginBottom: "1.2rem" }}>
+              {/* 배지 */}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.15rem", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em" }}>
                 <span style={{ color: "#ffffff" }}>CLARUS</span>
                 <span style={{ color: "#a855f7" }}>-N</span>
               </div>
-              <div style={{ marginBottom: "1rem" }}>
-                <span style={{ fontSize: "1.5rem", fontWeight: 300, color: "#e2e8f0", fontStyle: "italic" }}>Clārus</span>
-                <span style={{ fontSize: "1rem", color: "#94a3b8", marginLeft: "0.75rem" }}>: 명확한, 분명한</span>
+
+              {/* 타이틀 */}
+              <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
+                <span style={{ fontSize: "1.6rem", fontWeight: 300, color: "#e2e8f0", fontStyle: "italic", letterSpacing: "0.02em" }}>Clārus</span>
+                <span style={{ fontSize: "0.95rem", color: "#64748b" }}>: 명확한, 분명한</span>
               </div>
-              <div style={{ color: "#64748b", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "0.5rem" }}>
+
+              {/* 설명 */}
+              <div style={{ color: "#64748b", fontSize: "0.85rem", lineHeight: 1.6 }}>
                 Comes from Latin, and its meaning includes:
               </div>
-              <div style={{ color: "#94a3b8", fontSize: "0.9rem", textAlign: "center", marginBottom: "1.2rem" }}>
-                Clear, Bright, Distinguished, Easily understood
+              <div style={{
+                display: "flex", flexWrap: "wrap", gap: "0.5rem",
+              }}>
+                {["Clear", "Bright", "Distinguished", "Easily understood"].map(w => (
+                  <span key={w} style={{
+                    padding: "0.25rem 0.75rem",
+                    borderRadius: "2rem",
+                    background: "rgba(96,165,250,0.08)",
+                    border: "1px solid rgba(96,165,250,0.2)",
+                    color: "#93c5fd",
+                    fontSize: "0.8rem",
+                    fontWeight: 500,
+                    letterSpacing: "0.03em",
+                  }}>{w}</span>
+                ))}
               </div>
-              <div style={{ color: "#64748b", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "1.2rem" }}>
-                "Clarus" reflects the goal of making complex brain imaging "Clear, accurate, and accessible
+
+              <div style={{ color: "#64748b", fontSize: "0.85rem", lineHeight: 1.7, fontStyle: "italic" }}>
+                "Clarus" reflects the goal of making complex brain imaging Clear, accurate, and accessible.
               </div>
-              <div style={{ fontSize: "0.95rem", color: "#94a3b8" }}>
-                <span style={{ color: "#a855f7", fontWeight: 700 }}>-N</span>
-                <span style={{ color: "#64748b" }}> : "hyphen N" means </span>
-                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>AI (</span>
-                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#a855f7" }}>N</span>
-                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>)</span>
+
+              {/* -N 설명 */}
+              <div style={{
+                marginTop: "auto",
+                padding: "0.85rem 1.2rem",
+                borderRadius: "0.75rem",
+                background: "rgba(168,85,247,0.07)",
+                border: "1px solid rgba(168,85,247,0.2)",
+                display: "flex", alignItems: "center", gap: "0.5rem",
+              }}>
+                <span style={{ color: "#a855f7", fontWeight: 700, fontSize: "1rem" }}>-N</span>
+                <span style={{ color: "#64748b", fontSize: "0.85rem" }}>"hyphen N" means</span>
+                <span style={{ color: "#ffffff", fontWeight: 700, fontSize: "1.1rem", marginLeft: "auto" }}>
+                  AI&nbsp;<span style={{ color: "#a855f7" }}>(N)</span>
+                </span>
               </div>
             </div>
           </RevealSection>
 
           {/* CEO 카드 */}
-          <RevealSection style={{ transitionDelay: "0.2s" }}>
+          <RevealSection style={{ transitionDelay: "0.2s", flex: 1 }}>
             <div style={{
+              height: "100%",
               padding: "2rem 2.2rem",
-              borderRadius: "1rem",
-              background: "rgba(15,23,42,0.7)",
-              border: "1px solid rgba(96,165,250,0.15)",
-              backdropFilter: "blur(12px)",
+              borderRadius: "1.2rem",
+              background: "rgba(15,23,42,0.6)",
+              border: "1px solid rgba(96,165,250,0.12)",
+              backdropFilter: "blur(16px)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
             }}>
-              <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "#e2e8f0", marginBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "0.75rem" }}>
-                CEO 김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.95rem" }}>(Sion Kim, M.D)</span>
-              </div>
-              <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.9 }}>
-                <div style={{ color: "#64748b", marginBottom: "0.25rem" }}>Board-Certified</div>
-                <div style={{ paddingLeft: "1rem", display: "flex", flexDirection: "column", gap: "0.15rem" }}>
-                  <span>Neurosurgeon</span>
-                  <span>Critical Care Specialist</span>
-                  <span>Specialist in Endovascular Neurosurgery</span>
-                  <span>Specialist by the Korean Society of Cerebrovascular</span>
+              <div>
+                <div style={{ fontSize: "0.8rem", letterSpacing: "0.15em", color: "#60a5fa", fontWeight: 600, marginBottom: "0.5rem" }}>FOUNDER & CEO</div>
+                <div style={{ fontSize: "1.2rem", fontWeight: 600, color: "#e2e8f0" }}>
+                  김시온 <span style={{ color: "#64748b", fontWeight: 400, fontSize: "0.95rem" }}>Sion Kim, M.D</span>
                 </div>
-                <div style={{ marginTop: "0.25rem" }}>Surgery</div>
+              </div>
+              <div style={{ width: "2rem", height: "1px", background: "rgba(96,165,250,0.3)" }} />
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <div style={{ fontSize: "0.75rem", letterSpacing: "0.12em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Board-Certified</div>
+                {[
+                  "Neurosurgeon",
+                  "Critical Care Specialist",
+                  "Specialist in Endovascular Neurosurgery",
+                  "Specialist by the Korean Society of Cerebrovascular Surgery",
+                ].map(item => (
+                  <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
+                    <span style={{ color: "#a855f7", marginTop: "0.4rem", fontSize: "0.4rem", flexShrink: 0 }}>●</span>
+                    <span style={{ color: "#94a3b8", fontSize: "0.88rem", lineHeight: 1.6 }}>{item}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </RevealSection>
         </div>
 
         {/* 우측: CEO 사진 흑백 */}
-        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s" }}>
-          <div style={{ position: "relative", borderRadius: "1rem", overflow: "hidden", width: "280px", height: "420px" }}>
+        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "center" }}>
+          <div style={{
+            position: "relative",
+            borderRadius: "1.2rem",
+            overflow: "hidden",
+            width: "260px",
+            height: "480px",
+            boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
+          }}>
             <img
               src="/ceo-photo.png"
               alt="CEO Sion Kim"
@@ -345,12 +397,20 @@ function AboutSection() {
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                filter: "grayscale(100%)",
+                objectPosition: "center top",
+                filter: "grayscale(100%) contrast(1.05)",
                 display: "block",
               }}
             />
+            {/* 하단 그라데이션 오버레이 */}
+            <div style={{
+              position: "absolute", bottom: 0, left: 0, right: 0, height: "40%",
+              background: "linear-gradient(to top, rgba(3,7,18,0.7), transparent)",
+              pointerEvents: "none",
+            }} />
           </div>
         </RevealSection>
+
       </div>
     </section>
   );
