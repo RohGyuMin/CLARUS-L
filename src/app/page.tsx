@@ -1190,9 +1190,9 @@ function TestRequestSection() {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow = "0 10px 25px -5px rgba(59,130,246,0.5), 0 8px 10px -6px rgba(139,92,246,0.3)";
               }}
-              onClick={() => setRequestCount(prev => prev + 1)}
+              onClick={handleAnalysisSubmit}
               >
-                분석 요청하기
+                {submitState === "loading" ? "전송 중..." : "분석 요청하기"}
               </button>
 
               {/* 분석 요청 카운터: 화려하게 강조 */}
