@@ -287,15 +287,15 @@ function AboutSection() {
               gap: "1rem",
             }}>
                 {/* 배지 */}
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
+              <div style={{ fontSize: "1.1rem", fontWeight: 700, letterSpacing: "0.18em", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
                 <span style={{ color: "#ffffff" }}>CLARUS</span>
                 <span style={{ color: "#a855f7" }}>-N</span>
               </div>
 
               {/* 타이틀 */}
-              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#e2e8f0" }}>
+              <div style={{ fontSize: "1.15rem", fontWeight: 600, color: "#e2e8f0" }}>
                 <span style={{ fontStyle: "italic", fontWeight: 300 }}>Clārus</span>
-                <span> : 명확한, 분명한</span>
+                <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: 400 }}> : 명확한, 분명한</span>
               </div>
 
               {/* 설명 */}
@@ -303,7 +303,7 @@ function AboutSection() {
                 <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.7 }}>
                   Comes from Latin, and its meaning includes:
                 </div>
-                <div style={{ color: "#94a3b8", fontSize: "0.9rem", textAlign: "center" }}>
+                <div style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
                   Clear, Bright, Distinguished, Easily understood
                 </div>
               </div>
@@ -340,12 +340,14 @@ function AboutSection() {
               <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                   <span style={{
-                    fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em",
-                    color: "#60a5fa", background: "rgba(96,165,250,0.1)",
-                    border: "1px solid rgba(96,165,250,0.3)",
-                    padding: "0.2rem 0.6rem", borderRadius: "0.3rem",
+                    fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.2em",
+                    color: "#60a5fa", background: "rgba(96,165,250,0.15)",
+                    border: "1px solid rgba(96,165,250,0.5)",
+                    padding: "0.3rem 0.8rem", borderRadius: "0.3rem",
+                    textShadow: "0 0 12px rgba(96,165,250,0.6)",
+                    boxShadow: "0 0 10px rgba(96,165,250,0.15)",
                   }}>CEO</span>
-                  <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#e2e8f0" }}>
+                  <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#e2e8f0" }}>
                     김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.95rem" }}>(Sion Kim, M.D)</span>
                   </span>
                 </div>
@@ -369,7 +371,7 @@ function AboutSection() {
         </div>
 
         {/* 우측: CEO 사진 흑백 */}
-        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "center" }}>
+        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "flex-end", paddingBottom: "0" }}>
           <div style={{
             position: "relative",
             borderRadius: "1.2rem",
@@ -404,86 +406,202 @@ function AboutSection() {
   );
 }
 
-function BackgroundSection() {
-  const stats = [
-    { value: "10K+", label: "Training Datasets" },
-    { value: "97.3%", label: "Aneurysm Accuracy" },
-    { value: "0.3s", label: "Avg. Analysis Time" },
-    { value: "15+", label: "Collaborating Hospitals" },
+function AboutStrengthsSection() {
+  const strengths = [
+    {
+      title: <>Expert-Annotation by <span style={{ color: "#facc15" }}>Neurosurgeon</span></>,
+      sub: "Every case, Every Pixel",
+      desc: "All annotations are performed directly by board-certified neurosurgeons, ensuring the highest level of clinical accuracy in every labeled dataset.",
+    },
+    {
+      title: <>High-<span style={{ color: "#f87171" }}>Accuracy</span> Annotation</>,
+      sub: "Precise Annotation Grounded in Deep Clinical Understanding",
+      desc: "Our annotations reflect real surgical insight — not just image-level labeling — resulting in data quality that drives superior AI performance.",
+    },
+    {
+      title: <><span style={{ color: "#a78bfa" }}>Consistency</span> of Annotations</>,
+      sub: "Minimize Inter-observer Variability",
+      desc: "Strict annotation protocols and expert review pipelines minimize variability, ensuring consistent and reproducible ground truth across all cases.",
+    },
+    {
+      title: <><span style={{ color: "#60a5fa" }}>Large-scale</span> datasets</>,
+      sub: "Training Dataset: Over 26,000 cases, 1.7M DICOM files",
+      desc: "With over 26,000 annotated cases and 1.7 million DICOM files, our dataset covers rare and complex pathologies that most AI systems have never encountered.",
+    },
+    {
+      title: <><span style={{ color: "#34d399" }}>Rapid</span> AI Solution Development Process</>,
+      sub: "Completed the development of 8 pipelines within 11 months.",
+      desc: "Our streamlined development process — from data curation to model deployment — enables faster iteration and delivery without compromising clinical rigor.",
+    },
   ];
 
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [pinned, setPinned] = useState<number | null>(null);
+
   return (
-    <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "42rem", width: "100%" }}>
+    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
+        <div style={{ flex: 1 }}>
           <RevealSection>
-            <SectionLabel>Background</SectionLabel>
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
-              Research & Motivation
+            <SectionLabel>About</SectionLabel>
+            <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.3 }}>
+              Distinctive Strengths of <span style={{ color: "#ffffff" }}>CLARUS</span><span style={{ color: "#a855f7" }}>-N</span>
             </h2>
-            <Divider />
-          </RevealSection>
-          <RevealSection style={{ transitionDelay: "0.1s" }}>
-            <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2.5rem" }}>
-              Cerebrovascular diseases require rapid diagnosis, making timing critical for survival. We solve challenges like radiologist shortages and interpretation delays through AI-driven automation.
-            </p>
           </RevealSection>
 
-          {/* 통계 카드 */}
-          <div className="cn-stat-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
-            {stats.map((s, i) => (
-              <RevealSection key={s.label} style={{ transitionDelay: `${0.15 + i * 0.1}s` }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {strengths.map((item, i) => (
+              <RevealSection key={i} style={{ transitionDelay: `${i * 0.08}s` }}>
                 <div
-                  className="cn-stat-card"
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(null)}
+                  onClick={() => setPinned(pinned === i ? null : i)}
                   style={{
-                    padding: "1.75rem",
-                    borderRadius: "1rem",
-                    background: "rgba(30,58,138,0.08)",
-                    border: "1px solid rgba(96,165,250,0.1)",
-                    backdropFilter: "blur(12px)",
-                    position: "relative",
+                    padding: (hovered === i || pinned === i) ? "1.2rem 1.5rem 1.4rem" : "1rem 1.5rem",
+                    borderRadius: "0.9rem",
+                    background: pinned === i ? "rgba(96,165,250,0.12)" : hovered === i ? "rgba(96,165,250,0.08)" : "rgba(15,23,42,0.5)",
+                    border: `1px solid ${(hovered === i || pinned === i) ? "rgba(96,165,250,0.25)" : "rgba(255,255,255,0.06)"}`,
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
                     overflow: "hidden",
-                    transition: "all 0.4s cubic-bezier(0.4,0,0.2,1)",
                   }}
                 >
+                  <div style={{ fontSize: "1rem", fontWeight: 600, color: "#e2e8f0" }}>
+                    {item.title}
+                  </div>
                   <div style={{
-                    position: "absolute",
-                    top: "-50%", left: "-50%",
-                    width: "200%", height: "200%",
-                    background: "radial-gradient(circle at center, rgba(59,130,246,0.05) 0%, transparent 70%)",
-                    pointerEvents: "none",
-                  }} />
-                  
-                  <div style={{ 
-                    fontSize: "2.25rem", 
-                    fontWeight: 200, 
-                    color: "#60a5fa", 
-                    marginBottom: "0.5rem", 
-                    letterSpacing: "0.05em",
-                    textShadow: "0 0 20px rgba(96,165,250,0.4)"
+                    maxHeight: (hovered === i || pinned === i) ? "60px" : "0px",
+                    opacity: (hovered === i || pinned === i) ? 1 : 0,
+                    overflow: "hidden",
+                    transition: "max-height 0.35s ease, opacity 0.3s ease",
+                    marginTop: (hovered === i || pinned === i) ? "0.5rem" : "0",
+                    fontSize: "0.82rem",
+                    color: "#94a3b8",
+                    fontStyle: "italic",
+                    lineHeight: 1.6,
                   }}>
-                    {s.value}
+                    {item.sub}
                   </div>
-                  <div style={{ 
-                    fontSize: "0.85rem", 
-                    color: "#94a3b8", 
-                    letterSpacing: "0.15em", 
-                    textTransform: "uppercase",
-                    fontWeight: 400
-                  }}>
-                    {s.label}
-                  </div>
-                  <div className="cn-card-border-glow" />
                 </div>
               </RevealSection>
             ))}
           </div>
         </div>
 
-        {/* 우측 뉴런 장식: 배경 섹션은 더 깊은 연결 느낌 */}
+        {/* 우측 장식 */}
         <div style={{ flex: 1, height: "500px", position: "relative" }}>
-          <NeuralSynapseVisual mode="deep" color="147, 197, 253" opacity={0.4} />
+          <NeuralSynapseVisual mode="dense" color="147, 197, 253" opacity={0.85} />
         </div>
+      </div>
+    </section>
+  );
+}
+
+function BackgroundSection() {
+  const items: { en: string; ko: string; side: "left" | "right" }[] = [
+    { en: "Ultra-aged society", ko: "초고령화 사회", side: "left" },
+    { en: "Surge in neurological diseases associated with super-aging", ko: "초고령화 사회로 인한 신경계 질환의 급증", side: "right" },
+    { en: "Limited availability of neurological expertise", ko: "신경계 전문 인력의 희소성", side: "left" },
+    { en: "Complexity of neuroimaging interpretation", ko: "MRI, CT 영상 해석의 난해함", side: "right" },
+    { en: "The time-sensitive and life-threatening nature of brain disorders", ko: "신경계 질환의 긴급성과 생명과 직결되는 치명성", side: "left" },
+    { en: "Regional imbalance in the distribution of general hospitals", ko: "병원 접근성의 지역별 불균형", side: "right" },
+  ];
+
+  const cardStyle = {
+    borderRadius: "0.75rem",
+    overflow: "hidden" as const,
+    background: "rgba(15,23,42,0.8)",
+    border: "1px solid rgba(96,165,250,0.15)",
+    backdropFilter: "blur(12px)",
+    transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s",
+    width: "38%",
+  };
+
+  return (
+    <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+      <div style={{ width: "100%" }}>
+        <RevealSection>
+          <SectionLabel>Background</SectionLabel>
+          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem" }}>
+            Research Context and Motivation
+          </h2>
+          <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "2.5rem", maxWidth: "42rem", lineHeight: 1.7 }}>
+            Cerebrovascular diseases require rapid diagnosis, making timing critical for survival. We solve challenges like radiologist shortages and interpretation delays through AI-driven automation.
+          </p>
+        </RevealSection>
+
+        <RevealSection style={{ transitionDelay: "0.1s" }}>
+          {/* 중앙 로고 + 양쪽 카드 */}
+          <div style={{ position: "relative", width: "100%", height: "520px" }}>
+
+            {/* 중앙 로고 */}
+            <div style={{
+              position: "absolute", top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)", zIndex: 2,
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <div style={{ position: "absolute", width: "300px", height: "300px", borderRadius: "50%", border: "1px solid rgba(96,165,250,0.2)", animation: "bgLogoPulse 3s ease-in-out infinite" }} />
+              <div style={{ position: "absolute", width: "400px", height: "400px", borderRadius: "50%", border: "1px solid rgba(168,85,247,0.1)", animation: "bgLogoPulse 3s ease-in-out infinite 1s" }} />
+              <div style={{ position: "absolute", width: "500px", height: "500px", borderRadius: "50%", border: "1px solid rgba(96,165,250,0.05)", animation: "bgLogoPulse 3s ease-in-out infinite 2s" }} />
+              <img src="/logo.png" alt="CLARUS-N" style={{
+                position: "relative", zIndex: 1, width: "240px", opacity: 0.95,
+                filter: "drop-shadow(0 0 30px rgba(96,165,250,0.3)) drop-shadow(0 0 60px rgba(168,85,247,0.2))",
+              }} />
+            </div>
+
+            {/* 뉴런 배경 */}
+            <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+              <NeuralSynapseVisual mode="calm" color="96, 165, 250" opacity={0.15} />
+            </div>
+
+            {/* 카드들 — 3개씩 좌우 */}
+            {items.map((item, i) => {
+              const isLeft = item.side === "left";
+              const rowIndex = Math.floor(i / 2); // 0, 1, 2
+              const topPercent = 8 + rowIndex * 33; // 8%, 41%, 74%
+              return (
+                <div key={i}
+                  style={{
+                    ...cardStyle,
+                    position: "absolute",
+                    top: `${topPercent}%`,
+                    ...(isLeft ? { left: "0%" } : { right: "0%" }),
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.5)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(96,165,250,0.12)";
+                    (e.currentTarget as HTMLElement).style.transform = isLeft ? "translateX(4px)" : "translateX(-4px)";
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.15)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                    (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
+                  }}
+                >
+                  <div style={{ height: "2px", background: "linear-gradient(90deg, rgba(96,165,250,0.8), rgba(168,85,247,0.6))" }} />
+                  <div style={{ padding: "0.7rem 1rem", display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
+                    <div style={{
+                      flexShrink: 0, width: "1.4rem", height: "1.4rem", borderRadius: "50%",
+                      background: "rgba(96,165,250,0.1)", border: "1px solid rgba(96,165,250,0.3)",
+                      color: "#60a5fa", fontSize: "0.6rem", fontWeight: 700,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "0.58rem", color: "#60a5fa", marginBottom: "0.15rem", fontStyle: "italic" }}>
+                        [{item.en}]
+                      </div>
+                      <div style={{ fontSize: "0.82rem", color: "#e2e8f0", fontWeight: 600, lineHeight: 1.5 }}>
+                        {item.ko}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </RevealSection>
       </div>
     </section>
   );
@@ -560,7 +678,15 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       description: "Mapping the vascular territory that caused the cerebral infarction",
       videoSrc: "/videos/5. infarction territory.mp4",
       theme: "purple",
-      details: ["#Dice 0.820, #22.0sec", "#Six major vessels"]
+      details: ["#Dice 0.820, #22.0sec", "#Six major vessels"],
+      legendItems: [
+        { label: "ACA", color: "#d946ef" },
+        { label: "MCA", color: "#22c55e" },
+        { label: "Lenticulostriatal A.", color: "#2dd4bf" },
+        { label: "Ant. choroidal A.", color: "#60a5fa" },
+        { label: "PCA", color: "#fb923c" },
+        { label: "BA & VA", color: "#a855f7" },
+      ],
     },
     {
       id: "dwi-3",
@@ -568,7 +694,12 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       description: "Transferring DWI-predicted lesions to ADC to estimate time since onset.",
       videoSrc: "/videos/KakaoTalk_20260406_122852533.mp4",
       theme: "purple",
-      details: ["#Dice 0.820, #22.0sec", "#Acute, Subacute, Chronic stage"]
+      details: ["#Dice 0.820, #22.0sec", "#Acute, Subacute, Chronic stage"],
+      legendItems: [
+        { label: "Acute stage", color: "#ef4444" },
+        { label: "Subacute stage", color: "#f97316" },
+        { label: "Chronic stage", color: "#eab308" },
+      ],
     }
   ];
 
@@ -618,7 +749,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       setIsPlaying(false);
     } else {
       setActiveVideo(videoSrc);
-      setIsPlaying(false); // 카드를 바꿀 때는 일단 정지 상태로 시작
+      setIsPlaying(false);
     }
   };
 
@@ -780,112 +911,67 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
           </div>
           </div>
         
-        {/* 우측 영역: 평소에는 뉴런만 떠 있다가, 클릭 시 비디오 박스가 활성화됨 */}
-        <div style={{ 
-          flex: 1.4, 
-          height: "500px", 
+        {/* 우측 영역: 비디오 재생 시만 박스 등장 */}
+        <div style={{
+          flex: 1.4,
+          height: "500px",
           position: "relative",
-          background: activeVideo ? "rgba(30,58,138,0.15)" : "transparent",
+          background: activeVideo ? "rgba(0,0,0,0.85)" : "transparent",
           borderRadius: "1.5rem",
           overflow: "hidden",
-          border: activeVideo ? "1px solid rgba(96,165,250,0.2)" : "1px solid transparent",
-          boxShadow: activeVideo ? "0 0 40px rgba(0,0,0,0.4)" : "none",
-          transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-          cursor: activeVideo ? "pointer" : "default"
+          border: activeVideo ? "1px solid rgba(96,165,250,0.3)" : "none",
+          boxShadow: activeVideo ? "0 0 40px rgba(0,0,0,0.5)" : "none",
+          transition: "all 0.6s ease",
+          cursor: activeVideo ? "pointer" : "default",
+          display: "flex", alignItems: "center", justifyContent: "center",
         }}
         onClick={activeVideo ? togglePlay : undefined}
         >
-          {/* 범례 오버레이 (특정 비디오일 때만 표시) */}
+          {/* 비디오 없을 때: 안내 텍스트 */}
+          {!activeVideo && (
+            <p style={{
+              color: "rgba(148,163,184,0.5)",
+              fontSize: "0.85rem",
+              letterSpacing: "0.05em",
+              pointerEvents: "none",
+              textAlign: "center",
+            }}>
+              Click a pipeline to view the AI analysis results
+            </p>
+          )}
+
+          {/* 범례 오버레이 */}
           <ClinicalLegend activeVideo={activeVideo} />
 
-          {/* 뉴런 시각화 (동영상이 없을 때만 혹은 밑에 깔기) */}
-          <div style={{ 
-            position: "absolute", inset: 0, 
-            opacity: activeVideo ? 0.3 : 1,
-            transition: "opacity 0.8s ease",
-            filter: activeVideo ? "blur(4px)" : "none",
-          }}>
-            <NeuralSynapseVisual mode="fast" color="110, 227, 175" opacity={0.5} />
-          </div>
-
-          {/* 동영상 플레이어 */}
+          {/* 비디오 플레이어 */}
           {activeVideo && (
-            <div 
-              style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "black",
-              }}
-            >
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <video
                 ref={videoRef}
                 src={activeVideo}
-                loop
-                muted
-                playsInline
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                }}
+                loop muted playsInline
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
               />
-              
-              {/* 재생 버튼 오버레이 */}
               {!isPlaying && (
                 <div style={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "rgba(0,0,0,0.3)",
-                  backdropFilter: "blur(4px)",
-                  transition: "all 0.4s ease",
-                  zIndex: 2,
+                  position: "absolute", inset: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  background: "rgba(0,0,0,0.3)", backdropFilter: "blur(4px)", zIndex: 2,
                 }}>
                   <div style={{
-                    width: "80px",
-                    height: "80px",
-                    borderRadius: "50%",
-                    background: "rgba(255,255,255,0.15)",
-                    border: "1px solid rgba(255,255,255,0.3)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    boxShadow: "0 0 30px rgba(96,165,250,0.4)",
-                    color: "white",
+                    width: "72px", height: "72px", borderRadius: "50%",
+                    background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.3)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: "0 0 30px rgba(96,165,250,0.4)", color: "white",
                   }}>
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>
                 </div>
               )}
-            </div>
-          )}
-
-          {/* 안내 오버레이 (비디오 없을 때) */}
-          {!activeVideo && (
-            <div style={{
-              position: "absolute",
-              bottom: "2rem",
-              left: "0",
-              width: "100%",
-              textAlign: "center",
-              color: "rgba(186, 215, 255, 0.9)", // 더 밝은 파란색 계열
-              fontSize: "0.85rem",
-              fontWeight: 500,
-              letterSpacing: "0.05em",
-              textTransform: "none", // 대소문자 유지
-              pointerEvents: "none",
-              textShadow: "0 0 10px rgba(186, 215, 255, 0.3)"
-            }}>
-              Click a pipeline to view the AI analysis results
             </div>
           )}
         </div>
@@ -901,6 +987,7 @@ interface CardData {
   theme: "blue" | "purple" | "gray" | "green";
   details: string[];
   id?: string;
+  legendItems?: { label: string; color: string }[];
 }
 
 function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isActive: boolean; onClick: () => void }) {
@@ -1034,6 +1121,38 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
           });
         })}
       </div>
+
+      {/* 활성화 시 범례 정보 표시 */}
+      {card.legendItems && (
+        <div style={{
+          maxHeight: isActive ? "200px" : "0",
+          opacity: isActive ? 1 : 0,
+          overflow: "hidden",
+          transition: "max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease",
+          marginTop: isActive ? "1.25rem" : "0",
+        }}>
+          <div style={{
+            borderTop: `1px solid ${themeColor.replace("0.8", "0.2")}`,
+            paddingTop: "1rem",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.5rem",
+          }}>
+            {card.legendItems.map(item => (
+              <div key={item.label} style={{
+                display: "flex", alignItems: "center", gap: "0.5rem",
+                background: `${item.color}14`,
+                border: `1px solid ${item.color}40`,
+                borderRadius: "0.4rem",
+                padding: "0.3rem 0.65rem",
+              }}>
+                <div style={{ width: "10px", height: "10px", borderRadius: "2px", background: item.color, flexShrink: 0 }} />
+                <span style={{ fontSize: "0.78rem", color: "#e2e8f0", fontWeight: 500 }}>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* 호버 시 배경 글로우 */}
       <div style={{
@@ -2021,6 +2140,7 @@ export default function ClarusNPage() {
           <HeroSection />
           <div className="cn-content-padding" style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
             <AboutSection />
+            <AboutStrengthsSection />
             <BackgroundSection />
             <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} />
             <TestRequestSection />
