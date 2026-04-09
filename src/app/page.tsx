@@ -997,9 +997,9 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                     style={{ 
                       width: `${100 / cardSets.length}%`, 
                       flexShrink: 0, 
-                      display: "flex", 
-                      flexDirection: "column", 
-                      gap: "1.5rem",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "2.5rem",
                       paddingRight: "1.5rem",
                       opacity: pageIndex === setIdx ? 1 : 0.3,
                       transform: pageIndex === setIdx ? "scale(1)" : "scale(0.96)",
