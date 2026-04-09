@@ -318,9 +318,9 @@ function AboutSection() {
               <div style={{ fontSize: "0.95rem" }}>
                 <span style={{ color: "#a855f7", fontWeight: 700 }}>-N</span>
                 <span style={{ color: "#94a3b8" }}> : "hyphen N" means </span>
-                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>AI (</span>
-                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#a855f7" }}>N</span>
-                <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#ffffff" }}>)</span>
+                <span style={{ fontSize: "1.8rem", fontWeight: 700, color: "#ffffff" }}>AI (</span>
+                <span style={{ fontSize: "1.8rem", fontWeight: 700, color: "#a855f7" }}>N</span>
+                <span style={{ fontSize: "1.8rem", fontWeight: 700, color: "#ffffff" }}>)</span>
               </div>
             </div>
           </RevealSection>
