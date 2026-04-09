@@ -516,22 +516,6 @@ function AboutStrengthsSection() {
                         <div style={{ fontSize: "0.95rem", fontWeight: 600, color: "#e2e8f0" }}>
                           {item.title}
                         </div>
-                        {item.badge && (
-                          <span style={{
-                            flexShrink: 0,
-                            fontSize: "0.65rem",
-                            fontWeight: 600,
-                            color: item.color,
-                            background: `${item.color}18`,
-                            border: `1px solid ${item.color}40`,
-                            padding: "0.2rem 0.55rem",
-                            borderRadius: "0.35rem",
-                            letterSpacing: "0.03em",
-                            whiteSpace: "nowrap",
-                          }}>
-                            {item.badge}
-                          </span>
-                        )}
                       </div>
 
                       {/* 서브타이틀 — hover/pinned 시 펼침 */}
