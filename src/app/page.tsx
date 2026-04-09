@@ -376,8 +376,8 @@ function AboutSection() {
             position: "relative",
             borderRadius: "1.2rem",
             overflow: "hidden",
-            width: "360px",
-            height: "580px",
+            width: "400px",
+            height: "620px",
             boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
           }}>
             <img
@@ -389,7 +389,7 @@ function AboutSection() {
                 objectFit: "cover",
                 objectPosition: "38% 12%",
                 filter: "grayscale(100%) contrast(1.05)",
-                marginLeft: "-5%",
+                marginLeft: "5%",
                 display: "block",
               }}
             />
