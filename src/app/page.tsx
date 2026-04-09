@@ -409,29 +409,39 @@ function AboutSection() {
 function AboutStrengthsSection() {
   const strengths = [
     {
+      color: "#facc15",
       title: <>Expert-Annotation by <span style={{ color: "#facc15" }}>Neurosurgeon</span></>,
       sub: "Every case, Every Pixel",
       desc: "All annotations are performed directly by board-certified neurosurgeons, ensuring the highest level of clinical accuracy in every labeled dataset.",
+      badge: "MD Annotated",
     },
     {
+      color: "#f87171",
       title: <>High-<span style={{ color: "#f87171" }}>Accuracy</span> Annotation</>,
       sub: "Precise Annotation Grounded in Deep Clinical Understanding",
       desc: "Our annotations reflect real surgical insight — not just image-level labeling — resulting in data quality that drives superior AI performance.",
+      badge: null,
     },
     {
+      color: "#a78bfa",
       title: <><span style={{ color: "#a78bfa" }}>Consistency</span> of Annotations</>,
       sub: "Minimize Inter-observer Variability",
       desc: "Strict annotation protocols and expert review pipelines minimize variability, ensuring consistent and reproducible ground truth across all cases.",
+      badge: null,
     },
     {
+      color: "#60a5fa",
       title: <><span style={{ color: "#60a5fa" }}>Large-scale</span> datasets</>,
-      sub: "Training Dataset: Over 26,000 cases, 1.7M DICOM files",
+      sub: "Over 26,000 cases · 1.7M DICOM files",
       desc: "With over 26,000 annotated cases and 1.7 million DICOM files, our dataset covers rare and complex pathologies that most AI systems have never encountered.",
+      badge: "26,000+ cases",
     },
     {
+      color: "#34d399",
       title: <><span style={{ color: "#34d399" }}>Rapid</span> AI Solution Development Process</>,
-      sub: "Completed the development of 8 pipelines within 11 months.",
+      sub: "8 pipelines completed within 11 months",
       desc: "Our streamlined development process — from data curation to model deployment — enables faster iteration and delivery without compromising clinical rigor.",
+      badge: "8 pipelines / 11 mo.",
     },
   ];
 
@@ -449,62 +459,122 @@ function AboutStrengthsSection() {
             </h2>
           </RevealSection>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-            {strengths.map((item, i) => (
-              <RevealSection key={i} style={{ transitionDelay: `${i * 0.08}s` }}>
-                <div
-                  onMouseEnter={() => setHovered(i)}
-                  onMouseLeave={() => setHovered(null)}
-                  onClick={() => setPinned(pinned === i ? null : i)}
-                  style={{
-                    padding: (hovered === i || pinned === i) ? "1.2rem 1.5rem 1.4rem" : "1rem 1.5rem",
-                    borderRadius: "0.9rem",
-                    background: pinned === i ? "rgba(96,165,250,0.12)" : hovered === i ? "rgba(96,165,250,0.08)" : "rgba(15,23,42,0.5)",
-                    border: `1px solid ${(hovered === i || pinned === i) ? "rgba(96,165,250,0.25)" : "rgba(255,255,255,0.06)"}`,
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div style={{ fontSize: "1rem", fontWeight: 600, color: "#e2e8f0" }}>
-                    {item.title}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+            {strengths.map((item, i) => {
+              const active = hovered === i || pinned === i;
+              return (
+                <RevealSection key={i} style={{ transitionDelay: `${i * 0.08}s` }}>
+                  <div
+                    onMouseEnter={() => setHovered(i)}
+                    onMouseLeave={() => setHovered(null)}
+                    onClick={() => setPinned(pinned === i ? null : i)}
+                    style={{
+                      display: "flex",
+                      borderRadius: "0.9rem",
+                      background: pinned === i
+                        ? `${item.color}14`
+                        : hovered === i ? `${item.color}0a` : "rgba(15,23,42,0.5)",
+                      border: `1px solid ${active ? `${item.color}40` : "rgba(255,255,255,0.06)"}`,
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {/* 왼쪽 컬러 액센트 바 */}
+                    <div style={{
+                      width: "3px",
+                      flexShrink: 0,
+                      background: active ? item.color : `${item.color}40`,
+                      transition: "background 0.3s ease",
+                      borderRadius: "0.9rem 0 0 0.9rem",
+                    }} />
+
+                    {/* 번호 배지 */}
+                    <div style={{
+                      flexShrink: 0,
+                      width: "2rem",
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "center",
+                      paddingTop: "1rem",
+                    }}>
+                      <span style={{
+                        fontSize: "0.6rem",
+                        fontWeight: 700,
+                        color: active ? item.color : "rgba(255,255,255,0.2)",
+                        transition: "color 0.3s ease",
+                        letterSpacing: "0.02em",
+                      }}>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    {/* 본문 */}
+                    <div style={{ flex: 1, padding: "0.9rem 1rem 0.9rem 0.25rem" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
+                        <div style={{ fontSize: "0.95rem", fontWeight: 600, color: "#e2e8f0" }}>
+                          {item.title}
+                        </div>
+                        {item.badge && (
+                          <span style={{
+                            flexShrink: 0,
+                            fontSize: "0.65rem",
+                            fontWeight: 600,
+                            color: item.color,
+                            background: `${item.color}18`,
+                            border: `1px solid ${item.color}40`,
+                            padding: "0.2rem 0.55rem",
+                            borderRadius: "0.35rem",
+                            letterSpacing: "0.03em",
+                            whiteSpace: "nowrap",
+                          }}>
+                            {item.badge}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* 서브타이틀 — hover/pinned 시 펼침 */}
+                      <div style={{
+                        maxHeight: active ? "60px" : "0px",
+                        opacity: active ? 1 : 0,
+                        overflow: "hidden",
+                        transition: "max-height 0.35s ease, opacity 0.3s ease",
+                        marginTop: active ? "0.35rem" : "0",
+                        fontSize: "0.78rem",
+                        color: "#94a3b8",
+                        fontStyle: "italic",
+                        lineHeight: 1.6,
+                      }}>
+                        {item.sub}
+                      </div>
+                    </div>
                   </div>
-                  <div style={{
-                    maxHeight: (hovered === i || pinned === i) ? "60px" : "0px",
-                    opacity: (hovered === i || pinned === i) ? 1 : 0,
-                    overflow: "hidden",
-                    transition: "max-height 0.35s ease, opacity 0.3s ease",
-                    marginTop: (hovered === i || pinned === i) ? "0.5rem" : "0",
-                    fontSize: "0.82rem",
-                    color: "#94a3b8",
-                    fontStyle: "italic",
-                    lineHeight: 1.6,
-                  }}>
-                    {item.sub}
-                  </div>
-                </div>
-              </RevealSection>
-            ))}
+                </RevealSection>
+              );
+            })}
           </div>
         </div>
 
-        {/* 우측 장식 */}
+        {/* 우측 뉴런 장식 */}
         <div style={{ flex: 1, height: "500px", position: "relative" }}>
-          <NeuralSynapseVisual mode="dense" color="147, 197, 253" opacity={0.85} />
+          <NeuralSynapseVisual mode="dense" color="147, 197, 253" opacity={0.55} />
         </div>
       </div>
     </section>
   );
 }
 
+
 function BackgroundSection() {
-  const items: { en: string; ko: string; side: "left" | "right" }[] = [
-    { en: "Ultra-aged society", ko: "초고령화 사회", side: "left" },
-    { en: "Surge in neurological diseases associated with super-aging", ko: "초고령화 사회로 인한 신경계 질환의 급증", side: "right" },
-    { en: "Limited availability of neurological expertise", ko: "신경계 전문 인력의 희소성", side: "left" },
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+
+  const items: { en: string; ko: string; side: "left" | "right"; image?: string }[] = [
+    { en: "Ultra-aged society", ko: "초고령화 사회", side: "left", image: "/bg-초고령.png" },
+    { en: "Surge in neurological diseases associated with super-aging", ko: "초고령화 사회로 인한 신경계 질환의 급증", side: "right", image: "/bg-질환급증.png" },
+    { en: "Limited availability of neurological expertise", ko: "신경계 전문 인력의 희소성", side: "left", image: "/bg-신경의희소성.png" },
     { en: "Complexity of neuroimaging interpretation", ko: "MRI, CT 영상 해석의 난해함", side: "right" },
-    { en: "The time-sensitive and life-threatening nature of brain disorders", ko: "신경계 질환의 긴급성과 생명과 직결되는 치명성", side: "left" },
-    { en: "Regional imbalance in the distribution of general hospitals", ko: "병원 접근성의 지역별 불균형", side: "right" },
+    { en: "The time-sensitive and life-threatening nature of brain disorders", ko: "신경계 질환의 긴급성과 생명과 직결되는 치명성", side: "left", image: "/bg-신경긴급성.png" },
+    { en: "Regional imbalance in the distribution of general hospitals", ko: "병원 접근성의 지역별 불균형", side: "right", image: "/bg-병원분포.png" },
   ];
 
   const cardStyle = {
@@ -557,8 +627,10 @@ function BackgroundSection() {
             {/* 카드들 — 3개씩 좌우 */}
             {items.map((item, i) => {
               const isLeft = item.side === "left";
-              const rowIndex = Math.floor(i / 2); // 0, 1, 2
-              const topPercent = 8 + rowIndex * 33; // 8%, 41%, 74%
+              const rowIndex = Math.floor(i / 2);
+              const topPercent = 8 + rowIndex * 33;
+              const isActive = activeCard === i;
+              const hasImage = !!item.image;
               return (
                 <div key={i}
                   style={{
@@ -566,15 +638,22 @@ function BackgroundSection() {
                     position: "absolute",
                     top: `${topPercent}%`,
                     ...(isLeft ? { left: "0%" } : { right: "0%" }),
+                    borderColor: isActive ? "rgba(96,165,250,0.5)" : "rgba(96,165,250,0.15)",
+                    boxShadow: isActive ? "0 0 24px rgba(96,165,250,0.2)" : "none",
+                    cursor: hasImage ? "pointer" : "default",
+                    transition: "all 0.3s ease",
                   }}
+                  onClick={() => hasImage && setActiveCard(isActive ? null : i)}
                   onMouseEnter={e => {
                     (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.5)";
                     (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(96,165,250,0.12)";
                     (e.currentTarget as HTMLElement).style.transform = isLeft ? "translateX(4px)" : "translateX(-4px)";
                   }}
                   onMouseLeave={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.15)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                    if (!isActive) {
+                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.15)";
+                      (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                    }
                     (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
                   }}
                 >
@@ -588,18 +667,85 @@ function BackgroundSection() {
                     }}>
                       {String(i + 1).padStart(2, "0")}
                     </div>
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div style={{ fontSize: "0.58rem", color: "#60a5fa", marginBottom: "0.15rem", fontStyle: "italic" }}>
                         [{item.en}]
                       </div>
-                      <div style={{ fontSize: "0.82rem", color: "#e2e8f0", fontWeight: 600, lineHeight: 1.5 }}>
+                      <div style={{ fontSize: "0.82rem", color: "#e2e8f0", fontWeight: 600, lineHeight: 1.5, display: "flex", alignItems: "center", gap: "0.5rem" }}>
                         {item.ko}
+                        {hasImage && (
+                          <span style={{ fontSize: "0.6rem", color: "rgba(96,165,250,0.5)", marginLeft: "auto" }}>
+                            {isActive ? "▲" : "▼"}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               );
             })}
+
+            {/* 이미지 팝업 오버레이 */}
+            {activeCard !== null && items[activeCard]?.image && (
+              <div
+                onClick={() => setActiveCard(null)}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 10,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "rgba(5,10,25,0.75)",
+                  backdropFilter: "blur(6px)",
+                  animation: "cn-content-reveal 0.3s ease forwards",
+                }}
+              >
+                <div
+                  onClick={e => e.stopPropagation()}
+                  style={{
+                    position: "relative",
+                    maxWidth: "420px",
+                    width: "90%",
+                    borderRadius: "1rem",
+                    overflow: "hidden",
+                    border: "1px solid rgba(96,165,250,0.3)",
+                    boxShadow: "0 0 60px rgba(0,0,0,0.6), 0 0 30px rgba(96,165,250,0.1)",
+                  }}
+                >
+                  {/* 헤더 */}
+                  <div style={{
+                    padding: "0.6rem 1rem",
+                    background: "rgba(15,23,42,0.95)",
+                    borderBottom: "1px solid rgba(96,165,250,0.15)",
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                  }}>
+                    <span style={{ fontSize: "0.72rem", color: "#60a5fa", fontStyle: "italic" }}>
+                      [{items[activeCard].en}]
+                    </span>
+                    <button
+                      onClick={() => setActiveCard(null)}
+                      style={{
+                        background: "none", border: "none", color: "rgba(148,163,184,0.6)",
+                        fontSize: "1rem", cursor: "pointer", lineHeight: 1, padding: "0 0.2rem",
+                      }}
+                    >×</button>
+                  </div>
+                  <img
+                    src={items[activeCard].image}
+                    alt={items[activeCard].ko}
+                    style={{ width: "100%", display: "block", objectFit: "cover" }}
+                  />
+                  <div style={{
+                    padding: "0.65rem 1rem",
+                    background: "rgba(15,23,42,0.95)",
+                    fontSize: "0.82rem", fontWeight: 600, color: "#e2e8f0",
+                  }}>
+                    {items[activeCard].ko}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </RevealSection>
       </div>
@@ -927,14 +1073,27 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
         }}
         onClick={activeVideo ? togglePlay : undefined}
         >
+          {/* 뉴런 시각화 (항상 배경에 깔림) */}
+          <div style={{
+            position: "absolute", inset: 0,
+            opacity: activeVideo ? 0.15 : 1,
+            filter: activeVideo ? "blur(4px)" : "none",
+            transition: "opacity 0.6s ease, filter 0.6s ease",
+          }}>
+            <NeuralSynapseVisual mode="fast" color="110, 227, 175" opacity={0.5} />
+          </div>
+
           {/* 비디오 없을 때: 안내 텍스트 */}
           {!activeVideo && (
             <p style={{
-              color: "rgba(148,163,184,0.5)",
-              fontSize: "0.85rem",
+              position: "absolute",
+              bottom: "1.5rem",
+              left: 0, right: 0,
+              textAlign: "center",
+              color: "rgba(148,163,184,0.45)",
+              fontSize: "0.8rem",
               letterSpacing: "0.05em",
               pointerEvents: "none",
-              textAlign: "center",
             }}>
               Click a pipeline to view the AI analysis results
             </p>

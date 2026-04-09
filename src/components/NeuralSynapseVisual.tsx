@@ -142,12 +142,12 @@ export default function NeuralSynapseVisual({
           const dx = m.x - n.x;
           const dy = m.y - n.y;
           const d = Math.sqrt(dx * dx + dy * dy);
-          const lineAlpha = Math.max(0, (1 - d / (config.dist * 1.5))) * opacity * 0.5;
+          const lineAlpha = Math.max(0, (1 - d / (config.dist * 1.5))) * opacity * 0.6;
           ctx.beginPath();
           ctx.moveTo(n.x, n.y);
           ctx.lineTo(m.x, m.y);
           ctx.strokeStyle = `rgba(${color}, ${lineAlpha})`;
-          ctx.lineWidth = 0.8;
+          ctx.lineWidth = 0.9;
           ctx.stroke();
         }
       }
