@@ -387,7 +387,7 @@ function AboutSection() {
                 width: "115%",
                 height: "115%",
                 objectFit: "cover",
-                objectPosition: "32% 12%",
+                objectPosition: "38% 12%",
                 filter: "grayscale(100%) contrast(1.05)",
                 marginLeft: "-5%",
                 display: "block",
