@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import emailjs from "@emailjs/browser";
 import ClarusSidebar from "@/components/ClarusSidebar";
 import ClarusCursor from "@/components/ClarusCursor";
 import ClarusHeroCanvas from "@/components/ClarusHeroCanvas";
@@ -339,8 +338,16 @@ function AboutSection() {
               gap: "1rem",
             }}>
               <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
-                <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#e2e8f0" }}>
-                  CEO 김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.95rem" }}>(Sion Kim, M.D)</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{
+                    fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em",
+                    color: "#60a5fa", background: "rgba(96,165,250,0.1)",
+                    border: "1px solid rgba(96,165,250,0.3)",
+                    padding: "0.2rem 0.6rem", borderRadius: "0.3rem",
+                  }}>CEO</span>
+                  <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#e2e8f0" }}>
+                    김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.95rem" }}>(Sion Kim, M.D)</span>
+                  </span>
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
