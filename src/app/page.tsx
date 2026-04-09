@@ -314,12 +314,12 @@ function AboutSection() {
               </div>
 
               {/* -N 설명 */}
-              <div style={{ fontSize: "0.95rem" }}>
-                <span style={{ color: "#a855f7", fontWeight: 700 }}>-N</span>
+              <div style={{ fontSize: "1.8rem", fontWeight: 700, display: "flex", alignItems: "baseline", gap: "0.3rem", flexWrap: "wrap" }}>
+                <span style={{ color: "#a855f7" }}>-N</span>
                 <span style={{ color: "#94a3b8" }}> : "hyphen N" means </span>
-                <span style={{ fontSize: "1.8rem", fontWeight: 700, color: "#ffffff" }}>AI (</span>
-                <span style={{ fontSize: "1.8rem", fontWeight: 700, color: "#a855f7" }}>N</span>
-                <span style={{ fontSize: "1.8rem", fontWeight: 700, color: "#ffffff" }}>)</span>
+                <span style={{ color: "#ffffff" }}>AI (</span>
+                <span style={{ color: "#a855f7" }}>N</span>
+                <span style={{ color: "#ffffff" }}>)</span>
               </div>
             </div>
           </RevealSection>
@@ -384,11 +384,12 @@ function AboutSection() {
               src="/ceo-photo.png"
               alt="CEO Sion Kim"
               style={{
-                width: "100%",
-                height: "100%",
+                width: "115%",
+                height: "115%",
                 objectFit: "cover",
-                objectPosition: "center top",
+                objectPosition: "32% 12%",
                 filter: "grayscale(100%) contrast(1.05)",
+                marginLeft: "-5%",
                 display: "block",
               }}
             />
