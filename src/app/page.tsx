@@ -340,10 +340,10 @@ function AboutSection() {
               <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                   <span style={{
-                    fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.2em",
+                    fontSize: "2.25rem", fontWeight: 700, letterSpacing: "0.2em",
                     color: "#60a5fa", background: "rgba(96,165,250,0.15)",
                     border: "1px solid rgba(96,165,250,0.5)",
-                    padding: "0.3rem 0.8rem", borderRadius: "0.3rem",
+                    padding: "0.5rem 1.2rem", borderRadius: "0.5rem",
                     textShadow: "0 0 12px rgba(96,165,250,0.6)",
                     boxShadow: "0 0 10px rgba(96,165,250,0.15)",
                   }}>CEO</span>
