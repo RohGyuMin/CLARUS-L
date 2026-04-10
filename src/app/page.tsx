@@ -655,7 +655,7 @@ function BackgroundSection() {
                   border: "1px solid rgba(96,165,250,0.2)",
                   boxShadow: "0 0 40px rgba(0,0,0,0.4)",
                 }}>
-                  <img src={item.image} alt={item.ko} style={{ width: "100%", height: "100%", objectFit: item.image === "/bg-병원분포.png" ? "contain" : "cover", background: item.image === "/bg-병원분포.png" ? "rgba(10,18,40,0.95)" : "none" }} />
+                  <img src={item.image} alt={item.ko} style={{ width: "100%", height: "100%", objectFit: "contain", background: "rgba(10,18,40,0.95)" }} />
                   <div style={{
                     position: "absolute", bottom: 0, left: 0, right: 0,
                     padding: "1.5rem 1.2rem 1rem",
