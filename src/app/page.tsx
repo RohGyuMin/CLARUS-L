@@ -371,7 +371,7 @@ function AboutSection() {
         </div>
 
         {/* 우측: CEO 사진 흑백 */}
-        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "flex-end", paddingBottom: "0" }}>
+        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "center", paddingBottom: "0" }}>
           <div style={{
             position: "relative",
             borderRadius: "1.2rem",
