@@ -254,7 +254,7 @@ export default function ClarusHeroCanvas() {
       }
       ctx.restore();
 
-      if (t % 7 === 0 && Math.random() > 0.4 && pulses.length < 60) spawnPulse();
+      if (t % 7 === 0 && Math.random() > 0.85 && pulses.length < 15) spawnPulse();
       for (let i = pulses.length - 1; i >= 0; i--) {
         const p = pulses[i];
         const n = nodes[p.start], m = nodes[p.end];
