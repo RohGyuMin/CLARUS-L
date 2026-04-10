@@ -289,18 +289,23 @@ function AboutSection() {
             }}>
               {/* 타이틀 */}
               <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
-                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
-                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>-N</span>
-                <span style={{ marginLeft: "0.5rem", fontSize: "1rem", fontStyle: "italic", fontWeight: 300, color: "#64748b" }}>/ Clārus</span>
+                <span style={{ fontSize: "4rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
+                <span style={{ fontSize: "4rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>-N</span>
               </div>
 
               {/* 의미 */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <div style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Latin Origin</div>
-                <div style={{ fontSize: "1.05rem", color: "#cbd5e1", lineHeight: 1.6 }}>
-                  명확한, 분명한 — <span style={{ color: "#94a3b8" }}>Clear, Bright, Distinguished, Easily understood</span>
+                <div style={{ fontSize: "1.25rem", color: "#cbd5e1", lineHeight: 1.75 }}>
+                  <span style={{ marginRight: "0.4rem", fontSize: "1.35rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
+                  명확한, 분명한
                 </div>
-                <div style={{ fontSize: "0.95rem", color: "#64748b", lineHeight: 1.7 }}>
+                <div style={{ fontSize: "1.05rem", color: "#94a3b8", lineHeight: 1.65 }}>
+                  Comes from Latin, and its meaning includes:
+                </div>
+                <div style={{ fontSize: "1.15rem", color: "#94a3b8", lineHeight: 1.75 }}>
+                  Clear, Bright, Distinguished, Easily understood
+                </div>
+                <div style={{ fontSize: "1.15rem", color: "#64748b", lineHeight: 1.8 }}>
                   "Clarus" reflects the goal of making complex brain imaging<br />clear, accurate, and accessible.
                 </div>
               </div>
@@ -311,9 +316,9 @@ function AboutSection() {
                 background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)",
                 borderRadius: "0.6rem", padding: "0.6rem 1.1rem", alignSelf: "flex-start",
               }}>
-                <span style={{ fontSize: "1.3rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
-                <span style={{ fontSize: "0.95rem", color: "#94a3b8" }}>: "hyphen N" means</span>
-                <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
+                <span style={{ fontSize: "1.45rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
+                <span style={{ fontSize: "1.05rem", color: "#94a3b8" }}>: "hyphen N" means</span>
+                <span style={{ fontSize: "1.25rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
               </div>
             </div>
           </RevealSection>
@@ -343,14 +348,13 @@ function AboutSection() {
                   flexShrink: 0,
                 }}>CEO</span>
                 <div>
-                  <div style={{ fontSize: "1.6rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2 }}>김시온</div>
-                  <div style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 400, marginTop: "0.1rem" }}>Sion Kim, M.D.</div>
+                  <div style={{ fontSize: "2.2rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2 }}>김시온</div>
+                  <div style={{ fontSize: "1.2rem", lineHeight: 1.55, color: "#64748b", fontWeight: 400, marginTop: "0.1rem" }}>Sion Kim, M.D.</div>
                 </div>
               </div>
 
               {/* Board-Certified */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-                <div style={{ fontSize: "0.65rem", letterSpacing: "0.15em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Board-Certified</div>
                 {[
                   { label: "Neurosurgeon", color: "#a855f7" },
                   { label: "Critical Care Specialist", color: "#60a5fa" },
@@ -359,7 +363,7 @@ function AboutSection() {
                 ].map(item => (
                   <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
                     <span style={{ width: "2px", minHeight: "1.1rem", background: item.color, borderRadius: "1px", flexShrink: 0, marginTop: "0.2rem", opacity: 0.7 }} />
-                    <span style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6 }}>{item.label}</span>
+                    <span style={{ color: "#94a3b8", fontSize: "1.2rem", lineHeight: 1.75 }}>{item.label}</span>
                   </div>
                 ))}
               </div>
@@ -546,26 +550,18 @@ function AboutStrengthsSection() {
 
 
 function BackgroundSection() {
-  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
-  const items: { en: string; ko: string; side: "left" | "right"; image?: string }[] = [
-    { en: "Ultra-aged society", ko: "초고령화 사회", side: "left", image: "/bg-초고령.png" },
-    { en: "Surge in neurological diseases associated with super-aging", ko: "초고령화 사회로 인한 신경계 질환의 급증", side: "right", image: "/bg-질환급증.png" },
-    { en: "Limited availability of neurological expertise", ko: "신경계 전문 인력의 희소성", side: "left", image: "/bg-신경의희소성.png" },
-    { en: "Complexity of neuroimaging interpretation", ko: "MRI, CT 영상 해석의 난해함", side: "right" },
-    { en: "The time-sensitive and life-threatening nature of brain disorders", ko: "신경계 질환의 긴급성과 생명과 직결되는 치명성", side: "left", image: "/bg-신경긴급성.png" },
-    { en: "Regional imbalance in the distribution of general hospitals", ko: "병원 접근성의 지역별 불균형", side: "right", image: "/bg-병원분포.png" },
+  const items: { en: string; ko: string; image?: string }[] = [
+    { en: "Ultra-aged society", ko: "초고령화 사회", image: "/bg-초고령.png" },
+    { en: "Surge in neurological diseases associated with super-aging", ko: "초고령화 사회로 인한 신경계 질환의 급증", image: "/bg-질환급증.png" },
+    { en: "Limited availability of neurological expertise", ko: "신경계 전문 인력의 희소성", image: "/bg-신경의희소성.png" },
+    { en: "Complexity of neuroimaging interpretation", ko: "MRI, CT 영상 해석의 난해함" },
+    { en: "The time-sensitive and life-threatening nature of brain disorders", ko: "신경계 질환의 긴급성과 생명과 직결되는 치명성", image: "/bg-신경긴급성.png" },
+    { en: "Regional imbalance in the distribution of general hospitals", ko: "병원 접근성의 지역별 불균형", image: "/bg-병원분포.png" },
   ];
 
-  const cardStyle = {
-    borderRadius: "0.75rem",
-    overflow: "hidden" as const,
-    background: "rgba(15,23,42,0.8)",
-    border: "1px solid rgba(96,165,250,0.15)",
-    backdropFilter: "blur(12px)",
-    transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s",
-    width: "38%",
-  };
+  const activeImage = hoveredCard !== null ? items[hoveredCard]?.image : null;
 
   return (
     <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
@@ -581,151 +577,97 @@ function BackgroundSection() {
         </RevealSection>
 
         <RevealSection style={{ transitionDelay: "0.1s" }}>
-          {/* 중앙 로고 + 양쪽 카드 */}
-          <div style={{ position: "relative", width: "100%", height: "520px" }}>
+          <div style={{ display: "flex", gap: "3rem", alignItems: "stretch" }}>
 
-            {/* 중앙 로고 */}
-            <div style={{
-              position: "absolute", top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)", zIndex: 2,
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <div style={{ position: "absolute", width: "300px", height: "300px", borderRadius: "50%", border: "1px solid rgba(96,165,250,0.2)", animation: "bgLogoPulse 3s ease-in-out infinite" }} />
-              <div style={{ position: "absolute", width: "400px", height: "400px", borderRadius: "50%", border: "1px solid rgba(168,85,247,0.1)", animation: "bgLogoPulse 3s ease-in-out infinite 1s" }} />
-              <div style={{ position: "absolute", width: "500px", height: "500px", borderRadius: "50%", border: "1px solid rgba(96,165,250,0.05)", animation: "bgLogoPulse 3s ease-in-out infinite 2s" }} />
-              <img src="/logo.png" alt="CLARUS-N" style={{
-                position: "relative", zIndex: 1, width: "240px", opacity: 0.95,
-                filter: "drop-shadow(0 0 30px rgba(96,165,250,0.3)) drop-shadow(0 0 60px rgba(168,85,247,0.2))",
-              }} />
-            </div>
-
-            {/* 뉴런 배경 */}
-            <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-              <NeuralSynapseVisual mode="calm" color="96, 165, 250" opacity={0.15} />
-            </div>
-
-            {/* 카드들 — 3개씩 좌우 */}
-            {items.map((item, i) => {
-              const isLeft = item.side === "left";
-              const rowIndex = Math.floor(i / 2);
-              const topPercent = 8 + rowIndex * 33;
-              const isActive = activeCard === i;
-              const hasImage = !!item.image;
-              return (
-                <div key={i}
-                  style={{
-                    ...cardStyle,
-                    position: "absolute",
-                    top: `${topPercent}%`,
-                    ...(isLeft ? { left: "0%" } : { right: "0%" }),
-                    borderColor: isActive ? "rgba(96,165,250,0.5)" : "rgba(96,165,250,0.15)",
-                    boxShadow: isActive ? "0 0 24px rgba(96,165,250,0.2)" : "none",
-                    cursor: hasImage ? "pointer" : "default",
-                    transition: "all 0.3s ease",
-                  }}
-                  onClick={() => hasImage && setActiveCard(isActive ? null : i)}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.5)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 0 24px rgba(96,165,250,0.12)";
-                    (e.currentTarget as HTMLElement).style.transform = isLeft ? "translateX(4px)" : "translateX(-4px)";
-                  }}
-                  onMouseLeave={e => {
-                    if (!isActive) {
-                      (e.currentTarget as HTMLElement).style.borderColor = "rgba(96,165,250,0.15)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                    }
-                    (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
-                  }}
-                >
-                  <div style={{ height: "2px", background: "linear-gradient(90deg, rgba(96,165,250,0.8), rgba(168,85,247,0.6))" }} />
-                  <div style={{ padding: "0.7rem 1rem", display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
-                    <div style={{
-                      flexShrink: 0, width: "1.4rem", height: "1.4rem", borderRadius: "50%",
-                      background: "rgba(96,165,250,0.1)", border: "1px solid rgba(96,165,250,0.3)",
-                      color: "#60a5fa", fontSize: "0.6rem", fontWeight: 700,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: "0.58rem", color: "#60a5fa", marginBottom: "0.15rem", fontStyle: "italic" }}>
-                        [{item.en}]
+            {/* 좌측: 카드 리스트 */}
+            <div style={{ flex: "0 0 480px", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {items.map((item, i) => {
+                const isHovered = hoveredCard === i;
+                const hasImage = !!item.image;
+                return (
+                  <div
+                    key={i}
+                    onMouseEnter={() => setHoveredCard(i)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    style={{
+                      borderRadius: "0.75rem",
+                      overflow: "hidden",
+                      background: isHovered ? "rgba(96,165,250,0.06)" : "rgba(15,23,42,0.8)",
+                      border: `1px solid ${isHovered ? "rgba(96,165,250,0.4)" : "rgba(96,165,250,0.12)"}`,
+                      backdropFilter: "blur(12px)",
+                      transition: "all 0.25s ease",
+                      cursor: "default",
+                      transform: isHovered ? "translateX(6px)" : "translateX(0)",
+                      boxShadow: isHovered ? "0 0 20px rgba(96,165,250,0.1)" : "none",
+                    }}
+                  >
+                    <div style={{ height: "2px", background: isHovered ? "linear-gradient(90deg, rgba(96,165,250,0.9), rgba(168,85,247,0.7))" : "linear-gradient(90deg, rgba(96,165,250,0.3), rgba(168,85,247,0.2))", transition: "all 0.25s" }} />
+                    <div style={{ padding: "0.85rem 1.1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
+                      <div style={{
+                        flexShrink: 0, width: "1.6rem", height: "1.6rem", borderRadius: "50%",
+                        background: isHovered ? "rgba(96,165,250,0.15)" : "rgba(96,165,250,0.06)",
+                        border: `1px solid ${isHovered ? "rgba(96,165,250,0.5)" : "rgba(96,165,250,0.2)"}`,
+                        color: isHovered ? "#60a5fa" : "#475569",
+                        fontSize: "0.6rem", fontWeight: 700,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        transition: "all 0.25s",
+                      }}>
+                        {String(i + 1).padStart(2, "0")}
                       </div>
-                      <div style={{ fontSize: "0.82rem", color: "#e2e8f0", fontWeight: 600, lineHeight: 1.5, display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        {item.ko}
-                        {hasImage && (
-                          <span style={{ fontSize: "0.6rem", color: "rgba(96,165,250,0.5)", marginLeft: "auto" }}>
-                            {isActive ? "▲" : "▼"}
-                          </span>
-                        )}
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: "0.6rem", color: isHovered ? "#60a5fa" : "#475569", marginBottom: "0.15rem", fontStyle: "italic", transition: "color 0.25s" }}>
+                          {item.en}
+                        </div>
+                        <div style={{ fontSize: "0.88rem", color: isHovered ? "#e2e8f0" : "#94a3b8", fontWeight: 600, lineHeight: 1.5, transition: "color 0.25s" }}>
+                          {item.ko}
+                        </div>
                       </div>
+                      {hasImage && (
+                        <span style={{ fontSize: "0.7rem", color: isHovered ? "rgba(96,165,250,0.7)" : "rgba(96,165,250,0.2)", transition: "color 0.25s", flexShrink: 0 }}>›</span>
+                      )}
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
 
-            {/* 이미지 팝업 오버레이 */}
-            {activeCard !== null && items[activeCard]?.image && (
-              <div
-                onClick={() => setActiveCard(null)}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  zIndex: 10,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "rgba(5,10,25,0.75)",
-                  backdropFilter: "blur(6px)",
-                  animation: "cn-content-reveal 0.3s ease forwards",
-                }}
-              >
-                <div
-                  onClick={e => e.stopPropagation()}
-                  style={{
-                    position: "relative",
-                    maxWidth: "420px",
-                    width: "90%",
-                    borderRadius: "1rem",
-                    overflow: "hidden",
-                    border: "1px solid rgba(96,165,250,0.3)",
-                    boxShadow: "0 0 60px rgba(0,0,0,0.6), 0 0 30px rgba(96,165,250,0.1)",
-                  }}
-                >
-                  {/* 헤더 */}
-                  <div style={{
-                    padding: "0.6rem 1rem",
-                    background: "rgba(15,23,42,0.95)",
-                    borderBottom: "1px solid rgba(96,165,250,0.15)",
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                  }}>
-                    <span style={{ fontSize: "0.72rem", color: "#60a5fa", fontStyle: "italic" }}>
-                      [{items[activeCard].en}]
-                    </span>
-                    <button
-                      onClick={() => setActiveCard(null)}
-                      style={{
-                        background: "none", border: "none", color: "rgba(148,163,184,0.6)",
-                        fontSize: "1rem", cursor: "pointer", lineHeight: 1, padding: "0 0.2rem",
-                      }}
-                    >×</button>
-                  </div>
-                  <img
-                    src={items[activeCard].image}
-                    alt={items[activeCard].ko}
-                    style={{ width: "100%", display: "block", objectFit: "cover" }}
-                  />
-                  <div style={{
-                    padding: "0.65rem 1rem",
-                    background: "rgba(15,23,42,0.95)",
-                    fontSize: "0.82rem", fontWeight: 600, color: "#e2e8f0",
-                  }}>
-                    {items[activeCard].ko}
-                  </div>
-                </div>
+            {/* 우측: 이미지 패널 */}
+            <div style={{ flex: 1, position: "relative", minHeight: "420px" }}>
+              {/* 이미지 없을 때 뉴런 배경 */}
+              <div style={{
+                position: "absolute", inset: 0, borderRadius: "1.2rem", overflow: "hidden",
+                opacity: activeImage ? 0 : 1, transition: "opacity 0.4s ease",
+                border: "1px solid rgba(96,165,250,0.08)",
+                background: "rgba(15,23,42,0.4)",
+              }}>
+                <NeuralSynapseVisual mode="calm" color="96, 165, 250" opacity={0.2} />
               </div>
-            )}
+
+              {/* 이미지 */}
+              {items.map((item, i) => item.image && (
+                <div key={i} style={{
+                  position: "absolute", inset: 0,
+                  borderRadius: "1.2rem", overflow: "hidden",
+                  opacity: hoveredCard === i ? 1 : 0,
+                  transform: hoveredCard === i ? "scale(1)" : "scale(1.03)",
+                  transition: "opacity 0.35s ease, transform 0.35s ease",
+                  pointerEvents: "none",
+                  border: "1px solid rgba(96,165,250,0.2)",
+                  boxShadow: "0 0 40px rgba(0,0,0,0.4)",
+                }}>
+                  <img src={item.image} alt={item.ko} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0,
+                    padding: "1.5rem 1.2rem 1rem",
+                    background: "linear-gradient(to top, rgba(5,10,25,0.9), transparent)",
+                  }}>
+                    <div style={{ fontSize: "0.65rem", color: "#60a5fa", fontStyle: "italic", marginBottom: "0.25rem" }}>{item.en}</div>
+                    <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#e2e8f0" }}>{item.ko}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
           </div>
         </RevealSection>
       </div>
