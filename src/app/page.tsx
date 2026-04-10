@@ -455,7 +455,7 @@ function AboutStrengthsSection() {
           <RevealSection>
             <SectionLabel>About</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.3 }}>
-              Distinctive Strengths of <span style={{ color: "#ffffff" }}>CLARUS</span><span style={{ color: "#a855f7" }}>-N</span>
+              Distinctive Strengths of <span style={{ color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>-N</span>
             </h2>
           </RevealSection>
 
@@ -551,6 +551,7 @@ function AboutStrengthsSection() {
 
 function BackgroundSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [pinnedCard, setPinnedCard] = useState<number | null>(null);
 
   const items: { en: string; ko: string; image?: string }[] = [
     { en: "Ultra-aged society", ko: "초고령화 사회", image: "/bg-초고령.png" },
@@ -561,7 +562,7 @@ function BackgroundSection() {
     { en: "Regional imbalance in the distribution of general hospitals", ko: "병원 접근성의 지역별 불균형", image: "/bg-병원분포.png" },
   ];
 
-  const activeImage = hoveredCard !== null ? items[hoveredCard]?.image : null;
+  const activeIndex = hoveredCard ?? pinnedCard;
 
   return (
     <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
@@ -582,32 +583,34 @@ function BackgroundSection() {
             {/* 좌측: 카드 리스트 */}
             <div style={{ flex: "0 0 480px", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {items.map((item, i) => {
-                const isHovered = hoveredCard === i;
+                const isActive = activeIndex === i;
+                const isPinned = pinnedCard === i;
                 const hasImage = !!item.image;
                 return (
                   <div
                     key={i}
                     onMouseEnter={() => setHoveredCard(i)}
                     onMouseLeave={() => setHoveredCard(null)}
+                    onClick={() => hasImage && setPinnedCard(isPinned ? null : i)}
                     style={{
                       borderRadius: "0.75rem",
                       overflow: "hidden",
-                      background: isHovered ? "rgba(96,165,250,0.06)" : "rgba(15,23,42,0.8)",
-                      border: `1px solid ${isHovered ? "rgba(96,165,250,0.4)" : "rgba(96,165,250,0.12)"}`,
+                      background: isActive ? "rgba(96,165,250,0.06)" : "rgba(15,23,42,0.8)",
+                      border: `1px solid ${isPinned ? "rgba(168,85,247,0.5)" : isActive ? "rgba(96,165,250,0.4)" : "rgba(96,165,250,0.12)"}`,
                       backdropFilter: "blur(12px)",
                       transition: "all 0.25s ease",
-                      cursor: "default",
-                      transform: isHovered ? "translateX(6px)" : "translateX(0)",
-                      boxShadow: isHovered ? "0 0 20px rgba(96,165,250,0.1)" : "none",
+                      cursor: hasImage ? "pointer" : "default",
+                      transform: isActive ? "translateX(6px)" : "translateX(0)",
+                      boxShadow: isPinned ? "0 0 20px rgba(168,85,247,0.15)" : isActive ? "0 0 20px rgba(96,165,250,0.1)" : "none",
                     }}
                   >
-                    <div style={{ height: "2px", background: isHovered ? "linear-gradient(90deg, rgba(96,165,250,0.9), rgba(168,85,247,0.7))" : "linear-gradient(90deg, rgba(96,165,250,0.3), rgba(168,85,247,0.2))", transition: "all 0.25s" }} />
+                    <div style={{ height: "2px", background: isPinned ? "linear-gradient(90deg, rgba(168,85,247,0.9), rgba(96,165,250,0.7))" : isActive ? "linear-gradient(90deg, rgba(96,165,250,0.9), rgba(168,85,247,0.7))" : "linear-gradient(90deg, rgba(96,165,250,0.3), rgba(168,85,247,0.2))", transition: "all 0.25s" }} />
                     <div style={{ padding: "0.85rem 1.1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
                       <div style={{
                         flexShrink: 0, width: "1.6rem", height: "1.6rem", borderRadius: "50%",
-                        background: isHovered ? "rgba(96,165,250,0.15)" : "rgba(96,165,250,0.06)",
-                        border: `1px solid ${isHovered ? "rgba(96,165,250,0.5)" : "rgba(96,165,250,0.2)"}`,
-                        color: isHovered ? "#60a5fa" : "#475569",
+                        background: isActive ? "rgba(96,165,250,0.15)" : "rgba(96,165,250,0.06)",
+                        border: `1px solid ${isActive ? "rgba(96,165,250,0.5)" : "rgba(96,165,250,0.2)"}`,
+                        color: isActive ? "#60a5fa" : "#475569",
                         fontSize: "0.6rem", fontWeight: 700,
                         display: "flex", alignItems: "center", justifyContent: "center",
                         transition: "all 0.25s",
@@ -615,15 +618,17 @@ function BackgroundSection() {
                         {String(i + 1).padStart(2, "0")}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: "0.6rem", color: isHovered ? "#60a5fa" : "#475569", marginBottom: "0.15rem", fontStyle: "italic", transition: "color 0.25s" }}>
+                        <div style={{ fontSize: "0.6rem", color: isActive ? "#60a5fa" : "#475569", marginBottom: "0.15rem", fontStyle: "italic", transition: "color 0.25s" }}>
                           {item.en}
                         </div>
-                        <div style={{ fontSize: "0.88rem", color: isHovered ? "#e2e8f0" : "#94a3b8", fontWeight: 600, lineHeight: 1.5, transition: "color 0.25s" }}>
+                        <div style={{ fontSize: "0.88rem", color: isActive ? "#e2e8f0" : "#94a3b8", fontWeight: 600, lineHeight: 1.5, transition: "color 0.25s" }}>
                           {item.ko}
                         </div>
                       </div>
                       {hasImage && (
-                        <span style={{ fontSize: "0.7rem", color: isHovered ? "rgba(96,165,250,0.7)" : "rgba(96,165,250,0.2)", transition: "color 0.25s", flexShrink: 0 }}>›</span>
+                        <span style={{ fontSize: "0.7rem", color: isPinned ? "rgba(168,85,247,0.8)" : isActive ? "rgba(96,165,250,0.7)" : "rgba(96,165,250,0.2)", transition: "color 0.25s", flexShrink: 0 }}>
+                          {isPinned ? "⊙" : "›"}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -633,23 +638,14 @@ function BackgroundSection() {
 
             {/* 우측: 이미지 패널 */}
             <div style={{ flex: 1, position: "relative", minHeight: "420px" }}>
-              {/* 이미지 없을 때 뉴런 배경 */}
-              <div style={{
-                position: "absolute", inset: 0, borderRadius: "1.2rem", overflow: "hidden",
-                opacity: activeImage ? 0 : 1, transition: "opacity 0.4s ease",
-                border: "1px solid rgba(96,165,250,0.08)",
-                background: "rgba(15,23,42,0.4)",
-              }}>
-                <NeuralSynapseVisual mode="calm" color="96, 165, 250" opacity={0.2} />
-              </div>
 
               {/* 이미지 */}
               {items.map((item, i) => item.image && (
                 <div key={i} style={{
                   position: "absolute", inset: 0,
                   borderRadius: "1.2rem", overflow: "hidden",
-                  opacity: hoveredCard === i ? 1 : 0,
-                  transform: hoveredCard === i ? "scale(1)" : "scale(1.03)",
+                  opacity: activeIndex === i ? 1 : 0,
+                  transform: activeIndex === i ? "scale(1)" : "scale(1.03)",
                   transition: "opacity 0.35s ease, transform 0.35s ease",
                   pointerEvents: "none",
                   border: "1px solid rgba(96,165,250,0.2)",
@@ -841,7 +837,10 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
         <div style={{ flex: 1, maxWidth: "42rem", width: "100%", position: "relative" }}>
           <RevealSection>
-            <SectionLabel>Pipeline Characteristics</SectionLabel>
+            <SectionLabel>Performance</SectionLabel>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
+              Pipeline Characteristics
+            </h2>
             <Divider />
           </RevealSection>
 
@@ -1639,7 +1638,7 @@ function ContactSection() {
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
             <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem" }}>
-              <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
+              <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
               저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", maxWidth: "420px" }}>
@@ -1836,7 +1835,7 @@ function ContactSection() {
              
              {/* Form Description */}
              <div style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "2rem", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "1.5rem" }}>
-               <span style={{ color: "#e2e8f0", fontWeight: 600 }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700 }}>N</span>에 관심 가져주셔서 감사합니다.<br/>
+               <span style={{ color: "#e2e8f0", fontWeight: 600, fontFamily: "var(--font-bernhard)" }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>에 관심 가져주셔서 감사합니다.<br/>
                제품에 관한 사항, 기술제휴 및 협력 등의 문의를 남겨주시면 확인 후 빠르게 연락 드리겠습니다.
              </div>
 
