@@ -264,7 +264,7 @@ function Divider() {
 
 function AboutSection() {
   return (
-    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "8rem" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "2rem" }}>
 
         {/* 좌측: 카드 두 개 */}
