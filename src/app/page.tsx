@@ -293,22 +293,22 @@ function AboutSection() {
               </div>
 
               {/* 타이틀 */}
-              <div style={{ fontSize: "1.15rem", fontWeight: 600, color: "#e2e8f0" }}>
+              <div style={{ fontSize: "2.3rem", fontWeight: 600, color: "#e2e8f0" }}>
                 <span style={{ fontStyle: "italic", fontWeight: 300 }}>Clārus</span>
-                <span style={{ color: "#64748b", fontSize: "0.95rem", fontWeight: 400 }}> : 명확한, 분명한</span>
+                <span style={{ color: "#64748b", fontSize: "1.9rem", fontWeight: 400 }}> : 명확한, 분명한</span>
               </div>
 
               {/* 설명 */}
               <div style={{ paddingLeft: "1.5rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.7 }}>
+                <div style={{ color: "#94a3b8", fontSize: "1.8rem", lineHeight: 1.7 }}>
                   Comes from Latin, and its meaning includes:
                 </div>
-                <div style={{ color: "#94a3b8", fontSize: "0.9rem" }}>
+                <div style={{ color: "#94a3b8", fontSize: "1.8rem" }}>
                   Clear, Bright, Distinguished, Easily understood
                 </div>
               </div>
 
-              <div style={{ paddingLeft: "1.5rem", color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.7 }}>
+              <div style={{ paddingLeft: "1.5rem", color: "#94a3b8", fontSize: "1.8rem", lineHeight: 1.7 }}>
                 "Clarus" reflects the goal of making complex brain imaging<br />
                 "Clear, accurate, and accessible
               </div>
@@ -347,13 +347,13 @@ function AboutSection() {
                     textShadow: "0 0 12px rgba(96,165,250,0.6)",
                     boxShadow: "0 0 10px rgba(96,165,250,0.15)",
                   }}>CEO</span>
-                  <span style={{ fontSize: "1.3rem", fontWeight: 700, color: "#e2e8f0" }}>
-                    김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "0.95rem" }}>(Sion Kim, M.D)</span>
+                  <span style={{ fontSize: "3.9rem", fontWeight: 700, color: "#e2e8f0" }}>
+                    김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "2.85rem" }}>(Sion Kim, M.D)</span>
                   </span>
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <div style={{ fontSize: "0.75rem", letterSpacing: "0.12em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Board-Certified</div>
+                <div style={{ fontSize: "1.5rem", letterSpacing: "0.12em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Board-Certified</div>
                 {[
                   "Neurosurgeon",
                   "Critical Care Specialist",
@@ -361,8 +361,8 @@ function AboutSection() {
                   "Specialist by the Korean Society of Cerebrovascular Surgery",
                 ].map(item => (
                   <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
-                    <span style={{ color: "#a855f7", marginTop: "0.4rem", fontSize: "0.4rem", flexShrink: 0 }}>●</span>
-                    <span style={{ color: "#94a3b8", fontSize: "0.88rem", lineHeight: 1.6 }}>{item}</span>
+                    <span style={{ color: "#a855f7", marginTop: "0.4rem", fontSize: "0.8rem", flexShrink: 0 }}>●</span>
+                    <span style={{ color: "#94a3b8", fontSize: "1.76rem", lineHeight: 1.6 }}>{item}</span>
                   </div>
                 ))}
               </div>
@@ -376,8 +376,8 @@ function AboutSection() {
             position: "relative",
             borderRadius: "1.2rem",
             overflow: "hidden",
-            width: "400px",
-            height: "620px",
+            width: "560px",
+            height: "820px",
             boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
           }}>
             <img
