@@ -277,49 +277,43 @@ function AboutSection() {
           <RevealSection style={{ transitionDelay: "0.1s", flex: 1 }}>
             <div style={{
               height: "100%",
-              padding: "2rem 2.2rem",
+              padding: "2.2rem 2.4rem",
               borderRadius: "1.2rem",
               background: "rgba(15,23,42,0.6)",
-              border: "1px solid rgba(96,165,250,0.12)",
+              border: "1px solid rgba(168,85,247,0.18)",
               backdropFilter: "blur(16px)",
               display: "flex",
               flexDirection: "column",
-              gap: "1rem",
+              gap: "1.2rem",
+              boxShadow: "0 0 40px rgba(168,85,247,0.05)",
             }}>
-                {/* 배지 */}
-              <div style={{ fontSize: "3.3rem", fontWeight: 700, letterSpacing: "0.18em", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
-                <span style={{ color: "#ffffff" }}>CLARUS</span>
-                <span style={{ color: "#a855f7" }}>-N</span>
-              </div>
-
               {/* 타이틀 */}
-              <div style={{ fontSize: "2.3rem", fontWeight: 600, color: "#e2e8f0" }}>
-                <span style={{ fontStyle: "italic", fontWeight: 300 }}>Clārus</span>
-                <span style={{ color: "#64748b", fontSize: "1.9rem", fontWeight: 400 }}> : 명확한, 분명한</span>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
+                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff" }}>CLARUS</span>
+                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7" }}>-N</span>
+                <span style={{ marginLeft: "0.5rem", fontSize: "1rem", fontStyle: "italic", fontWeight: 300, color: "#64748b" }}>/ Clārus</span>
               </div>
 
-              {/* 설명 */}
-              <div style={{ paddingLeft: "1.5rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <div style={{ color: "#94a3b8", fontSize: "1.3rem", lineHeight: 1.7 }}>
-                  Comes from Latin, and its meaning includes:
+              {/* 의미 */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <div style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Latin Origin</div>
+                <div style={{ fontSize: "1.05rem", color: "#cbd5e1", lineHeight: 1.6 }}>
+                  명확한, 분명한 — <span style={{ color: "#94a3b8" }}>Clear, Bright, Distinguished, Easily understood</span>
                 </div>
-                <div style={{ color: "#94a3b8", fontSize: "1.3rem" }}>
-                  Clear, Bright, Distinguished, Easily understood
+                <div style={{ fontSize: "0.95rem", color: "#64748b", lineHeight: 1.7 }}>
+                  "Clarus" reflects the goal of making complex brain imaging<br />clear, accurate, and accessible.
                 </div>
-              </div>
-
-              <div style={{ paddingLeft: "1.5rem", color: "#94a3b8", fontSize: "1.3rem", lineHeight: 1.7 }}>
-                "Clarus" reflects the goal of making complex brain imaging<br />
-                "Clear, accurate, and accessible
               </div>
 
               {/* -N 설명 */}
-              <div style={{ fontSize: "1.8rem", fontWeight: 700, display: "flex", alignItems: "baseline", gap: "0.3rem", flexWrap: "wrap" }}>
-                <span style={{ color: "#a855f7" }}>-N</span>
-                <span style={{ color: "#94a3b8" }}> : "hyphen N" means </span>
-                <span style={{ color: "#ffffff" }}>AI (</span>
-                <span style={{ color: "#a855f7" }}>N</span>
-                <span style={{ color: "#ffffff" }}>)</span>
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)",
+                borderRadius: "0.6rem", padding: "0.6rem 1.1rem", alignSelf: "flex-start",
+              }}>
+                <span style={{ fontSize: "1.3rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
+                <span style={{ fontSize: "0.95rem", color: "#94a3b8" }}>: "hyphen N" means</span>
+                <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7" }}>N</span>)</span>
               </div>
             </div>
           </RevealSection>
@@ -328,41 +322,44 @@ function AboutSection() {
           <RevealSection style={{ transitionDelay: "0.2s", flex: 1 }}>
             <div style={{
               height: "100%",
-              padding: "2rem 2.2rem",
+              padding: "2.2rem 2.4rem",
               borderRadius: "1.2rem",
               background: "rgba(15,23,42,0.6)",
-              border: "1px solid rgba(96,165,250,0.12)",
+              border: "1px solid rgba(96,165,250,0.14)",
               backdropFilter: "blur(16px)",
               display: "flex",
               flexDirection: "column",
-              gap: "1rem",
+              gap: "1.2rem",
+              boxShadow: "0 0 40px rgba(96,165,250,0.04)",
             }}>
-              <div style={{ borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  <span style={{
-                    fontSize: "2.25rem", fontWeight: 700, letterSpacing: "0.2em",
-                    color: "#60a5fa", background: "rgba(96,165,250,0.15)",
-                    border: "1px solid rgba(96,165,250,0.5)",
-                    padding: "0.5rem 1.2rem", borderRadius: "0.5rem",
-                    textShadow: "0 0 12px rgba(96,165,250,0.6)",
-                    boxShadow: "0 0 10px rgba(96,165,250,0.15)",
-                  }}>CEO</span>
-                  <span style={{ fontSize: "3.9rem", fontWeight: 700, color: "#e2e8f0" }}>
-                    김시온 <span style={{ color: "#94a3b8", fontWeight: 400, fontSize: "2.85rem" }}>(Sion Kim, M.D)</span>
-                  </span>
+              {/* CEO 헤더 */}
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
+                <span style={{
+                  fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.22em",
+                  color: "#60a5fa", background: "rgba(96,165,250,0.12)",
+                  border: "1px solid rgba(96,165,250,0.4)",
+                  padding: "0.35rem 0.85rem", borderRadius: "0.4rem",
+                  textShadow: "0 0 10px rgba(96,165,250,0.5)",
+                  flexShrink: 0,
+                }}>CEO</span>
+                <div>
+                  <div style={{ fontSize: "1.6rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2 }}>김시온</div>
+                  <div style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 400, marginTop: "0.1rem" }}>Sion Kim, M.D.</div>
                 </div>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <div style={{ fontSize: "1.5rem", letterSpacing: "0.12em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Board-Certified</div>
+
+              {/* Board-Certified */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                <div style={{ fontSize: "0.65rem", letterSpacing: "0.15em", color: "#475569", fontWeight: 600, textTransform: "uppercase" }}>Board-Certified</div>
                 {[
-                  "Neurosurgeon",
-                  "Critical Care Specialist",
-                  "Specialist in Endovascular Neurosurgery",
-                  "Specialist by the Korean Society of Cerebrovascular Surgery",
+                  { label: "Neurosurgeon", color: "#a855f7" },
+                  { label: "Critical Care Specialist", color: "#60a5fa" },
+                  { label: "Specialist in Endovascular Neurosurgery", color: "#34d399" },
+                  { label: "Specialist by the Korean Society of Cerebrovascular Surgery", color: "#f59e0b" },
                 ].map(item => (
-                  <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
-                    <span style={{ color: "#a855f7", marginTop: "0.4rem", fontSize: "0.6rem", flexShrink: 0 }}>●</span>
-                    <span style={{ color: "#94a3b8", fontSize: "1.3rem", lineHeight: 1.6 }}>{item}</span>
+                  <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
+                    <span style={{ width: "2px", minHeight: "1.1rem", background: item.color, borderRadius: "1px", flexShrink: 0, marginTop: "0.2rem", opacity: 0.7 }} />
+                    <span style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6 }}>{item.label}</span>
                   </div>
                 ))}
               </div>
