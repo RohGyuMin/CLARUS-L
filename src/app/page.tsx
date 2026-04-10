@@ -289,8 +289,8 @@ function AboutSection() {
             }}>
               {/* 타이틀 */}
               <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
-                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff" }}>CLARUS</span>
-                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7" }}>-N</span>
+                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
+                <span style={{ fontSize: "2.8rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>-N</span>
                 <span style={{ marginLeft: "0.5rem", fontSize: "1rem", fontStyle: "italic", fontWeight: 300, color: "#64748b" }}>/ Clārus</span>
               </div>
 
