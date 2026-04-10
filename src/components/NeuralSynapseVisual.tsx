@@ -35,7 +35,7 @@ export default function NeuralSynapseVisual({
       dense: { count: 45, dist: 150, speed: 0.15, signalSpeed: 0.012, signalRate: 0.012 },
       fast:  { count: 35, dist: 130, speed: 0.35, signalSpeed: 0.025, signalRate: 0.020 },
       deep:  { count: 60, dist: 180, speed: 0.08, signalSpeed: 0.008, signalRate: 0.008 },
-      calm:  { count: 25, dist: 220, speed: 0.12, signalSpeed: 0.007, signalRate: 0.006 },
+      calm:  { count: 20, dist: 250, speed: 0.04, signalSpeed: 0.005, signalRate: 0.004 },
     }[mode];
 
     interface Node {
