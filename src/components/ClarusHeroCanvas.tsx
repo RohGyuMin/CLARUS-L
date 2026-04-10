@@ -140,7 +140,7 @@ export default function ClarusHeroCanvas() {
           start: startIdx,
           end: possibleEnds[Math.floor(Math.random() * possibleEnds.length)],
           progress: 0,
-          speed: isAmbientPulse ? rand(0.003, 0.008) : rand(0.005, 0.012),
+          speed: isAmbientPulse ? rand(0.008, 0.02) : rand(0.012, 0.035),
         });
       }
     }
