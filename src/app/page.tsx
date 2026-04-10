@@ -287,7 +287,7 @@ function AboutSection() {
               gap: "1rem",
             }}>
                 {/* 배지 */}
-              <div style={{ fontSize: "1.1rem", fontWeight: 700, letterSpacing: "0.18em", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
+              <div style={{ fontSize: "3.3rem", fontWeight: 700, letterSpacing: "0.18em", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
                 <span style={{ color: "#ffffff" }}>CLARUS</span>
                 <span style={{ color: "#a855f7" }}>-N</span>
               </div>
