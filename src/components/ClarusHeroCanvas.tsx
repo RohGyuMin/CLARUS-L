@@ -122,10 +122,11 @@ export default function ClarusHeroCanvas() {
     }
 
     function spawnPulse() {
-      const isAmbientPulse = Math.random() > 0.85; // 15% 확률로 배경 앰비언트 펄스 발생
-      const startIdx = isAmbientPulse 
-        ? 80 + Math.floor(Math.random() * (nodes.length - 80)) 
-        : Math.floor(Math.random() * 80);
+      const split = Math.floor(nodes.length * 0.6);
+      const isAmbientPulse = Math.random() > 0.85;
+      const startIdx = isAmbientPulse
+        ? split + Math.floor(Math.random() * (nodes.length - split))
+        : Math.floor(Math.random() * split);
         
       const possibleEnds = [];
       const searchDist = isAmbientPulse ? 400 : 250;
