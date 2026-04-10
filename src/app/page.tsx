@@ -300,15 +300,15 @@ function AboutSection() {
 
               {/* 설명 */}
               <div style={{ paddingLeft: "1.5rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                <div style={{ color: "#94a3b8", fontSize: "1.8rem", lineHeight: 1.7 }}>
+                <div style={{ color: "#94a3b8", fontSize: "1.3rem", lineHeight: 1.7 }}>
                   Comes from Latin, and its meaning includes:
                 </div>
-                <div style={{ color: "#94a3b8", fontSize: "1.8rem" }}>
+                <div style={{ color: "#94a3b8", fontSize: "1.3rem" }}>
                   Clear, Bright, Distinguished, Easily understood
                 </div>
               </div>
 
-              <div style={{ paddingLeft: "1.5rem", color: "#94a3b8", fontSize: "1.8rem", lineHeight: 1.7 }}>
+              <div style={{ paddingLeft: "1.5rem", color: "#94a3b8", fontSize: "1.3rem", lineHeight: 1.7 }}>
                 "Clarus" reflects the goal of making complex brain imaging<br />
                 "Clear, accurate, and accessible
               </div>
@@ -361,8 +361,8 @@ function AboutSection() {
                   "Specialist by the Korean Society of Cerebrovascular Surgery",
                 ].map(item => (
                   <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
-                    <span style={{ color: "#a855f7", marginTop: "0.4rem", fontSize: "0.8rem", flexShrink: 0 }}>●</span>
-                    <span style={{ color: "#94a3b8", fontSize: "1.76rem", lineHeight: 1.6 }}>{item}</span>
+                    <span style={{ color: "#a855f7", marginTop: "0.4rem", fontSize: "0.6rem", flexShrink: 0 }}>●</span>
+                    <span style={{ color: "#94a3b8", fontSize: "1.3rem", lineHeight: 1.6 }}>{item}</span>
                   </div>
                 ))}
               </div>
