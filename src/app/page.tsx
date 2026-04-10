@@ -277,48 +277,49 @@ function AboutSection() {
           <RevealSection style={{ transitionDelay: "0.1s", flex: 1 }}>
             <div style={{
               height: "100%",
-              padding: "2.2rem 2.4rem",
+              padding: "1.6rem 2rem",
               borderRadius: "1.2rem",
               background: "rgba(15,23,42,0.6)",
               border: "1px solid rgba(168,85,247,0.18)",
               backdropFilter: "blur(16px)",
               display: "flex",
               flexDirection: "column",
-              gap: "1.2rem",
+              gap: "0.9rem",
               boxShadow: "0 0 40px rgba(168,85,247,0.05)",
             }}>
               {/* 타이틀 */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
-                <span style={{ fontSize: "4rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
-                <span style={{ fontSize: "4rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>-N</span>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "0.85rem" }}>
+                <span style={{ fontSize: "3rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
+                <span style={{ fontSize: "3rem", fontWeight: 800, fontFamily: "HYGraphic, sans-serif", color: "#a855f7", margin: "0 0.02em" }}>-</span>
+                <span style={{ fontSize: "3rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>N</span>
               </div>
 
               {/* 의미 */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <div style={{ fontSize: "1.25rem", color: "#cbd5e1", lineHeight: 1.75 }}>
-                  <span style={{ marginRight: "0.4rem", fontSize: "1.35rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                <div style={{ fontSize: "1.05rem", color: "#cbd5e1", lineHeight: 1.7 }}>
+                  <span style={{ marginRight: "0.4rem", fontSize: "1.1rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
                   명확한, 분명한
                 </div>
-                <div style={{ fontSize: "1.05rem", color: "#94a3b8", lineHeight: 1.65 }}>
+                <div style={{ fontSize: "0.9rem", color: "#94a3b8", lineHeight: 1.65 }}>
                   Comes from Latin, and its meaning includes:
                 </div>
-                <div style={{ fontSize: "1.15rem", color: "#94a3b8", lineHeight: 1.75 }}>
+                <div style={{ fontSize: "0.95rem", color: "#94a3b8", lineHeight: 1.7 }}>
                   Clear, Bright, Distinguished, Easily understood
                 </div>
-                <div style={{ fontSize: "1.15rem", color: "#64748b", lineHeight: 1.8 }}>
+                <div style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.75 }}>
                   "Clarus" reflects the goal of making complex brain imaging<br />clear, accurate, and accessible.
                 </div>
               </div>
 
               {/* -N 설명 */}
               <div style={{
-                display: "inline-flex", alignItems: "center", gap: "0.5rem",
+                display: "inline-flex", alignItems: "center", gap: "0.45rem",
                 background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)",
-                borderRadius: "0.6rem", padding: "0.6rem 1.1rem", alignSelf: "flex-start",
+                borderRadius: "0.6rem", padding: "0.5rem 0.9rem", alignSelf: "flex-start",
               }}>
-                <span style={{ fontSize: "1.45rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
-                <span style={{ fontSize: "1.05rem", color: "#94a3b8" }}>: "hyphen N" means</span>
-                <span style={{ fontSize: "1.25rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
+                <span style={{ fontSize: "1.2rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
+                <span style={{ fontSize: "0.9rem", color: "#94a3b8" }}>: "hyphen N" means</span>
+                <span style={{ fontSize: "1.05rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
               </div>
             </div>
           </RevealSection>
@@ -327,14 +328,14 @@ function AboutSection() {
           <RevealSection style={{ transitionDelay: "0.2s", flex: 1 }}>
             <div style={{
               height: "100%",
-              padding: "2.2rem 2.4rem",
+              padding: "1.6rem 2rem",
               borderRadius: "1.2rem",
               background: "rgba(15,23,42,0.6)",
               border: "1px solid rgba(96,165,250,0.14)",
               backdropFilter: "blur(16px)",
               display: "flex",
               flexDirection: "column",
-              gap: "1.2rem",
+              gap: "0.9rem",
               boxShadow: "0 0 40px rgba(96,165,250,0.04)",
             }}>
               {/* CEO 헤더 */}
@@ -348,8 +349,8 @@ function AboutSection() {
                   flexShrink: 0,
                 }}>CEO</span>
                 <div>
-                  <div style={{ fontSize: "2.2rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2 }}>김시온</div>
-                  <div style={{ fontSize: "1.2rem", lineHeight: 1.55, color: "#64748b", fontWeight: 400, marginTop: "0.1rem" }}>Sion Kim, M.D.</div>
+                  <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2 }}>김시온</div>
+                  <div style={{ fontSize: "1rem", lineHeight: 1.55, color: "#64748b", fontWeight: 400, marginTop: "0.1rem" }}>Sion Kim, M.D.</div>
                 </div>
               </div>
 
@@ -363,7 +364,7 @@ function AboutSection() {
                 ].map(item => (
                   <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
                     <span style={{ width: "2px", minHeight: "1.1rem", background: item.color, borderRadius: "1px", flexShrink: 0, marginTop: "0.2rem", opacity: 0.7 }} />
-                    <span style={{ color: "#94a3b8", fontSize: "1.2rem", lineHeight: 1.75 }}>{item.label}</span>
+                    <span style={{ color: "#94a3b8", fontSize: "1rem", lineHeight: 1.7 }}>{item.label}</span>
                   </div>
                 ))}
               </div>
@@ -377,8 +378,8 @@ function AboutSection() {
             position: "relative",
             borderRadius: "1.2rem",
             overflow: "hidden",
-            width: "560px",
-            height: "820px",
+            width: "460px",
+            height: "660px",
             boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
           }}>
             <img
@@ -454,12 +455,12 @@ function AboutStrengthsSection() {
         <div style={{ flex: 1 }}>
           <RevealSection>
             <SectionLabel>About</SectionLabel>
-            <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.3 }}>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.3 }}>
               Distinctive Strengths of <span style={{ color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>-N</span>
             </h2>
           </RevealSection>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {strengths.map((item, i) => {
               const active = hovered === i || pinned === i;
               return (
@@ -470,7 +471,7 @@ function AboutStrengthsSection() {
                     onClick={() => setPinned(pinned === i ? null : i)}
                     style={{
                       display: "flex",
-                      borderRadius: "0.9rem",
+                      borderRadius: "1rem",
                       background: pinned === i
                         ? `${item.color}14`
                         : hovered === i ? `${item.color}0a` : "rgba(15,23,42,0.5)",
@@ -482,24 +483,24 @@ function AboutStrengthsSection() {
                   >
                     {/* 왼쪽 컬러 액센트 바 */}
                     <div style={{
-                      width: "3px",
+                      width: "5px",
                       flexShrink: 0,
                       background: active ? item.color : `${item.color}40`,
                       transition: "background 0.3s ease",
-                      borderRadius: "0.9rem 0 0 0.9rem",
+                      borderRadius: "1rem 0 0 1rem",
                     }} />
 
                     {/* 번호 배지 */}
                     <div style={{
                       flexShrink: 0,
-                      width: "2rem",
+                      width: "3rem",
                       display: "flex",
                       alignItems: "flex-start",
                       justifyContent: "center",
-                      paddingTop: "1rem",
+                      paddingTop: "1.4rem",
                     }}>
                       <span style={{
-                        fontSize: "0.6rem",
+                        fontSize: "0.85rem",
                         fontWeight: 700,
                         color: active ? item.color : "rgba(255,255,255,0.2)",
                         transition: "color 0.3s ease",
@@ -510,9 +511,9 @@ function AboutStrengthsSection() {
                     </div>
 
                     {/* 본문 */}
-                    <div style={{ flex: 1, padding: "0.9rem 1rem 0.9rem 0.25rem" }}>
+                    <div style={{ flex: 1, padding: "1.3rem 1.4rem 1.3rem 0.25rem" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
-                        <div style={{ fontSize: "0.95rem", fontWeight: 600, color: "#e2e8f0" }}>
+                        <div style={{ fontSize: "1.3rem", fontWeight: 600, color: "#e2e8f0" }}>
                           {item.title}
                         </div>
                       </div>
@@ -523,8 +524,8 @@ function AboutStrengthsSection() {
                         opacity: active ? 1 : 0,
                         overflow: "hidden",
                         transition: "max-height 0.35s ease, opacity 0.3s ease",
-                        marginTop: active ? "0.35rem" : "0",
-                        fontSize: "0.78rem",
+                        marginTop: active ? "0.4rem" : "0",
+                        fontSize: "0.9rem",
                         color: "#94a3b8",
                         fontStyle: "italic",
                         lineHeight: 1.6,
@@ -569,10 +570,10 @@ function BackgroundSection() {
       <div style={{ width: "100%" }}>
         <RevealSection>
           <SectionLabel>Background</SectionLabel>
-          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem" }}>
+          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", fontFamily: "'Arial Black', sans-serif" }}>
             Research Context and Motivation
           </h2>
-          <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "2.5rem", maxWidth: "42rem", lineHeight: 1.7 }}>
+          <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "2.5rem", maxWidth: "42rem", lineHeight: 1.7, fontFamily: "'Arial Unicode MS', 'Arial', sans-serif" }}>
             Cerebrovascular diseases require rapid diagnosis, making timing critical for survival. We solve challenges like radiologist shortages and interpretation delays through AI-driven automation.
           </p>
         </RevealSection>
@@ -639,6 +640,18 @@ function BackgroundSection() {
             {/* 우측: 이미지 패널 */}
             <div style={{ flex: 1, position: "relative", minHeight: "420px" }}>
 
+              {/* 뉴런 (이미지 없을 때 기본 표시) */}
+              <div style={{
+                position: "absolute", inset: 0,
+                borderRadius: "1.2rem", overflow: "hidden",
+                opacity: activeIndex !== null ? 0 : 1,
+                transition: "opacity 0.4s ease",
+                pointerEvents: "none",
+                background: "transparent",
+              }}>
+                <NeuralSynapseVisual mode="calm" color="96, 165, 250" opacity={0.65} />
+              </div>
+
               {/* 이미지 */}
               {items.map((item, i) => item.image && (
                 <div key={i} style={{
@@ -652,14 +665,6 @@ function BackgroundSection() {
                   boxShadow: "0 0 40px rgba(0,0,0,0.4)",
                 }}>
                   <img src={item.image} alt={item.ko} style={{ width: "100%", height: "100%", objectFit: "contain", background: "rgba(10,18,40,0.95)" }} />
-                  <div style={{
-                    position: "absolute", bottom: 0, left: 0, right: 0,
-                    padding: "1.5rem 1.2rem 1rem",
-                    background: "linear-gradient(to top, rgba(5,10,25,0.9), transparent)",
-                  }}>
-                    <div style={{ fontSize: "0.65rem", color: "#60a5fa", fontStyle: "italic", marginBottom: "0.25rem" }}>{item.en}</div>
-                    <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#e2e8f0" }}>{item.ko}</div>
-                  </div>
                 </div>
               ))}
             </div>
@@ -702,7 +707,9 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       theme: "blue",
       details: [
         "#Input: TOF images",
-        "#Dice: 0.872, #6.78sec"
+        "#DICE: 0.872",
+        "#Analysis time: 6.8s",
+        "#View Manipulation: zoom in, zoom out, rotation, pan"
       ]
     },
     {
@@ -712,7 +719,11 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       theme: "blue",
       details: [
         "#Input: TOF images",
-        "#Sensitivity: 92.0%, #20.25sec"
+        "#Sensitivity: 92.0%",
+        "#Specificity: 97.8%",
+        "#Analysis time: 20.3s",
+        "#Training data: 3500 cases, 5030 aneurysms",
+        "#Overwhelming detection performance"
       ]
     },
     {
@@ -722,7 +733,11 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       theme: "blue",
       details: [
         "#Input: TOF images",
-        "#Sensitivity: 92.0%, #20.25sec"
+        "#Sensitivity: 95.8%",
+        "#Specificity: 86.4%",
+        "#Analysis time: 22.4s",
+        "#Training data: 1722 cases",
+        "#Particularly effective for multi-focal stenosis"
       ]
     }
   ];
@@ -734,7 +749,13 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       description: "Accurately identifies even minute infarct lesions",
       videoSrc: "/videos/4. Infarction region.mp4",
       theme: "purple",
-      details: ["#Dice 0.820, #22.0sec", "#6002 cases training data"]
+      details: [
+        "#Input: DWI images",
+        "#Dice: 0.820",
+        "#Analysis time: 22.0s",
+        "#Training data: 6002 cases",
+        "#Optimized for detecting multiple small infarction"
+      ]
     },
     {
       id: "dwi-2",
@@ -742,7 +763,13 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       description: "Mapping the vascular territory that caused the cerebral infarction",
       videoSrc: "/videos/5. infarction territory.mp4",
       theme: "purple",
-      details: ["#Dice 0.820, #22.0sec", "#Six major vessels"],
+      details: [
+        "#Input: DWI images",
+        "#Dice: 0.820",
+        "#Analysis time: 22.0s",
+        "#Training data: 6002 cases",
+        "#Six Major Vessel"
+      ],
       legendItems: [
         { label: "ACA", color: "#d946ef" },
         { label: "MCA", color: "#22c55e" },
@@ -758,7 +785,13 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       description: "Transferring DWI-predicted lesions to ADC to estimate time since onset.",
       videoSrc: "/videos/KakaoTalk_20260406_122852533.mp4",
       theme: "purple",
-      details: ["#Dice 0.820, #22.0sec", "#Acute, Subacute, Chronic stage"],
+      details: [
+        "#Input: ADC images",
+        "#Dice: 0.820",
+        "#Analysis time: 22.0s",
+        "#Training data: 1919 cases",
+        "#Acute, Subacute, Chronic stage"
+      ],
       legendItems: [
         { label: "Acute stage", color: "#ef4444" },
         { label: "Subacute stage", color: "#f97316" },
@@ -771,10 +804,14 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     {
       id: "carotid-1",
       title: "MRA AI for <span style='color: #facc15'>Carotid Vessel</span> reconstruction",
-      description: "Rendering CCAs that are difficult to visualize using MIP.",
+      description: "CCA-rendered images provide superior visualization compared to MIP",
       videoSrc: "/videos/7.Carotid 3D-cube.mp4",
       theme: "gray",
-      details: ["#Input: Carotid TOF images", "#Dice 0.916, #4.52sec"]
+      details: [
+        "#Input: Carotid TOF images",
+        "#Dice: 0.916",
+        "#Analysis time: 4.5s"
+      ]
     },
     {
       id: "carotid-2",
@@ -782,7 +819,13 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       description: "Identifies stenotic and occlusive regions.",
       videoSrc: "/videos/8.Carotid Stenosis-cube.mp4",
       theme: "gray",
-      details: ["#Input: Carotid TOF images", "#0.00sec"]
+      details: [
+        "#Input: Carotid TOF images",
+        "#Sensitivity: 85.3%",
+        "#Specificity: 92.3%",
+        "#Analysis time: 7.5s",
+        "#Training data: 622 cases"
+      ]
     }
   ];
 
@@ -790,18 +833,29 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     {
       id: "ct-1",
       title: "CT AI for <span style='color: #f472b6'>Hemorrhage</span> Detection",
-      description: "Rendering CCAs that are difficult to visualize using MIP.",
+      description: "Robustly identifies subtle hemorrhages that are easy to miss",
       videoSrc: "/videos/9. CT hemorrhage.mp4",
       theme: "green",
-      details: ["#Input: Axial CT images", "#Dice 0.928 #4.5sec"]
+      details: [
+        "#Input: Axial CT images",
+        "#Dice: 0.928",
+        "#Analysis time: 2.9s",
+        "#Training data: 5556 cases"
+      ]
     },
     {
       id: "ct-2",
       title: "CTA AI for <span style='color: #facc15'>Vessel</span> Reconstruction",
-      description: "Identifies stenotic and occlusive regions.",
+      description: "Rapid and detailed 3D reconstruction of the cerebral vessels.",
       videoSrc: "/videos/10.CTA vessel 3D-cube.mp4",
       theme: "green",
-      details: ["#Input: CTA source images", "#0.00sec"]
+      details: [
+        "#Input: CTA source images",
+        "#Dice: 0.912",
+        "#Analysis time: 7.5sec",
+        "#Training data: 200 cases",
+        "#Highly advanced in bone subtraction for the cavernous segment"
+      ]
     }
   ];
 
@@ -861,7 +915,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
               disabled={pageIndex === 0}
               style={{
                 position: "absolute",
-                left: "-3.5rem",
+                left: "-5rem",
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
@@ -873,7 +927,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
               onMouseEnter={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "1")}
               onMouseLeave={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "0.6")}
             >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </button>
@@ -887,11 +941,11 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
               disabled={pageIndex === cardSets.length - 1}
               style={{
                 position: "absolute",
-                right: "-2.5rem",
+                right: "-5rem",
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
-                background: "none", border: "none", color: "#60a5fa", 
+                background: "none", border: "none", color: "#60a5fa",
                 cursor: pageIndex === cardSets.length - 1 ? "default" : "pointer",
                 opacity: pageIndex === cardSets.length - 1 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: "1rem",
                 display: "flex", alignItems: "center", justifyContent: "center"
@@ -899,7 +953,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
               onMouseEnter={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "1")}
               onMouseLeave={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "0.6")}
             >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
@@ -1145,94 +1199,62 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
         {card.description}
       </p>
 
-      {/* 호버 시 나타나는 상세 정보 - 테크니컬 뱃지 스타일 */}
+      {/* 호버 시 나타나는 상세 정보 - Key-Value 그리드 */}
       <div style={{
-        maxHeight: highlighted ? "140px" : "0",
+        maxHeight: highlighted ? "200px" : "0",
         opacity: highlighted ? 1 : 0,
         overflow: "hidden",
         transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-        marginTop: highlighted ? "1.5rem" : "0",
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "0.5rem",
+        marginTop: highlighted ? "1.25rem" : "0",
       }}>
-        {card.details.map((detailStr: string, idx: number) => {
-          // # 을 기준으로 파싱하여 개별 뱃지로 생성
-          const parts = detailStr.split('#').filter(p => p.trim() !== '');
-          return parts.map((part, pIdx) => {
-            // 끝에 붙은 쉼표 제거 및 공백 정리
-            const cleanPart = part.trim().replace(/,$/, '');
-            const [label, ...val] = cleanPart.split(':');
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "0.5rem 1.5rem",
+          borderTop: `1px solid ${themeColor.replace('0.8', '0.12')}`,
+          paddingTop: "1rem",
+        }}>
+          {card.details.map((detailStr: string, idx: number) => {
+            const clean = detailStr.replace(/^#/, '').trim();
+            const colonIdx = clean.indexOf(':');
+            const label = colonIdx !== -1 ? clean.slice(0, colonIdx).trim() : clean;
+            const value = colonIdx !== -1 ? clean.slice(colonIdx + 1).trim() : '';
+            const isFullWidth = !value || clean.length > 35;
             return (
-              <div key={`${idx}-${pIdx}`} style={{
-                background: "rgba(255,255,255,0.03)",
-                border: `1px solid ${themeColor.replace('0.8', '0.15')}`,
-                padding: "0.35rem 0.75rem",
-                borderRadius: "0.5rem",
-                fontSize: "0.85rem",
-                fontFamily: "'Inter', sans-serif",
+              <div key={idx} style={{
+                gridColumn: isFullWidth ? "1 / -1" : "auto",
                 display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                transition: "all 0.3s ease",
+                flexDirection: "column",
+                gap: "0.15rem",
               }}>
-                <span style={{ 
-                  color: themeColor, 
-                  fontWeight: 700, 
-                  fontSize: "0.75rem", 
-                  letterSpacing: "0.05em",
+                <span style={{
+                  fontSize: "0.65rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
                   textTransform: "uppercase",
-                  opacity: 0.9 
+                  color: themeColor,
+                  opacity: 0.7,
+                  fontFamily: "'Inter', sans-serif",
                 }}>
-                  {label.trim()}
+                  {label}
                 </span>
-                {val.length > 0 && (
-                  <span style={{ 
-                    color: "rgba(255,255,255,0.75)", 
-                    fontWeight: 400,
-                    borderLeft: "1px solid rgba(255,255,255,0.1)",
-                    paddingLeft: "0.5rem"
+                {value && (
+                  <span style={{
+                    fontSize: "0.88rem",
+                    fontWeight: 500,
+                    color: "rgba(226,232,240,0.9)",
+                    fontFamily: "'Inter', sans-serif",
+                    lineHeight: 1.4,
                   }}>
-                    {val.join(':').trim()}
+                    {value}
                   </span>
                 )}
               </div>
             );
-          });
-        })}
+          })}
+        </div>
       </div>
 
-      {/* 활성화 시 범례 정보 표시 */}
-      {card.legendItems && (
-        <div style={{
-          maxHeight: isActive ? "200px" : "0",
-          opacity: isActive ? 1 : 0,
-          overflow: "hidden",
-          transition: "max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease",
-          marginTop: isActive ? "1.25rem" : "0",
-        }}>
-          <div style={{
-            borderTop: `1px solid ${themeColor.replace("0.8", "0.2")}`,
-            paddingTop: "1rem",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "0.5rem",
-          }}>
-            {card.legendItems.map(item => (
-              <div key={item.label} style={{
-                display: "flex", alignItems: "center", gap: "0.5rem",
-                background: `${item.color}14`,
-                border: `1px solid ${item.color}40`,
-                borderRadius: "0.4rem",
-                padding: "0.3rem 0.65rem",
-              }}>
-                <div style={{ width: "10px", height: "10px", borderRadius: "2px", background: item.color, flexShrink: 0 }} />
-                <span style={{ fontSize: "0.78rem", color: "#e2e8f0", fontWeight: 500 }}>{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* 호버 시 배경 글로우 */}
       <div style={{
@@ -1305,7 +1327,7 @@ function TestRequestSection() {
         <div style={{ flex: 1, maxWidth: "38rem" }}>
           <RevealSection>
             <SectionLabel>Research Analysis Request</SectionLabel>
-            <h2 style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.2rem)", fontWeight: 700, color: "#ffffff", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "-0.01em" }}>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#ffffff", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "-0.01em" }}>
               연구용 데이터 AI 분석 의뢰
             </h2>
             <Divider />
@@ -1630,7 +1652,7 @@ function ContactSection() {
         <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <RevealSection>
             <SectionLabel>Contact</SectionLabel>
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
               <span style={{ whiteSpace: "nowrap" }}>Research Collaboration</span><br />
               <span style={{ whiteSpace: "nowrap" }}>& Technical Partnerships</span>
             </h2>
@@ -2355,9 +2377,10 @@ function ClinicalLegend({ activeVideo }: { activeVideo: string | null }) {
           cursor: "pointer",
           backdropFilter: "blur(8px)",
           boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
-          opacity: isOpen ? 0 : 1, // 열려있으면 숨김
+          opacity: isOpen ? 0 : 1,
           pointerEvents: isOpen ? "none" : "auto",
-          transform: isOpen ? "scale(0.8) translateY(10px)" : "scale(1) translateY(0)",
+          transform: isOpen ? "scale(0.48) translateY(10px)" : "scale(0.6) translateY(0)",
+          transformOrigin: "bottom left",
           transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
         onMouseEnter={e => e.currentTarget.style.background = "rgba(30, 41, 59, 0.9)"}
@@ -2397,7 +2420,7 @@ function ClinicalLegend({ activeVideo }: { activeVideo: string | null }) {
           cursor: "default",
           backdropFilter: "blur(8px)",
           transformOrigin: "bottom left",
-          transform: isOpen ? "scale(1)" : "scale(0.5)", // 크기를 줄이면서 완전히 숨김
+          transform: isOpen ? "scale(0.6)" : "scale(0.3)",
           opacity: isOpen ? 1 : 0,
           pointerEvents: isOpen ? "auto" : "none",
           transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",

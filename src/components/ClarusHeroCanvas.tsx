@@ -47,7 +47,7 @@ export default function ClarusHeroCanvas() {
     let H = canvas.height = canvas.offsetHeight;
 
     /* ── 설정 및 초기화 ── */
-    const nodeCount = 150; // 노드 수 상향 (공간 채우기용)
+    const nodeCount = 50; // 노드 수
     let brainCenterX = W * 0.75; 
     let brainCenterY = H * 0.45;
     let brainBaseScale = Math.min(W, H) * 0.32;

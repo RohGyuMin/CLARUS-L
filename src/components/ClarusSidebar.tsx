@@ -10,8 +10,8 @@ interface ClarusSidebarProps {
   onSubNavClick?: (index: number) => void;
 }
 
-const brainMriItems = ["Vessel 3D", "Aneurysm", "Stenosis", "Infarction", "Carotid Vessel 3D", "Carotid Stenosis"];
-const brainCtItems = ["Hemorrhage", "Vessel 3D"];
+const brainMriItems = ["MRA Vessel 3D", "Aneurysm", "Stenosis", "Infarction", "Carotid Vessel 3D", "Carotid Stenosis"];
+const brainCtItems = ["Hemorrhage", "CTA Vessel 3D"];
 
 export default function ClarusSidebar({
   isOpen,
@@ -205,11 +205,12 @@ export default function ClarusSidebar({
                   <h3 style={{
                     color: isPerformanceOpen ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
                     fontWeight: 700,
-                    fontSize: "0.85rem",
+                    fontSize: "1rem",
+                    lineHeight: 1.4,
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Arial Unicode MS', 'Arial', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain MRI</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -236,11 +237,12 @@ export default function ClarusSidebar({
                   <h3 style={{
                     color: isPerformanceOpen ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
                     fontWeight: 700,
-                    fontSize: "0.85rem",
+                    fontSize: "1rem",
+                    lineHeight: 1.4,
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Arial Unicode MS', 'Arial', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain CT</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -323,7 +325,7 @@ function NavBtn({
         color: active ? "#ffffff" : hovered ? "#ffffff" : "rgba(226,232,240,0.85)",
         fontSize: "1.2rem",
         fontWeight: active ? 600 : 500,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Arial Black', sans-serif",
         padding: "1rem 1.5rem",
         borderRadius: "0.75rem",
         textAlign: "left",
@@ -373,9 +375,10 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
           : "transparent",
         boxShadow: hovered ? "inset 2px 0 0 rgba(96,165,250,0.4)" : "none",
         color: hovered ? "#ffffff" : "rgba(203,213,225,0.75)",
-        fontSize: "1.05rem",
+        fontSize: "1rem",
+        lineHeight: 1.5,
         fontWeight: 500,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Arial Unicode MS', 'Arial', sans-serif",
         padding: "0.625rem 1.15rem",
         borderRadius: "0.375rem",
         textAlign: "left",
