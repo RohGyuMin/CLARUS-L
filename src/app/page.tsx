@@ -384,12 +384,10 @@ function AboutSection() {
               src="/ceo-photo.png"
               alt="CEO Sion Kim"
               style={{
-                width: "115%",
-                height: "115%",
+                width: "100%",
+                height: "100%",
                 objectFit: "cover",
-                objectPosition: "38% 12%",
-                filter: "grayscale(100%) contrast(1.05)",
-                marginLeft: "5%",
+                objectPosition: "50% 15%",
                 display: "block",
               }}
             />
