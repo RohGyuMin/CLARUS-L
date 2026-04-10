@@ -69,7 +69,7 @@ export default function ClarusHeroCanvas() {
 
       return {
         x: nx, y: ny,
-        vx: rand(-0.12, 0.12), vy: rand(-0.10, 0.10),
+        vx: rand(-0.05, 0.05), vy: rand(-0.04, 0.04),
         radius: i % 10 === 0 ? rand(3.5, 5.5) : rand(1.2, 2.8),
         alpha: i < 80 ? rand(0.5, 0.95) : rand(0.2, 0.5), // 배경 노드는 더 투명하게
         hue: rand(195, 235),
