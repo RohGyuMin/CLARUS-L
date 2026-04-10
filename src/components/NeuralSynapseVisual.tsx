@@ -46,12 +46,6 @@ export default function NeuralSynapseVisual({
       links: number[];
     }
 
-    interface Signal {
-      from: number;
-      to: number;
-      progress: number; // 0 → 1
-      speed: number;
-    }
 
     const MAX_LINKS = 5;
     const MIN_LINKS = 3;
@@ -77,26 +71,6 @@ export default function NeuralSynapseVisual({
       nodes[i].links = dists.slice(0, linkCount).map(v => v.j);
     }
 
-    const signals: Signal[] = [];
-    const MAX_SIGNALS = Math.floor(config.count * 0.6);
-
-    function spawnSignal() {
-      if (signals.length >= MAX_SIGNALS) return;
-      const from = Math.floor(Math.random() * nodes.length);
-      const n = nodes[from];
-      if (!n.links.length) return;
-      const to = n.links[Math.floor(Math.random() * n.links.length)];
-      // 중복 신호 방지
-      const exists = signals.some(s => s.from === from && s.to === to);
-      if (!exists) {
-        signals.push({
-          from,
-          to,
-          progress: 0,
-          speed: config.signalSpeed * (0.7 + Math.random() * 0.6),
-        });
-      }
-    }
 
     let raf: number;
     let isVisible = true;
@@ -113,9 +87,6 @@ export default function NeuralSynapseVisual({
 
       ctx.clearRect(0, 0, W, H);
       ctx.globalCompositeOperation = "screen";
-
-      // 신호 스폰
-      if (Math.random() < config.signalRate) spawnSignal();
 
       // 노드 이동 + 그리기
       for (let i = 0; i < nodes.length; i++) {
@@ -152,48 +123,6 @@ export default function NeuralSynapseVisual({
         }
       }
 
-      // 신호 이동 + 그리기
-      for (let s = signals.length - 1; s >= 0; s--) {
-        const sig = signals[s];
-        sig.progress += sig.speed;
-
-        if (sig.progress >= 1) {
-          signals.splice(s, 1);
-          continue;
-        }
-
-        const from = nodes[sig.from];
-        const to   = nodes[sig.to];
-        const t    = sig.progress;
-        const sx   = from.x + (to.x - from.x) * t;
-        const sy   = from.y + (to.y - from.y) * t;
-
-        // 신호 꼬리 (그라디언트 느낌)
-        const tailLen = 0.12;
-        const t0 = Math.max(0, t - tailLen);
-        const tx0 = from.x + (to.x - from.x) * t0;
-        const ty0 = from.y + (to.y - from.y) * t0;
-
-        const grad = ctx.createLinearGradient(tx0, ty0, sx, sy);
-        grad.addColorStop(0, `rgba(${color}, 0)`);
-        grad.addColorStop(1, `rgba(255, 255, 255, ${opacity * 0.9})`);
-        ctx.beginPath();
-        ctx.moveTo(tx0, ty0);
-        ctx.lineTo(sx, sy);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // 신호 헤드 (밝은 점)
-        const headGlow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 5);
-        headGlow.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
-        headGlow.addColorStop(0.4, `rgba(${color}, ${opacity * 0.6})`);
-        headGlow.addColorStop(1, `rgba(${color}, 0)`);
-        ctx.beginPath();
-        ctx.arc(sx, sy, 5, 0, Math.PI * 2);
-        ctx.fillStyle = headGlow;
-        ctx.fill();
-      }
     }
 
     raf = requestAnimationFrame(draw);
