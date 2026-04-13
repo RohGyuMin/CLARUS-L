@@ -1475,8 +1475,8 @@ function TestRequestSection() {
               backdropFilter: "blur(20px)",
               border: "1px solid rgba(255,255,255,0.06)",
               borderRadius: "1.5rem",
-              padding: "1.25rem",
-              marginBottom: "1.5rem",
+              padding: "1rem",
+              marginBottom: "1rem",
               boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
             }}>
               {/* 숨겨진 파일 입력 */}
@@ -1504,7 +1504,7 @@ function TestRequestSection() {
                   background: isDragging ? "rgba(96,165,250,0.12)" : isUploadHovered ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.01)",
                   border: `1px ${isDragging || isUploadHovered ? 'solid' : 'dashed'} ${isDragging ? 'rgba(96,165,250,0.8)' : isUploadHovered ? 'rgba(96,165,250,0.5)' : 'rgba(96,165,250,0.25)'}`,
                   borderRadius: "1rem",
-                  padding: "1.5rem 1.25rem",
+                  padding: "1rem 1.25rem",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -1512,7 +1512,7 @@ function TestRequestSection() {
                   textAlign: "center",
                   cursor: "pointer",
                   transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                  marginBottom: "2rem",
+                  marginBottom: "1rem",
                   position: "relative",
                   overflow: "hidden"
                 }}
@@ -1550,11 +1550,11 @@ function TestRequestSection() {
                   <>
                     <div style={{
                       color: isDragging ? "#60a5fa" : "#60a5fa",
-                      marginBottom: "1rem",
+                      marginBottom: "0.6rem",
                       transform: isUploadHovered ? "translateY(-5px)" : "translateY(0)",
                       transition: "transform 0.4s ease"
                     }}>
-                      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                         <polyline points="17 8 12 3 7 8" />
                         <line x1="12" y1="3" x2="12" y2="15" />
@@ -1578,19 +1578,19 @@ function TestRequestSection() {
               </div>
 
               {/* 상세 안내 리스트 */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
                 {infoPoints.map((point, idx) => (
-                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                    <span style={{ 
-                      color: "#60a5fa", 
-                      fontSize: "1.1rem", 
+                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
+                    <span style={{
+                      color: "#60a5fa",
+                      fontSize: "0.9rem",
                       lineHeight: "1.5rem",
                       fontWeight: 800
                     }}>•</span>
-                    <p style={{ 
-                      color: "rgba(226,232,240,0.75)", 
-                      fontSize: "0.95rem", 
-                      lineHeight: 1.6,
+                    <p style={{
+                      color: "rgba(226,232,240,0.75)",
+                      fontSize: "0.88rem",
+                      lineHeight: 1.55,
                       fontWeight: 300,
                       wordBreak: "keep-all"
                     }}>
@@ -1603,8 +1603,8 @@ function TestRequestSection() {
           </RevealSection>
 
           <RevealSection style={{ transitionDelay: "0.2s" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-              <div className="cn-form-row" style={{ display: "flex", gap: "1.25rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+              <div className="cn-form-row" style={{ display: "flex", gap: "0.85rem" }}>
                 {/* 이메일 입력 */}
                 <div style={{ flex: 1, position: "relative" }}>
                   <label htmlFor="email-input" className="sr-only">이메일 주소</label>
@@ -1616,11 +1616,11 @@ function TestRequestSection() {
                     onChange={e => setEmailValue(e.target.value)}
                     style={{ 
                       width: "100%",
-                      padding: "1.1rem 1.5rem", 
-                      borderRadius: "0.85rem", 
-                      background: "rgba(255,255,255,0.03)", 
-                      border: "1px solid rgba(255,255,255,0.08)", 
-                      color: "#ffffff", 
+                      padding: "0.85rem 1.25rem",
+                      borderRadius: "0.85rem",
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      color: "#ffffff",
                       outline: "none",
                       fontSize: "1rem",
                       transition: "all 0.3s ease",
@@ -1645,8 +1645,8 @@ function TestRequestSection() {
                     onChange={e => setFileType(e.target.value)}
                     style={{ 
                       width: "100%",
-                      padding: "1.1rem 1.5rem", 
-                      borderRadius: "0.85rem", 
+                      padding: "0.85rem 1.25rem",
+                      borderRadius: "0.85rem",
                       background: "rgba(15,23,42,0.8)", 
                       border: "1px solid rgba(255,255,255,0.08)", 
                       color: "#ffffff", 
@@ -1675,12 +1675,12 @@ function TestRequestSection() {
               
               {/* 분석 요청하기 버튼 */}
               <button style={{
-                padding: "1.2rem", 
+                padding: "0.9rem",
                 borderRadius: "1rem",
                 background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
-                color: "#ffffff", 
-                fontWeight: 700, 
-                fontSize: "1.15rem",
+                color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "1.05rem",
                 border: "none", 
                 cursor: "pointer",
                 boxShadow: "0 10px 25px -5px rgba(59,130,246,0.5), 0 8px 10px -6px rgba(139,92,246,0.3)",
