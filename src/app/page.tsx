@@ -1012,6 +1012,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
   ];
 
   const cardSets = [mraCards, infarctCards, carotidCards, ctCards];
+  const activeLegendItems = cardSets.flat().find(c => c.videoSrc === activeVideo)?.legendItems;
 
   const handleCardClick = (videoSrc: string) => {
     if (activeVideo === videoSrc) {
@@ -1252,6 +1253,64 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8 5v14l11-7z" />
                     </svg>
+                  </div>
+                </div>
+              )}
+
+              {/* 범례: legendItems 있는 영상에서 항상 표시 */}
+              {activeLegendItems && activeLegendItems.length > 0 && (
+                <div
+                  onClick={e => e.stopPropagation()}
+                  style={{
+                    position: "absolute",
+                    bottom: "1rem",
+                    left: "1rem",
+                    zIndex: 40,
+                    background: "rgba(6, 11, 26, 0.82)",
+                    backdropFilter: "blur(10px)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "0.65rem",
+                    overflow: "hidden",
+                    minWidth: "150px",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <div style={{
+                    padding: "0.35rem 0.8rem",
+                    borderBottom: "1px solid rgba(255,255,255,0.07)",
+                    background: "rgba(255,255,255,0.04)",
+                  }}>
+                    <span style={{
+                      color: "rgba(148,163,184,0.7)",
+                      fontSize: "0.67rem",
+                      fontWeight: 700,
+                      letterSpacing: "0.12em",
+                      fontFamily: "'Inter', sans-serif",
+                      textTransform: "uppercase",
+                    }}>
+                      Legend
+                    </span>
+                  </div>
+                  <div style={{ padding: "0.5rem 0.8rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                    {activeLegendItems.map(item => (
+                      <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <div style={{
+                          width: "9px", height: "9px",
+                          borderRadius: "2px",
+                          background: item.color,
+                          flexShrink: 0,
+                          boxShadow: `0 0 6px ${item.color}88`,
+                        }} />
+                        <span style={{
+                          color: "rgba(226,232,240,0.88)",
+                          fontSize: "0.73rem",
+                          fontFamily: "'Inter', sans-serif",
+                          whiteSpace: "nowrap",
+                        }}>
+                          {item.label}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
