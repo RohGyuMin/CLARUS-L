@@ -13,7 +13,7 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [scale, setScale] = useState(1.5);
+  const scale = 1.5;
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pdfDocRef = useRef<any>(null);
@@ -168,40 +168,6 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
 
           {/* 우측 컨트롤 */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            {/* 줌 */}
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "2px",
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.07)",
-              borderRadius: "0.55rem",
-              padding: "0.2rem",
-            }}>
-              {[1, 1.5, 2].map(s => (
-                <button
-                  key={s}
-                  onClick={() => setScale(s)}
-                  style={{
-                    padding: "0.22rem 0.55rem",
-                    borderRadius: "0.35rem",
-                    fontSize: "0.72rem",
-                    fontWeight: 600,
-                    letterSpacing: "0.03em",
-                    background: scale === s
-                      ? "linear-gradient(135deg, rgba(99,102,241,0.35) 0%, rgba(96,165,250,0.25) 100%)"
-                      : "transparent",
-                    border: scale === s ? "1px solid rgba(99,102,241,0.5)" : "1px solid transparent",
-                    color: scale === s ? "#a5b4fc" : "rgba(148,163,184,0.4)",
-                    cursor: "pointer",
-                    transition: "all 0.15s ease",
-                  }}
-                >
-                  {s === 1 ? "1×" : s === 1.5 ? "1.5×" : "2×"}
-                </button>
-              ))}
-            </div>
-
             {/* 다운로드 */}
             <a
               href={src}
