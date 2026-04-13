@@ -38,6 +38,7 @@ function useReveal(threshold = 0.15) {
 function HeroSection() {
   return (
     <section
+      id="hero"
       style={{
         height: "100vh",
         position: "relative",
@@ -2207,6 +2208,7 @@ function ContactSection() {
 ───────────────────────────────────────────── */
 const NAV_SECTIONS = ["about", "background", "performance", "test-request", "contact"] as const;
 type SectionId = typeof NAV_SECTIONS[number];
+const SNAP_SECTION_IDS = ["hero", "about", "background", "performance", "test-request", "contact"];
 
 export default function ClarusNPage() {
   const [showIntro, setShowIntro] = useState(true);
@@ -2215,6 +2217,7 @@ export default function ClarusNPage() {
   const [activeSection, setActiveSection] = useState<SectionId | "">("");
   const [performancePageIndex, setPerformancePageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isSnapScrolling = useRef(false);
 
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
@@ -2253,6 +2256,46 @@ export default function ClarusNPage() {
     setPerformancePageIndex(index);
     handleNavClick("performance");
   }, [handleNavClick]);
+
+  // 섹션 스냅 스크롤 (휠 한 번 = 다음 섹션)
+  useEffect(() => {
+    if (showIntro) return;
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (isSnapScrolling.current) {
+        e.preventDefault();
+        return;
+      }
+
+      const sections = SNAP_SECTION_IDS
+        .map(id => container.querySelector(`#${id}`) as HTMLElement | null)
+        .filter(Boolean) as HTMLElement[];
+
+      const containerRect = container.getBoundingClientRect();
+      const positions = sections.map(el => el.getBoundingClientRect().top - containerRect.top);
+
+      // 현재 섹션: top이 container 상단 이하(≤10px)인 마지막 섹션
+      let currentIdx = 0;
+      for (let i = 0; i < positions.length; i++) {
+        if (positions[i] <= 10) currentIdx = i;
+      }
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const nextIdx = Math.max(0, Math.min(sections.length - 1, currentIdx + direction));
+
+      if (nextIdx === currentIdx) return;
+
+      e.preventDefault();
+      isSnapScrolling.current = true;
+      sections[nextIdx].scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => { isSnapScrolling.current = false; }, 1000);
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, [showIntro]);
 
   const introVideoRef = useRef<HTMLVideoElement>(null);
   const hasTriggeredTransition = useRef(false);
