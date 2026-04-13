@@ -1,17 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, createContext, useContext } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import ClarusSidebar from "@/components/ClarusSidebar";
 import ClarusCursor from "@/components/ClarusCursor";
 import ClarusHeroCanvas from "@/components/ClarusHeroCanvas";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
+import PdfModal from "@/components/PdfModal";
 
-
-/* ─────────────────────────────────────────────
-   언어 컨텍스트
-───────────────────────────────────────────── */
-const LangContext = createContext<'ko' | 'en'>('ko');
 
 /* ─────────────────────────────────────────────
    인터섹션 옵저버 훅 – 뷰포트에 들어오면 visible
@@ -271,7 +267,6 @@ function Divider() {
 }
 
 function AboutSection() {
-  const lang = useContext(LangContext);
   return (
     <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "8rem" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "2rem" }}>
@@ -307,7 +302,7 @@ function AboutSection() {
               <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
                 <div style={{ fontSize: "1.08rem", color: "#cbd5e1", lineHeight: 1.7 }}>
                   <span style={{ marginRight: "0.4rem", fontSize: "1.13rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
-                  {lang === 'ko' ? '명확한, 분명한' : 'Clear, Distinct'}
+                  명확한, 분명한
                 </div>
                 <div style={{ fontSize: "0.93rem", color: "#94a3b8", lineHeight: 1.65 }}>
                   Comes from Latin, and its meaning includes:
@@ -385,13 +380,14 @@ function AboutSection() {
         </div>
 
         {/* 우측: CEO 사진 흑백 */}
-        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "center", paddingBottom: "0", marginTop: "2rem" }}>
+        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", alignSelf: "stretch", display: "flex", flexDirection: "column", paddingBottom: "0", marginTop: "2rem" }}>
           <div style={{
             position: "relative",
             borderRadius: "1.2rem",
             overflow: "hidden",
             width: "460px",
-            height: "660px",
+            flex: 1,
+            minHeight: "600px",
             boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
           }}>
             <img
@@ -462,7 +458,7 @@ function AboutStrengthsSection() {
   const [pinned, setPinned] = useState<number | null>(null);
 
   return (
-    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+    <section id="about-strengths" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
         <div style={{ flex: 1 }}>
           <RevealSection>
@@ -564,63 +560,55 @@ function AboutStrengthsSection() {
 
 
 function BackgroundSection() {
-  const lang = useContext(LangContext);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [pinnedCard, setPinnedCard] = useState<number | null>(null);
 
   const items: {
     color: string;
     title: React.ReactNode;
-    koTitle: string;
-    koDetail: string;
-    enDetail: string;
+    subtitle: string;
+    detail: string;
     image?: string;
   }[] = [
     {
       color: "#facc15",
-      title: <>Ultra-aged society</>,
-      koTitle: "2025년 초고령 사회 진입",
-      koDetail: "65세 이상 노인이 전체 인구의 20% 이상을 차지합니다.",
-      enDetail: "Adults aged 65+ now comprise over 20% of the total population.",
+      title: <><span style={{ color: "#facc15" }}>Ultra-Aged Society</span> in 2025</>,
+      subtitle: "2025년 초고령 사회 진입",
+      detail: "65세이상의 노인 인구가 전체 인구의 20%이상을 차지",
       image: "/bg-elderly.png",
     },
     {
-      color: "#fb7185",
-      title: <>Surge in neurological diseases associated with super-aging</>,
-      koTitle: "초고령화 사회로 인한 신경계 질환의 급증",
-      koDetail: "뇌출혈, 뇌위축, 치매와 같은 퇴행성 질환자가 증가하고 있습니다.",
-      enDetail: "Cases of hemorrhage, brain atrophy, and dementia are rapidly increasing.",
+      color: "#FFA47A",
+      title: <>A <span style={{ color: "#FFA47A" }}>Surge in Neurological Diseases</span> Due to an Ultra-Aged Society</>,
+      subtitle: "초고령화 사회로 인한 신경계 질환의 급증",
+      detail: "뇌졸중, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
       image: "/bg-disease-surge.png",
     },
     {
       color: "#a78bfa",
-      title: <>Limited availability of neurological expertise</>,
-      koTitle: "신경계 전문 인력의 희소성",
-      koDetail: "신경외과, 신경과 전문의는 전체 의사의 5.7%에 불과합니다.",
-      enDetail: "Neurosurgeons and neurologists account for only 5.7% of all physicians.",
+      title: <><span style={{ color: "#a78bfa" }}>Scarcity</span> of Neurological Specialists</>,
+      subtitle: "신경계 전문 인력의 희소성",
+      detail: "신경과·신경외과 전문의는 전체 의사의 5.7%에 불과",
       image: "/bg-neuro-rare.png",
     },
     {
       color: "#60a5fa",
-      title: <>Complexity of neuroimaging interpretation</>,
-      koTitle: "MRI, CT 영상 해석의 난해함",
-      koDetail: "복잡한 영상 구조와 미세한 병변 때문에 판독 난이도가 높습니다.",
-      enDetail: "Complex imaging structures and subtle lesions make interpretation highly challenging.",
+      title: <><span style={{ color: "#60a5fa" }}>Complexity</span> of Neuroimaging Interpretation</>,
+      subtitle: "MRI, CT 영상 해석의 난해함",
+      detail: "복잡한 영상 구조와 미세한 병변으로 판독 난이도가 매우 높음",
     },
     {
       color: "#34d399",
-      title: <>The time-sensitive and life-threatening nature of brain disorders</>,
-      koTitle: "신경계 질환의 긴급성과 생명과 직결되는 치명성",
-      koDetail: "뇌종양은 단일질환 사망률 2위로, 신속한 판단이 매우 중요합니다.",
-      enDetail: "Brain tumors rank 2nd in single-disease mortality, making rapid assessment critical.",
+      title: <>The <span style={{ color: "#34d399" }}>Urgency and Fatality</span> of Neurological Diseases</>,
+      subtitle: "신경계 질환의 긴급성과 직결되는 치명성",
+      detail: "뇌졸증은 단일질환 사망률 2위",
       image: "/bg-neuro-urgent.png",
     },
     {
-      color: "#f59e0b",
-      title: <>Regional imbalance in the distribution of general hospitals</>,
-      koTitle: "병원 접근성의 지역별 불균형",
-      koDetail: "강원, 제주지역은 3차 종합병원 진료가 매우 어렵습니다.",
-      enDetail: "Access to tertiary hospitals remains severely limited in rural regions like Gangwon and Jeju.",
+      color: "#f87171",
+      title: <><span style={{ color: "#f87171" }}>Regional Imbalance</span> in the Distribution of General Hospitals</>,
+      subtitle: "병원 접근성의 지역별 불균형",
+      detail: "강원·제주지역은 3차 종합병원 진료가 매우 어려움",
       image: "/bg-hospital-map.png",
     },
   ];
@@ -632,17 +620,11 @@ function BackgroundSection() {
       <div style={{ width: "100%" }}>
         <RevealSection>
           <SectionLabel>Background</SectionLabel>
-          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
+          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.2 }}>
             Research Context and Motivation
           </h2>
-          <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "2.5rem", maxWidth: "42rem", lineHeight: 1.7, fontFamily: "'HYGraphic', sans-serif" }}>
-            Cerebrovascular diseases require rapid diagnosis, making timing critical for survival. We solve challenges like radiologist shortages and interpretation delays through AI-driven automation.
-          </p>
-        </RevealSection>
-
-        <RevealSection style={{ transitionDelay: "0.1s" }}>
           <div style={{ display: "flex", gap: "2.5rem", maxWidth: "1300px", alignItems: "center" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: 1, minWidth: 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", flex: 1, minWidth: 0 }}>
             {items.map((item, i) => {
               const isActive = activeIndex === i;
               const isPinned = pinnedCard === i;
@@ -655,112 +637,106 @@ function BackgroundSection() {
                   style={{
                     display: "flex",
                     alignItems: "stretch",
-                    minHeight: isActive ? "7.6rem" : "4.8rem",
-                    borderRadius: "1.1rem",
+                    borderRadius: "0.75rem",
                     overflow: "hidden",
-                    background: isActive ? `${item.color}12` : "rgba(15,23,42,0.68)",
-                    border: `1px solid ${isActive ? `${item.color}45` : "rgba(96,165,250,0.12)"}`,
-                    boxShadow: isPinned ? `0 0 24px ${item.color}1c` : isActive ? `0 0 18px ${item.color}10` : "none",
-                    backdropFilter: "blur(14px)",
-                    cursor: "pointer",
-                    transition: "all 0.28s ease",
-                    transform: isActive ? "translateX(6px)" : "translateX(0)",
+                    background: isActive ? `${item.color}10` : "rgba(15,23,42,0.55)",
+                    border: `1px solid ${isActive ? `${item.color}35` : "rgba(255,255,255,0.06)"}`,
+                    backdropFilter: "blur(12px)",
+                    cursor: item.image ? "pointer" : "default",
+                    transition: "all 0.22s ease",
+                    transform: isActive ? "translateX(4px)" : "translateX(0)",
                   }}
                 >
+                  {/* 왼쪽 컬러 바 */}
                   <div style={{
-                    width: "5px",
+                    width: "4px",
                     flexShrink: 0,
-                    background: isActive ? item.color : `${item.color}40`,
-                    transition: "background 0.25s ease",
+                    background: isActive ? item.color : `${item.color}50`,
+                    transition: "background 0.22s ease",
                   }} />
+                  {/* 번호 */}
                   <div style={{
                     flexShrink: 0,
-                    width: "4rem",
+                    width: "3rem",
                     display: "flex",
-                    alignItems: "flex-start",
+                    alignItems: "center",
                     justifyContent: "center",
-                    paddingTop: "1.3rem",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    color: isActive ? item.color : "rgba(255,255,255,0.2)",
+                    letterSpacing: "0.02em",
+                    transition: "color 0.22s ease",
                   }}>
-                    <span style={{
-                      fontSize: "0.88rem",
-                      fontWeight: 700,
-                      color: isActive ? item.color : "rgba(255,255,255,0.22)",
-                      letterSpacing: "0.02em",
-                    }}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+                    {String(i + 1).padStart(2, "0")}
                   </div>
-                  <div style={{ flex: 1, padding: "1.1rem 1.35rem 1.15rem 0.1rem" }}>
+                  {/* 본문 */}
+                  <div style={{ flex: 1, padding: "0.85rem 1.2rem 0.85rem 0" }}>
+                    {/* 영문 제목 */}
                     <div style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: "1rem",
+                      fontSize: "1.3rem",
+                      fontWeight: 600,
+                      color: "#e2e8f0",
+                      lineHeight: 1.3,
+                      marginBottom: "0.3rem",
                     }}>
-                      <div style={{
-                        fontSize: "1.22rem",
-                        lineHeight: 1.25,
-                        fontWeight: 700,
-                        color: isActive ? item.color : `${item.color}ff`,
-                        textShadow: isActive ? `0 0 16px ${item.color}44` : "none",
-                        transition: "all 0.25s ease",
-                      }}>
-                        {lang === 'ko' ? item.koTitle : item.title}
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
-                        {item.image && (
-                          <span style={{
-                            fontSize: "0.7rem",
-                            color: isPinned ? item.color : "rgba(148,163,184,0.4)",
-                            border: `1px solid ${isPinned ? item.color + "80" : "rgba(148,163,184,0.2)"}`,
-                            borderRadius: "0.3rem",
-                            padding: "0.1rem 0.35rem",
-                            letterSpacing: "0.04em",
-                            fontFamily: "'Inter', sans-serif",
-                            transition: "all 0.25s ease",
-                          }}>
-                            IMG
-                          </span>
-                        )}
-                        <span style={{
-                          color: isActive ? item.color : "rgba(148,163,184,0.35)",
-                          fontSize: "1.1rem",
-                          lineHeight: 1,
-                          transform: isActive ? "translateY(-1px)" : "translateY(0)",
-                          transition: "all 0.25s ease",
-                        }}>
-                          {isPinned ? "⌄" : "›"}
-                        </span>
-                      </div>
+                      {item.title}
                     </div>
+                    {/* 한글 부제목 + 상세 설명 - 호버 시에만 표시 */}
                     <div style={{
-                      maxHeight: isActive ? "8rem" : "0",
+                      maxHeight: isActive ? "6rem" : "0",
                       opacity: isActive ? 1 : 0,
                       overflow: "hidden",
-                      transition: "max-height 0.35s ease, opacity 0.25s ease",
-                      marginTop: isActive ? "0.55rem" : "0",
-                      paddingLeft: isActive ? "1rem" : "0",
-                      borderLeft: isActive ? `2px solid ${item.color}` : "2px solid transparent",
+                      transition: "max-height 0.3s ease, opacity 0.22s ease",
+                      marginTop: isActive ? "0.25rem" : "0",
                     }}>
                       <div style={{
-                        fontSize: "0.96rem",
-                        color: "#cbd5e1",
-                        lineHeight: 1.6,
+                        fontSize: "0.82rem",
+                        color: "rgba(148,163,184,0.75)",
+                        marginBottom: "0.2rem",
                         fontFamily: "'HYGraphic', sans-serif",
                       }}>
-                        {lang === 'ko' ? item.koDetail : item.enDetail}
+                        {item.subtitle}
                       </div>
                       <div style={{
-                        marginTop: "0.4rem",
-                        fontSize: "0.82rem",
-                        color: `${item.color}90`,
-                        lineHeight: 1.5,
-                        fontFamily: "'Inter', sans-serif",
-                        fontStyle: "italic",
+                        fontSize: "0.96rem",
+                        color: item.color,
+                        fontFamily: "'HYGraphic', sans-serif",
+                        paddingLeft: "0.8rem",
                       }}>
-                        {item.title}
+                        : {item.detail}
                       </div>
                     </div>
+                  </div>
+                  {/* 오른쪽: 이미지 뱃지 + 화살표 */}
+                  <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.35rem",
+                    paddingRight: "1rem",
+                  }}>
+                    {item.image && (
+                      <span style={{
+                        fontSize: "0.65rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
+                        color: isActive ? item.color : `${item.color}60`,
+                        border: `1px solid ${isActive ? item.color + "80" : item.color + "30"}`,
+                        borderRadius: "0.3rem",
+                        padding: "0.1rem 0.3rem",
+                        transition: "all 0.22s ease",
+                      }}>
+                        IMG
+                      </span>
+                    )}
+                    <span style={{
+                      color: isActive ? item.color : "rgba(148,163,184,0.25)",
+                      fontSize: "1rem",
+                      transition: "color 0.22s ease",
+                    }}>
+                      →
+                    </span>
                   </div>
                 </div>
               );
@@ -780,7 +756,7 @@ function BackgroundSection() {
               {pinnedCard !== null && items[pinnedCard].image && (
                 <img
                   src={items[pinnedCard].image}
-                  alt={items[pinnedCard].koTitle}
+                  alt="Background Detail"
                   style={{
                     width: "100%",
                     maxHeight: "420px",
@@ -827,7 +803,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     {
       title: "MRA AI for <span style='color: #facc15'>Vessel</span> reconstruction",
       description: "Precise reconstruction of even the finest blood vessels.",
-      videoSrc: "/videos/1.Vessel 3D-cube.mp4",
+      videoSrc: "/videos/1-Vessel-3D-cube.mp4",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -839,7 +815,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     {
       title: "MRA AI for <span style='color: #ef4444'>Aneurysm</span> detection",
       description: "Detects more accurately than a neuro-specialists.",
-      videoSrc: "/videos/2.Aneurysm 3D-cube.mp4",
+      videoSrc: "/videos/2-Aneurysm-3D-cube.mp4",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -853,7 +829,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     {
       title: "MRA AI for <span style='color: #38bdf8'>Stenosis</span> detection",
       description: "Detects stenosis up to the A2 and M2 segments.",
-      videoSrc: "/videos/3.Stenosis 3D-cube.mp4",
+      videoSrc: "/videos/3-Stenosis-3D-cube.mp4",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -871,7 +847,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "dwi-1",
       title: "DWI AI for Infarcted <span style='color: #c084fc'>Region</span> Detection",
       description: "Accurately identifies even minute infarct lesions",
-      videoSrc: "/videos/4. Infarction region.mp4",
+      videoSrc: "/videos/4-Infarction-region.mp4",
       theme: "purple",
       details: [
         "#Input: DWI images",
@@ -885,7 +861,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "dwi-2",
       title: "DWI AI for Mapping <span style='color: #a3e635'>Vascular territories</span>",
       description: "Mapping the vascular territory that caused the cerebral infarction",
-      videoSrc: "/videos/5. infarction territory.mp4",
+      videoSrc: "/videos/5-infarction-territory.mp4",
       theme: "purple",
       details: [
         "#Input: DWI images",
@@ -929,7 +905,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "carotid-1",
       title: "MRA AI for <span style='color: #facc15'>Carotid Vessel</span> reconstruction",
       description: "CCA-rendered images provide superior visualization compared to MIP",
-      videoSrc: "/videos/7.Carotid 3D-cube.mp4",
+      videoSrc: "/videos/7-Carotid-3D-cube.mp4",
       theme: "gray",
       details: [
         "#Input: Carotid TOF images",
@@ -941,7 +917,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "carotid-2",
       title: "MRA AI for <span style='color: #22c55e'>Carotid Stenosis & occlusion</span>",
       description: "Identifies stenotic and occlusive regions.",
-      videoSrc: "/videos/8.Carotid Stenosis-cube.mp4",
+      videoSrc: "/videos/8-Carotid-Stenosis-cube.mp4",
       theme: "gray",
       details: [
         "#Input: Carotid TOF images",
@@ -958,7 +934,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "ct-1",
       title: "CT AI for <span style='color: #f472b6'>Hemorrhage</span> Detection",
       description: "Robustly identifies subtle hemorrhages that are easy to miss",
-      videoSrc: "/videos/9. CT hemorrhage.mp4",
+      videoSrc: "/videos/9-CT-hemorrhage.mp4",
       theme: "green",
       details: [
         "#Input: Axial CT images",
@@ -971,7 +947,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "ct-2",
       title: "CTA AI for <span style='color: #facc15'>Vessel</span> Reconstruction",
       description: "Rapid and detailed 3D reconstruction of the cerebral vessels.",
-      videoSrc: "/videos/10.CTA vessel 3D-cube.mp4",
+      videoSrc: "/videos/10-CTA-vessel-3D-cube.mp4",
       theme: "green",
       details: [
         "#Input: CTA source images",
@@ -1198,9 +1174,6 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
             </p>
           )}
 
-          {/* 범례 오버레이 */}
-          <ClinicalLegend activeVideo={activeVideo} />
-
           {/* 비디오 플레이어 */}
           {activeVideo && (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -1397,7 +1370,6 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
 
 
 function TestRequestSection() {
-  const lang = useContext(LangContext);
   const [isUploadHovered, setIsUploadHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -1405,6 +1377,7 @@ function TestRequestSection() {
   const [fileType, setFileType] = useState("");
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [requestCount, setRequestCount] = useState(231);
+  const [selectedPdf, setSelectedPdf] = useState<"analysis" | "dicom" | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (files: FileList | File[]) => {
@@ -1439,7 +1412,7 @@ function TestRequestSection() {
     }
   };
   
-  const infoPointsKR = [
+  const infoPoints = [
     "파일 형식 지원 (최대 25MB)",
     "전송된 영상은 NIfTI 파일형식으로 모두 전환됩니다",
     "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다",
@@ -1447,15 +1420,6 @@ function TestRequestSection() {
     "분석된 영상은 이메일로 24시간 이내로 보내드립니다",
     "빠른 영상분석이 필요시에는 파일 업로드 후 contact의 연락처로 문의 바랍니다."
   ];
-  const infoPointsEN = [
-    "All file formats supported (max 25MB)",
-    "All uploaded images are converted to NIfTI format",
-    "Patient data is automatically removed due to NIfTI specifications",
-    "Original files are deleted after NIfTI conversion",
-    "Analyzed results will be sent via email within 24 hours",
-    "For urgent analysis, contact us via the Contact section after uploading."
-  ];
-  const infoPoints = lang === 'ko' ? infoPointsKR : infoPointsEN;
 
   return (
     <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
@@ -1464,7 +1428,7 @@ function TestRequestSection() {
           <RevealSection>
             <SectionLabel>Research Analysis Request</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
-              {lang === 'ko' ? '연구용 데이터 AI 분석 의뢰' : 'Research Data AI Analysis Request'}
+              연구용 데이터 AI 분석 의뢰
             </h2>
             <Divider />
           </RevealSection>
@@ -1743,40 +1707,48 @@ function TestRequestSection() {
                 </div>
 
                 <div style={{ display: "flex", gap: "0.75rem" }}>
-                {[
-                  { label: "파일첨부 방식", icon: "📎" },
-                  { label: "분석 영상 확인 방법", icon: "🔍" },
-                ].map(({ label, icon }) => (
-                  <button
-                    key={label}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.45rem",
-                      padding: "0.55rem 1.1rem",
-                      borderRadius: "0.6rem",
-                      background: "rgba(96,165,250,0.07)",
-                      border: "1px solid rgba(96,165,250,0.25)",
-                      color: "#93c5fd",
-                      fontSize: "0.88rem",
-                      fontWeight: 600,
-                      fontFamily: "'HYGraphic', sans-serif",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.background = "rgba(96,165,250,0.15)";
-                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.background = "rgba(96,165,250,0.07)";
-                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)";
-                    }}
-                  >
-                    <span>{icon}</span>
-                    <span>{label}</span>
-                  </button>
-                ))}
+                {([
+                  { label: "분석영상 확인방법", icon: "🔍", key: "analysis" as const },
+                  { label: "DICOM 파일 추출 방법", icon: "📎", key: "dicom" as const },
+                ] as const).map(({ label, icon, key }) => {
+                  const isActive = selectedPdf === key;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setSelectedPdf(isActive ? null : key)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.45rem",
+                        padding: "0.55rem 1.1rem",
+                        borderRadius: "0.6rem",
+                        background: isActive ? "rgba(96,165,250,0.2)" : "rgba(96,165,250,0.07)",
+                        border: `1px solid ${isActive ? "rgba(96,165,250,0.6)" : "rgba(96,165,250,0.25)"}`,
+                        color: isActive ? "#bfdbfe" : "#93c5fd",
+                        fontSize: "0.88rem",
+                        fontWeight: 600,
+                        fontFamily: "'HYGraphic', sans-serif",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                      onMouseEnter={e => {
+                        if (!isActive) {
+                          e.currentTarget.style.background = "rgba(96,165,250,0.15)";
+                          e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        if (!isActive) {
+                          e.currentTarget.style.background = "rgba(96,165,250,0.07)";
+                          e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)";
+                        }
+                      }}
+                    >
+                      <span>{icon}</span>
+                      <span>{label}</span>
+                    </button>
+                  );
+                })}
                 </div>
               </div>
             </div>
@@ -1784,12 +1756,20 @@ function TestRequestSection() {
         </div>
 
       </div>
+
+      {/* PDF 팝업 모달 */}
+      {selectedPdf && (
+        <PdfModal
+          src={selectedPdf === "analysis" ? "/analysis-guide.pdf" : "/dicom-guide.pdf"}
+          title={selectedPdf === "analysis" ? "🔍 분석영상 확인방법" : "📎 DICOM 파일 추출 방법"}
+          onClose={() => setSelectedPdf(null)}
+        />
+      )}
     </section>
   );
 }
 
 function ContactSection() {
-  const [descLang, setDescLang] = useState<"ko" | "en">("ko");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
@@ -1839,19 +1819,9 @@ function ContactSection() {
             <Divider />
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
-            <p
-              onClick={() => setDescLang(l => l === "ko" ? "en" : "ko")}
-              style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem", cursor: "pointer", transition: "opacity 0.2s ease" }}
-              title="클릭하여 언어 전환"
-            >
-              {descLang === "ko" ? <>
-                <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
-                저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
-              </> : <>
-                Thank you for your interest in <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>&apos;s AI solutions.<br />
-                We are currently operating a research-focused pilot program.<br />
-                For inquiries regarding research collaboration or technical partnerships, please contact us.
-              </>}
+            <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem" }}>
+              <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
+              저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", maxWidth: "420px" }}>
               
@@ -2227,26 +2197,67 @@ function ContactSection() {
   );
 }
 
+function Footer() {
+  return (
+    <footer style={{
+      padding: "3rem 0 4rem 0",
+      borderTop: "1px solid rgba(255,255,255,0.06)",
+      color: "rgba(148, 163, 184, 0.6)",
+      fontSize: "0.85rem",
+      fontFamily: "'Inter', sans-serif",
+      lineHeight: "1.8",
+      letterSpacing: "0.02em",
+      paddingLeft: "7rem",
+      paddingRight: "4rem"
+    }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+        {/* 상단: 회사 기본 정보 (가로 배열) */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
+            <span>대표자: 김시은</span>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+          <span>사업자등록번호: 811-87-03349</span>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+          <span>연락처: +82-2-****-****</span>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+          <span>이메일: clarusnai@gmail.com</span>
+        </div>
+        {/* 중단: 주소 */}
+        <div>
+          <span>주소: 서울특별시 금천구 가산디지털1로 168, A동 10층 1012호 (가산동, 우림라이온스밸리)</span>
+        </div>
+      </div>
+      {/* 하단: 카피라이트 */}
+      <div style={{ 
+        marginTop: "2rem", 
+        color: "rgba(148, 163, 184, 0.4)", 
+        fontWeight: 500,
+        fontSize: "0.8rem",
+      }}>
+        Copyright 2026. CLARUS-N Co., Ltd. All rights reserved.
+      </div>
+    </footer>
+  );
+}
+
 /* ─────────────────────────────────────────────
    메인 페이지
 ───────────────────────────────────────────── */
-const NAV_SECTIONS = ["about", "background", "performance", "test-request", "contact"] as const;
+const NAV_SECTIONS = ["about", "about-strengths", "background", "performance", "test-request", "contact"] as const;
 type SectionId = typeof NAV_SECTIONS[number];
-const SNAP_SECTION_IDS = ["hero", "about", "background", "performance", "test-request", "contact"];
+const SNAP_SECTION_IDS = ["hero", "about", "about-strengths", "background", "performance", "test-request", "contact"] as const;
 
 export default function ClarusNPage() {
   const [showIntro, setShowIntro] = useState(true);
   const [isIntroEnding, setIsIntroEnding] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeSection, setActiveSection] = useState<SectionId | "">("");
+  const [activeSection, setActiveSection] = useState<string>("");
   const [performancePageIndex, setPerformancePageIndex] = useState(0);
-  const [lang, setLang] = useState<'ko' | 'en'>('ko');
   const scrollRef = useRef<HTMLDivElement>(null);
   const isSnapScrolling = useRef(false);
 
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
-  // 스크롤 위치 추적 → 현재 섹션 결정
+  // 스크롤 위치 추적 → 현재 활성 섹션(Sidebar 강조용) 파악
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -2282,46 +2293,6 @@ export default function ClarusNPage() {
     handleNavClick("performance");
   }, [handleNavClick]);
 
-  // 섹션 스냅 스크롤 (휠 한 번 = 다음 섹션)
-  useEffect(() => {
-    if (showIntro) return;
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (isSnapScrolling.current) {
-        e.preventDefault();
-        return;
-      }
-
-      const sections = SNAP_SECTION_IDS
-        .map(id => container.querySelector(`#${id}`) as HTMLElement | null)
-        .filter(Boolean) as HTMLElement[];
-
-      const containerRect = container.getBoundingClientRect();
-      const positions = sections.map(el => el.getBoundingClientRect().top - containerRect.top);
-
-      // 현재 섹션: top이 container 상단 이하(≤10px)인 마지막 섹션
-      let currentIdx = 0;
-      for (let i = 0; i < positions.length; i++) {
-        if (positions[i] <= 10) currentIdx = i;
-      }
-
-      const direction = e.deltaY > 0 ? 1 : -1;
-      const nextIdx = Math.max(0, Math.min(sections.length - 1, currentIdx + direction));
-
-      if (nextIdx === currentIdx) return;
-
-      e.preventDefault();
-      isSnapScrolling.current = true;
-      sections[nextIdx].scrollIntoView({ behavior: "smooth", block: "start" });
-      setTimeout(() => { isSnapScrolling.current = false; }, 1000);
-    };
-
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    return () => container.removeEventListener("wheel", handleWheel);
-  }, [showIntro]);
-
   const introVideoRef = useRef<HTMLVideoElement>(null);
   const hasTriggeredTransition = useRef(false);
   const introTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -2354,16 +2325,50 @@ export default function ClarusNPage() {
     introTimers.current.push(t);
   }, []);
 
-  // 비디오 타임 업데이트 핸들러
-  const handleTimeUpdate = () => {
-    const video = introVideoRef.current;
-    if (!video || hasTriggeredTransition.current) return;
+  // 섹션 스냅 스크롤 (휠 조작 시 섹션 단위 이동)
+  useEffect(() => {
+    if (showIntro) return;
+    const container = scrollRef.current;
+    if (!container) return;
 
-    // 8초 도달 시 트랜지션 시작
-    if (video.currentTime >= 8) {
-      startIntroTransition();
-    }
-  };
+    const handleWheel = (e: WheelEvent) => {
+      // 이미 스크롤 중이면 중복 처리 방지
+      if (isSnapScrolling.current) {
+        e.preventDefault();
+        return;
+      }
+
+      const sections = SNAP_SECTION_IDS
+        .map(id => container.querySelector(`#${id}`) as HTMLElement | null)
+        .filter(Boolean) as HTMLElement[];
+
+      const containerRect = container.getBoundingClientRect();
+      const positions = sections.map(el => el.getBoundingClientRect().top - containerRect.top);
+
+      // 현재 화면 중앙 부근에 위치한 섹션 인덱스 찾기
+      let currentIdx = 0;
+      for (let i = 0; i < positions.length; i++) {
+        if (positions[i] <= 50) currentIdx = i;
+      }
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const nextIdx = Math.max(0, Math.min(sections.length - 1, currentIdx + direction));
+
+      if (nextIdx === currentIdx) return;
+
+      e.preventDefault();
+      isSnapScrolling.current = true;
+      
+      // 다음 섹션으로 부드럽게 이동
+      sections[nextIdx].scrollIntoView({ behavior: "smooth", block: "start" });
+      
+      // 스냅 감도 조절 (1초 후 다시 활성화)
+      setTimeout(() => { isSnapScrolling.current = false; }, 1000);
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, [showIntro]);
 
 
   return (
@@ -2401,7 +2406,6 @@ export default function ClarusNPage() {
             autoPlay
             muted
             playsInline
-            onTimeUpdate={handleTimeUpdate}
             onEnded={startIntroTransition}
             onError={handleSkipIntro}
             onCanPlayThrough={() => {
@@ -2457,52 +2461,6 @@ export default function ClarusNPage() {
           pointerEvents: showIntro ? "none" : "auto",
         }}
       >
-        {/* KO/EN 토글 버튼 */}
-        <button
-          onClick={() => setLang(l => l === 'ko' ? 'en' : 'ko')}
-          style={{
-            position: "fixed",
-            top: "1.5rem",
-            right: "2rem",
-            zIndex: 200,
-            display: "flex",
-            alignItems: "center",
-            gap: "0",
-            background: "rgba(10,18,36,0.85)",
-            border: "1px solid rgba(96,165,250,0.25)",
-            borderRadius: "2rem",
-            padding: "0.35rem 0.2rem",
-            backdropFilter: "blur(16px)",
-            cursor: "pointer",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
-            transition: "border-color 0.2s ease",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)"; }}
-        >
-          {(['ko', 'en'] as const).map((l) => (
-            <span
-              key={l}
-              style={{
-                padding: "0.2rem 0.75rem",
-                borderRadius: "1.5rem",
-                fontSize: "0.78rem",
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                fontFamily: "'ITC Eras Medium', 'Arial', sans-serif",
-                background: lang === l ? "rgba(59,130,246,0.2)" : "transparent",
-                color: lang === l ? "#93c5fd" : "rgba(148,163,184,0.45)",
-                border: lang === l ? "1px solid rgba(96,165,250,0.35)" : "1px solid transparent",
-                transition: "all 0.25s ease",
-              }}
-            >
-              {l.toUpperCase()}
-            </span>
-          ))}
-        </button>
-
-        {/* 스크롤 영역 */}
-        <LangContext.Provider value={lang}>
         <div
           ref={scrollRef}
           className="cn-sidebar-scroll"
@@ -2562,7 +2520,6 @@ export default function ClarusNPage() {
             </footer>
           </div>
         </div>
-        </LangContext.Provider>
 
         {/* 메뉴 열기 버튼 */}
         <button

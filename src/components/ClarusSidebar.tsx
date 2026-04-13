@@ -165,6 +165,12 @@ export default function ClarusSidebar({
               onClick={onNavClick}
             />
             <NavBtn
+              label="Strengths"
+              sectionId="about-strengths"
+              active={activeSection === "about-strengths"}
+              onClick={onNavClick}
+            />
+            <NavBtn
               label="Background"
               sectionId="background"
               active={activeSection === "background"}
