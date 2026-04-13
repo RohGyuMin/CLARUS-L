@@ -7,6 +7,7 @@ import ClarusCursor from "@/components/ClarusCursor";
 import ClarusHeroCanvas from "@/components/ClarusHeroCanvas";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 
+
 /* ─────────────────────────────────────────────
    인터섹션 옵저버 훅 – 뷰포트에 들어오면 visible
 ───────────────────────────────────────────── */
@@ -75,7 +76,7 @@ function HeroSection() {
         <h1
           style={{
             margin: 0,
-            fontSize: "clamp(3.5rem, 10vw, 8rem)",
+            fontSize: "clamp(3.2rem, 9vw, 7.4rem)",
             fontWeight: 700,
             letterSpacing: "0.08em",
             fontFamily: "var(--font-bernhard)",
@@ -87,7 +88,7 @@ function HeroSection() {
           }}>
           C<span>LARUS</span>
           <span style={{ 
-            fontFamily: 'HYGraphic, sans-serif',
+            fontFamily: "'HYGraphic', sans-serif",
             fontSize: "0.85em",
             color: "#a855f7",
             margin: "0 0.02em",
@@ -290,24 +291,24 @@ function AboutSection() {
             }}>
               {/* 타이틀 */}
               <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "0.85rem" }}>
-                <span style={{ fontSize: "3rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
-                <span style={{ fontSize: "3rem", fontWeight: 800, fontFamily: "HYGraphic, sans-serif", color: "#a855f7", margin: "0 0.02em" }}>-</span>
-                <span style={{ fontSize: "3rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>N</span>
+                <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
+                <span style={{ fontSize: "3.12rem", fontWeight: 800, fontFamily: "HYGraphic, sans-serif", color: "#a855f7", margin: "0 0.02em" }}>-</span>
+                <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>N</span>
               </div>
 
               {/* 의미 */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                <div style={{ fontSize: "1.05rem", color: "#cbd5e1", lineHeight: 1.7 }}>
-                  <span style={{ marginRight: "0.4rem", fontSize: "1.1rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
+                <div style={{ fontSize: "1.08rem", color: "#cbd5e1", lineHeight: 1.7 }}>
+                  <span style={{ marginRight: "0.4rem", fontSize: "1.13rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
                   명확한, 분명한
                 </div>
-                <div style={{ fontSize: "0.9rem", color: "#94a3b8", lineHeight: 1.65 }}>
+                <div style={{ fontSize: "0.93rem", color: "#94a3b8", lineHeight: 1.65 }}>
                   Comes from Latin, and its meaning includes:
                 </div>
-                <div style={{ fontSize: "0.95rem", color: "#94a3b8", lineHeight: 1.7 }}>
+                <div style={{ fontSize: "0.98rem", color: "#94a3b8", lineHeight: 1.7 }}>
                   Clear, Bright, Distinguished, Easily understood
                 </div>
-                <div style={{ fontSize: "0.9rem", color: "#64748b", lineHeight: 1.75 }}>
+                <div style={{ fontSize: "0.93rem", color: "#64748b", lineHeight: 1.75 }}>
                   "Clarus" reflects the goal of making complex brain imaging<br />clear, accurate, and accessible.
                 </div>
               </div>
@@ -318,9 +319,9 @@ function AboutSection() {
                 background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)",
                 borderRadius: "0.6rem", padding: "0.5rem 0.9rem", alignSelf: "flex-start",
               }}>
-                <span style={{ fontSize: "1.2rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
-                <span style={{ fontSize: "0.9rem", color: "#94a3b8" }}>: "hyphen N" means</span>
-                <span style={{ fontSize: "1.05rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
+                <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
+                <span style={{ fontSize: "0.93rem", color: "#94a3b8" }}>: "hyphen N" means</span>
+                <span style={{ fontSize: "1.08rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
               </div>
             </div>
           </RevealSection>
@@ -330,51 +331,54 @@ function AboutSection() {
             <div style={{
               height: "100%",
               padding: "1.6rem 2rem",
-              borderRadius: "1.2rem",
-              background: "rgba(15,23,42,0.6)",
-              border: "1px solid rgba(96,165,250,0.14)",
-              backdropFilter: "blur(16px)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.9rem",
-              boxShadow: "0 0 40px rgba(96,165,250,0.04)",
-            }}>
-              {/* CEO 헤더 */}
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
-                <span style={{
-                  fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.22em",
-                  color: "#60a5fa", background: "rgba(96,165,250,0.12)",
-                  border: "1px solid rgba(96,165,250,0.4)",
-                  padding: "0.35rem 0.85rem", borderRadius: "0.4rem",
-                  textShadow: "0 0 10px rgba(96,165,250,0.5)",
-                  flexShrink: 0,
-                }}>CEO</span>
-                <div>
-                  <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2 }}>김시온</div>
-                  <div style={{ fontSize: "1rem", lineHeight: 1.55, color: "#64748b", fontWeight: 400, marginTop: "0.1rem" }}>Sion Kim, M.D.</div>
-                </div>
-              </div>
-
-              {/* Board-Certified */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-                {[
-                  { label: "Neurosurgeon", color: "#a855f7" },
-                  { label: "Critical Care Specialist", color: "#60a5fa" },
-                  { label: "Specialist in Endovascular Neurosurgery", color: "#34d399" },
-                  { label: "Specialist by the Korean Society of Cerebrovascular Surgery", color: "#f59e0b" },
-                ].map(item => (
-                  <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
-                    <span style={{ width: "2px", minHeight: "1.1rem", background: item.color, borderRadius: "1px", flexShrink: 0, marginTop: "0.2rem", opacity: 0.7 }} />
-                    <span style={{ color: "#94a3b8", fontSize: "1rem", lineHeight: 1.7 }}>{item.label}</span>
+                borderRadius: "1.2rem",
+                background: "rgba(15,23,42,0.6)",
+                border: "1px solid rgba(96,165,250,0.14)",
+                backdropFilter: "blur(16px)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.9rem",
+                boxShadow: "0 0 40px rgba(96,165,250,0.04)",
+              }}>
+                {/* CEO 헤더 */}
+                <div style={{ display: "flex", alignItems: "center", gap: "1.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
+                  <span style={{
+                    fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.22em",
+                    color: "#60a5fa", background: "rgba(96,165,250,0.12)",
+                    border: "1px solid rgba(96,165,250,0.4)",
+                    padding: "0.35rem 0.85rem", borderRadius: "0.4rem",
+                    textShadow: "0 0 10px rgba(96,165,250,0.5)",
+                    flexShrink: 0,
+                    display: "inline-block",
+                    transform: "scale(1.18)",
+                    transformOrigin: "left center",
+                  }}>CEO</span>
+                  <div>
+                    <div style={{ fontSize: "2rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, fontFamily: "HYGraphic, sans-serif" }}>김시은</div>
+                    <div style={{ fontSize: "1.15rem", lineHeight: 1.55, color: "#64748b", fontWeight: 400, marginTop: "0.1rem", fontFamily: "'ITC Eras Medium', 'Arial', sans-serif", letterSpacing: "0.01em" }}>Sion Kim, M.D.</div>
                   </div>
-                ))}
+                </div>
+
+                {/* Board-Certified */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {[
+                    { label: "Neurosurgeon", color: "#a855f7" },
+                    { label: "Critical Care Specialist", color: "#60a5fa" },
+                    { label: "Specialist in Endovascular Neurosurgery", color: "#34d399" },
+                    { label: "Specialist by the Korean Society of Cerebrovascular Surgery", color: "#f59e0b" },
+                  ].map(item => (
+                    <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
+                      <span style={{ width: "2px", minHeight: "1.1rem", background: item.color, borderRadius: "1px", flexShrink: 0, marginTop: "0.2rem", opacity: 0.7 }} />
+                      <span style={{ color: "#94a3b8", fontSize: "1.15rem", lineHeight: 1.7 }}>{item.label}</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </RevealSection>
         </div>
 
         {/* 우측: CEO 사진 흑백 */}
-        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "center", paddingBottom: "0" }}>
+        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "center", paddingBottom: "0", marginTop: "2rem" }}>
           <div style={{
             position: "relative",
             borderRadius: "1.2rem",
@@ -390,7 +394,7 @@ function AboutSection() {
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                objectPosition: "50% 15%",
+                objectPosition: "50% 24%",
                 display: "block",
               }}
             />
@@ -456,8 +460,8 @@ function AboutStrengthsSection() {
         <div style={{ flex: 1 }}>
           <RevealSection>
             <SectionLabel>About</SectionLabel>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.3 }}>
-              Distinctive Strengths of <span style={{ color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>-N</span>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.2 }}>
+              Distinctive Strengths of <span style={{ color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontFamily: "'HYGraphic', sans-serif" }}>-N</span>
             </h2>
           </RevealSection>
 
@@ -526,7 +530,8 @@ function AboutStrengthsSection() {
                         overflow: "hidden",
                         transition: "max-height 0.35s ease, opacity 0.3s ease",
                         marginTop: active ? "0.4rem" : "0",
-                        fontSize: "0.9rem",
+                        paddingLeft: active ? "0.9rem" : "0",
+                        fontSize: "0.96rem",
                         color: "#94a3b8",
                         fontStyle: "italic",
                         lineHeight: 1.6,
@@ -555,13 +560,54 @@ function BackgroundSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [pinnedCard, setPinnedCard] = useState<number | null>(null);
 
-  const items: { en: string; ko: string; image?: string }[] = [
-    { en: "Ultra-aged society", ko: "초고령화 사회", image: "/bg-초고령.png" },
-    { en: "Surge in neurological diseases associated with super-aging", ko: "초고령화 사회로 인한 신경계 질환의 급증", image: "/bg-질환급증.png" },
-    { en: "Limited availability of neurological expertise", ko: "신경계 전문 인력의 희소성", image: "/bg-신경의희소성.png" },
-    { en: "Complexity of neuroimaging interpretation", ko: "MRI, CT 영상 해석의 난해함" },
-    { en: "The time-sensitive and life-threatening nature of brain disorders", ko: "신경계 질환의 긴급성과 생명과 직결되는 치명성", image: "/bg-신경긴급성.png" },
-    { en: "Regional imbalance in the distribution of general hospitals", ko: "병원 접근성의 지역별 불균형", image: "/bg-병원분포.png" },
+  const items: {
+    color: string;
+    title: React.ReactNode;
+    koTitle: string;
+    koDetail: string;
+    image?: string;
+  }[] = [
+    {
+      color: "#facc15",
+      title: <>Ultra-aged society</>,
+      koTitle: "2025년 초고령 사회 진입",
+      koDetail: "65세 이상 노인이 전체 인구의 20% 이상을 차지합니다.",
+      image: "/bg-초고령.png",
+    },
+    {
+      color: "#fb7185",
+      title: <>Surge in neurological diseases associated with super-aging</>,
+      koTitle: "초고령화 사회로 인한 신경계 질환의 급증",
+      koDetail: "뇌출혈, 뇌위축, 치매와 같은 퇴행성 질환자가 증가하고 있습니다.",
+      image: "/bg-질환급증.png",
+    },
+    {
+      color: "#a78bfa",
+      title: <>Limited availability of neurological expertise</>,
+      koTitle: "신경계 전문 인력의 희소성",
+      koDetail: "신경외과, 신경과 전문의는 전체 의사의 5.7%에 불과합니다.",
+      image: "/bg-신경의희소성.png",
+    },
+    {
+      color: "#60a5fa",
+      title: <>Complexity of neuroimaging interpretation</>,
+      koTitle: "MRI, CT 영상 해석의 난해함",
+      koDetail: "복잡한 영상 구조와 미세한 병변 때문에 판독 난이도가 높습니다.",
+    },
+    {
+      color: "#34d399",
+      title: <>The time-sensitive and life-threatening nature of brain disorders</>,
+      koTitle: "신경계 질환의 긴급성과 생명과 직결되는 치명성",
+      koDetail: "뇌종양은 단일질환 사망률 2위로, 신속한 판단이 매우 중요합니다.",
+      image: "/bg-신경긴급성.png",
+    },
+    {
+      color: "#f59e0b",
+      title: <>Regional imbalance in the distribution of general hospitals</>,
+      koTitle: "병원 접근성의 지역별 불균형",
+      koDetail: "강원, 제주지역은 3차 종합병원 진료가 매우 어렵습니다.",
+      image: "/bg-병원분포.png",
+    },
   ];
 
   const activeIndex = hoveredCard ?? pinnedCard;
@@ -571,105 +617,167 @@ function BackgroundSection() {
       <div style={{ width: "100%" }}>
         <RevealSection>
           <SectionLabel>Background</SectionLabel>
-          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", fontFamily: "'Arial Black', sans-serif" }}>
+          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
             Research Context and Motivation
           </h2>
-          <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "2.5rem", maxWidth: "42rem", lineHeight: 1.7, fontFamily: "'Arial Unicode MS', 'Arial', sans-serif" }}>
+          <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "2.5rem", maxWidth: "42rem", lineHeight: 1.7, fontFamily: "'HYGraphic', sans-serif" }}>
             Cerebrovascular diseases require rapid diagnosis, making timing critical for survival. We solve challenges like radiologist shortages and interpretation delays through AI-driven automation.
           </p>
         </RevealSection>
 
         <RevealSection style={{ transitionDelay: "0.1s" }}>
-          <div style={{ display: "flex", gap: "3rem", alignItems: "stretch" }}>
-
-            {/* 좌측: 카드 리스트 */}
-            <div style={{ flex: "0 0 480px", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              {items.map((item, i) => {
-                const isActive = activeIndex === i;
-                const isPinned = pinnedCard === i;
-                const hasImage = !!item.image;
-                return (
-                  <div
-                    key={i}
-                    onMouseEnter={() => setHoveredCard(i)}
-                    onMouseLeave={() => setHoveredCard(null)}
-                    onClick={() => hasImage && setPinnedCard(isPinned ? null : i)}
-                    style={{
-                      borderRadius: "0.75rem",
-                      overflow: "hidden",
-                      background: isActive ? "rgba(96,165,250,0.06)" : "rgba(15,23,42,0.8)",
-                      border: `1px solid ${isPinned ? "rgba(168,85,247,0.5)" : isActive ? "rgba(96,165,250,0.4)" : "rgba(96,165,250,0.12)"}`,
-                      backdropFilter: "blur(12px)",
-                      transition: "all 0.25s ease",
-                      cursor: hasImage ? "pointer" : "default",
-                      transform: isActive ? "translateX(6px)" : "translateX(0)",
-                      boxShadow: isPinned ? "0 0 20px rgba(168,85,247,0.15)" : isActive ? "0 0 20px rgba(96,165,250,0.1)" : "none",
-                    }}
-                  >
-                    <div style={{ height: "2px", background: isPinned ? "linear-gradient(90deg, rgba(168,85,247,0.9), rgba(96,165,250,0.7))" : isActive ? "linear-gradient(90deg, rgba(96,165,250,0.9), rgba(168,85,247,0.7))" : "linear-gradient(90deg, rgba(96,165,250,0.3), rgba(168,85,247,0.2))", transition: "all 0.25s" }} />
-                    <div style={{ padding: "0.85rem 1.1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
+          <div style={{ display: "flex", gap: "2.5rem", maxWidth: "1300px", alignItems: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: 1, minWidth: 0 }}>
+            {items.map((item, i) => {
+              const isActive = activeIndex === i;
+              const isPinned = pinnedCard === i;
+              return (
+                <div
+                  key={i}
+                  onMouseEnter={() => setHoveredCard(i)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  onClick={() => setPinnedCard(isPinned ? null : i)}
+                  style={{
+                    display: "flex",
+                    alignItems: "stretch",
+                    minHeight: isActive ? "7.6rem" : "4.8rem",
+                    borderRadius: "1.1rem",
+                    overflow: "hidden",
+                    background: isActive ? `${item.color}12` : "rgba(15,23,42,0.68)",
+                    border: `1px solid ${isActive ? `${item.color}45` : "rgba(96,165,250,0.12)"}`,
+                    boxShadow: isPinned ? `0 0 24px ${item.color}1c` : isActive ? `0 0 18px ${item.color}10` : "none",
+                    backdropFilter: "blur(14px)",
+                    cursor: "pointer",
+                    transition: "all 0.28s ease",
+                    transform: isActive ? "translateX(6px)" : "translateX(0)",
+                  }}
+                >
+                  <div style={{
+                    width: "5px",
+                    flexShrink: 0,
+                    background: isActive ? item.color : `${item.color}40`,
+                    transition: "background 0.25s ease",
+                  }} />
+                  <div style={{
+                    flexShrink: 0,
+                    width: "4rem",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                    paddingTop: "1.3rem",
+                  }}>
+                    <span style={{
+                      fontSize: "0.88rem",
+                      fontWeight: 700,
+                      color: isActive ? item.color : "rgba(255,255,255,0.22)",
+                      letterSpacing: "0.02em",
+                    }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div style={{ flex: 1, padding: "1.1rem 1.35rem 1.15rem 0.1rem" }}>
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "1rem",
+                    }}>
                       <div style={{
-                        flexShrink: 0, width: "1.6rem", height: "1.6rem", borderRadius: "50%",
-                        background: isActive ? "rgba(96,165,250,0.15)" : "rgba(96,165,250,0.06)",
-                        border: `1px solid ${isActive ? "rgba(96,165,250,0.5)" : "rgba(96,165,250,0.2)"}`,
-                        color: isActive ? "#60a5fa" : "#475569",
-                        fontSize: "0.6rem", fontWeight: 700,
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        transition: "all 0.25s",
+                        fontSize: "1.22rem",
+                        lineHeight: 1.25,
+                        fontWeight: 700,
+                        color: isActive ? item.color : `${item.color}ff`,
+                        textShadow: isActive ? `0 0 16px ${item.color}44` : "none",
+                        transition: "all 0.25s ease",
                       }}>
-                        {String(i + 1).padStart(2, "0")}
+                        {item.koTitle}
                       </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: "0.6rem", color: isActive ? "#60a5fa" : "#475569", marginBottom: "0.15rem", fontStyle: "italic", transition: "color 0.25s" }}>
-                          {item.en}
-                        </div>
-                        <div style={{ fontSize: "0.88rem", color: isActive ? "#e2e8f0" : "#94a3b8", fontWeight: 600, lineHeight: 1.5, transition: "color 0.25s" }}>
-                          {item.ko}
-                        </div>
-                      </div>
-                      {hasImage && (
-                        <span style={{ fontSize: "0.7rem", color: isPinned ? "rgba(168,85,247,0.8)" : isActive ? "rgba(96,165,250,0.7)" : "rgba(96,165,250,0.2)", transition: "color 0.25s", flexShrink: 0 }}>
-                          {isPinned ? "⊙" : "›"}
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
+                        {item.image && (
+                          <span style={{
+                            fontSize: "0.7rem",
+                            color: isPinned ? item.color : "rgba(148,163,184,0.4)",
+                            border: `1px solid ${isPinned ? item.color + "80" : "rgba(148,163,184,0.2)"}`,
+                            borderRadius: "0.3rem",
+                            padding: "0.1rem 0.35rem",
+                            letterSpacing: "0.04em",
+                            fontFamily: "'Inter', sans-serif",
+                            transition: "all 0.25s ease",
+                          }}>
+                            IMG
+                          </span>
+                        )}
+                        <span style={{
+                          color: isActive ? item.color : "rgba(148,163,184,0.35)",
+                          fontSize: "1.1rem",
+                          lineHeight: 1,
+                          transform: isActive ? "translateY(-1px)" : "translateY(0)",
+                          transition: "all 0.25s ease",
+                        }}>
+                          {isPinned ? "⌄" : "›"}
                         </span>
-                      )}
+                      </div>
+                    </div>
+                    <div style={{
+                      maxHeight: isActive ? "8rem" : "0",
+                      opacity: isActive ? 1 : 0,
+                      overflow: "hidden",
+                      transition: "max-height 0.35s ease, opacity 0.25s ease",
+                      marginTop: isActive ? "0.55rem" : "0",
+                      paddingLeft: isActive ? "1rem" : "0",
+                      borderLeft: isActive ? `2px solid ${item.color}` : "2px solid transparent",
+                    }}>
+                      <div style={{
+                        fontSize: "0.96rem",
+                        color: "#cbd5e1",
+                        lineHeight: 1.6,
+                        fontFamily: "'HYGraphic', sans-serif",
+                      }}>
+                        {item.koDetail}
+                      </div>
+                      <div style={{
+                        marginTop: "0.4rem",
+                        fontSize: "0.82rem",
+                        color: `${item.color}90`,
+                        lineHeight: 1.5,
+                        fontFamily: "'Inter', sans-serif",
+                        fontStyle: "italic",
+                      }}>
+                        {item.title}
+                      </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-
-            {/* 우측: 이미지 패널 */}
-            <div style={{ flex: 1, position: "relative", minHeight: "420px" }}>
-
-              {/* 뉴런 (이미지 없을 때 기본 표시) */}
-              <div style={{
-                position: "absolute", inset: 0,
-                borderRadius: "1.2rem", overflow: "hidden",
-                opacity: activeIndex !== null ? 0 : 1,
-                transition: "opacity 0.4s ease",
-                pointerEvents: "none",
-                background: "transparent",
-              }}>
-                <NeuralSynapseVisual mode="calm" color="96, 165, 250" opacity={0.65} />
-              </div>
-
-              {/* 이미지 */}
-              {items.map((item, i) => item.image && (
-                <div key={i} style={{
-                  position: "absolute", inset: 0,
-                  borderRadius: "1.2rem", overflow: "hidden",
-                  opacity: activeIndex === i ? 1 : 0,
-                  transform: activeIndex === i ? "scale(1)" : "scale(1.03)",
-                  transition: "opacity 0.35s ease, transform 0.35s ease",
-                  pointerEvents: "none",
-                  border: "1px solid rgba(96,165,250,0.2)",
-                  boxShadow: "0 0 40px rgba(0,0,0,0.4)",
-                }}>
-                  <img src={item.image} alt={item.ko} style={{ width: "100%", height: "100%", objectFit: "contain", background: "rgba(10,18,40,0.95)" }} />
                 </div>
-              ))}
+              );
+            })}
             </div>
-
+            {/* 이미지 패널 */}
+            <div style={{
+              width: "600px",
+              flexShrink: 0,
+              borderRadius: "1.1rem",
+              overflow: "hidden",
+              opacity: pinnedCard !== null && items[pinnedCard].image ? 1 : 0,
+              transform: pinnedCard !== null && items[pinnedCard].image ? "translateX(0)" : "translateX(16px)",
+              transition: "opacity 0.3s ease, transform 0.3s ease",
+              pointerEvents: "none",
+            }}>
+              {pinnedCard !== null && items[pinnedCard].image && (
+                <img
+                  src={items[pinnedCard].image}
+                  alt={items[pinnedCard].koTitle}
+                  style={{
+                    width: "100%",
+                    maxHeight: "420px",
+                    objectFit: "contain",
+                    objectPosition: "center",
+                    display: "block",
+                    borderRadius: "1.1rem",
+                    border: `1px solid ${items[pinnedCard].color}30`,
+                  }}
+                />
+              )}
+            </div>
           </div>
         </RevealSection>
       </div>
@@ -677,8 +785,8 @@ function BackgroundSection() {
   );
 }
 
-function PerformanceSection({ pageIndex, setPageIndex }: { 
-  pageIndex: number; 
+function PerformanceSection({ pageIndex, setPageIndex }: {
+  pageIndex: number;
   setPageIndex: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
@@ -709,7 +817,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       details: [
         "#Input: TOF images",
         "#DICE: 0.872",
-        "#Analysis time: 6.8s",
+        "#Analysis time: 6.8sec",
         "#View Manipulation: zoom in, zoom out, rotation, pan"
       ]
     },
@@ -722,7 +830,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
         "#Input: TOF images",
         "#Sensitivity: 92.0%",
         "#Specificity: 97.8%",
-        "#Analysis time: 20.3s",
+        "#Analysis time: 20.3sec",
         "#Training data: 3500 cases, 5030 aneurysms",
         "#Overwhelming detection performance"
       ]
@@ -736,7 +844,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
         "#Input: TOF images",
         "#Sensitivity: 95.8%",
         "#Specificity: 86.4%",
-        "#Analysis time: 22.4s",
+        "#Analysis time: 22.4sec",
         "#Training data: 1722 cases",
         "#Particularly effective for multi-focal stenosis"
       ]
@@ -753,7 +861,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       details: [
         "#Input: DWI images",
         "#Dice: 0.820",
-        "#Analysis time: 22.0s",
+        "#Analysis time: 22.0sec",
         "#Training data: 6002 cases",
         "#Optimized for detecting multiple small infarction"
       ]
@@ -767,7 +875,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       details: [
         "#Input: DWI images",
         "#Dice: 0.820",
-        "#Analysis time: 22.0s",
+        "#Analysis time: 22.0sec",
         "#Training data: 6002 cases",
         "#Six Major Vessel"
       ],
@@ -789,7 +897,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       details: [
         "#Input: ADC images",
         "#Dice: 0.820",
-        "#Analysis time: 22.0s",
+        "#Analysis time: 22.0sec",
         "#Training data: 1919 cases",
         "#Acute, Subacute, Chronic stage"
       ],
@@ -811,7 +919,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       details: [
         "#Input: Carotid TOF images",
         "#Dice: 0.916",
-        "#Analysis time: 4.5s"
+        "#Analysis time: 4.5sec"
       ]
     },
     {
@@ -824,7 +932,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
         "#Input: Carotid TOF images",
         "#Sensitivity: 85.3%",
         "#Specificity: 92.3%",
-        "#Analysis time: 7.5s",
+        "#Analysis time: 7.5sec",
         "#Training data: 622 cases"
       ]
     }
@@ -840,7 +948,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       details: [
         "#Input: Axial CT images",
         "#Dice: 0.928",
-        "#Analysis time: 2.9s",
+        "#Analysis time: 2.9sec",
         "#Training data: 5556 cases"
       ]
     },
@@ -1229,7 +1337,7 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
                 gap: "0.15rem",
               }}>
                 <span style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.75rem",
                   fontWeight: 700,
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
@@ -1241,7 +1349,7 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
                 </span>
                 {value && (
                   <span style={{
-                    fontSize: "0.88rem",
+                    fontSize: "1.05rem",
                     fontWeight: 500,
                     color: "rgba(226,232,240,0.9)",
                     fontFamily: "'Inter', sans-serif",
@@ -1276,36 +1384,38 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
 function TestRequestSection() {
   const [isUploadHovered, setIsUploadHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [emailValue, setEmailValue] = useState("");
   const [fileType, setFileType] = useState("");
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [requestCount, setRequestCount] = useState(231);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (file: File) => {
-    if (file.size > 25 * 1024 * 1024) {
-      alert("파일 크기는 25MB 이하여야 합니다.");
+  const handleFileSelect = (files: FileList | File[]) => {
+    const arr = Array.from(files);
+    const oversized = arr.filter(f => f.size > 25 * 1024 * 1024);
+    if (oversized.length > 0) {
+      alert(`파일 크기는 25MB 이하여야 합니다.\n초과 파일: ${oversized.map(f => f.name).join(", ")}`);
       return;
     }
-    setSelectedFile(file);
+    setSelectedFiles(prev => [...prev, ...arr]);
   };
 
   const handleAnalysisSubmit = async () => {
-    if (!selectedFile) { alert("파일을 선택해주세요."); return; }
+    if (selectedFiles.length === 0) { alert("파일을 선택해주세요."); return; }
     if (!emailValue) { alert("이메일을 입력해주세요."); return; }
     if (!fileType) { alert("파일 내용을 선택해주세요."); return; }
     setSubmitState("loading");
     try {
       const form = new FormData();
-      form.append("file", selectedFile);
+      selectedFiles.forEach(f => form.append("file", f));
       form.append("email", emailValue);
       form.append("fileType", fileType);
       const res = await fetch("/api/analysis", { method: "POST", body: form });
       if (!res.ok) throw new Error();
       setSubmitState("success");
       setRequestCount(prev => prev + 1);
-      setSelectedFile(null);
+      setSelectedFiles([]);
       setEmailValue("");
       setFileType("");
     } catch {
@@ -1314,7 +1424,7 @@ function TestRequestSection() {
   };
   
   const infoPointsKR = [
-    "파일 형식 지원 (최대 500MB)",
+    "파일 형식 지원 (최대 25MB)",
     "전송된 영상은 NIfTI 파일형식으로 모두 전환됩니다",
     "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다",
     "원본 파일도 NIfTI 전환 후 모두 삭제됩니다",
@@ -1328,7 +1438,7 @@ function TestRequestSection() {
         <div style={{ flex: 1, maxWidth: "38rem" }}>
           <RevealSection>
             <SectionLabel>Research Analysis Request</SectionLabel>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#ffffff", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "-0.01em" }}>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
               연구용 데이터 AI 분석 의뢰
             </h2>
             <Divider />
@@ -1348,8 +1458,9 @@ function TestRequestSection() {
               <input
                 ref={fileInputRef}
                 type="file"
+                multiple
                 style={{ display: "none" }}
-                onChange={e => { if (e.target.files?.[0]) handleFileSelect(e.target.files[0]); }}
+                onChange={e => { if (e.target.files) handleFileSelect(e.target.files); }}
               />
 
               {/* 업로드 영역 */}
@@ -1362,7 +1473,7 @@ function TestRequestSection() {
                 onDrop={e => {
                   e.preventDefault();
                   setIsDragging(false);
-                  if (e.dataTransfer.files?.[0]) handleFileSelect(e.dataTransfer.files[0]);
+                  if (e.dataTransfer.files) handleFileSelect(e.dataTransfer.files);
                 }}
                 style={{
                   background: isDragging ? "rgba(96,165,250,0.12)" : isUploadHovered ? "rgba(96,165,250,0.05)" : "rgba(255,255,255,0.01)",
@@ -1381,7 +1492,7 @@ function TestRequestSection() {
                   overflow: "hidden"
                 }}
               >
-                {selectedFile ? (
+                {selectedFiles.length > 0 ? (
                   <>
                     <div style={{ color: "#34d399", marginBottom: "0.75rem" }}>
                       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -1390,17 +1501,24 @@ function TestRequestSection() {
                         <polyline points="9 15 11 17 15 13" />
                       </svg>
                     </div>
-                    <p style={{ color: "#e2e8f0", fontSize: "1rem", fontWeight: 600, marginBottom: "0.3rem", wordBreak: "break-all" }}>
-                      {selectedFile.name}
-                    </p>
-                    <p style={{ color: "#64748b", fontSize: "0.8rem" }}>
-                      {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
+                    <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                      {selectedFiles.map((f, idx) => (
+                        <div key={idx} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
+                          <p style={{ color: "#e2e8f0", fontSize: "0.9rem", fontWeight: 600, wordBreak: "break-all", textAlign: "left" }}>
+                            {f.name} <span style={{ color: "#64748b", fontWeight: 400 }}>({(f.size / 1024 / 1024).toFixed(2)} MB)</span>
+                          </p>
+                          <button
+                            onClick={e => { e.stopPropagation(); setSelectedFiles(prev => prev.filter((_, i) => i !== idx)); }}
+                            style={{ flexShrink: 0, fontSize: "0.75rem", color: "#f87171", background: "none", border: "none", cursor: "pointer" }}
+                          >✕</button>
+                        </div>
+                      ))}
+                    </div>
                     <button
-                      onClick={e => { e.stopPropagation(); setSelectedFile(null); }}
+                      onClick={e => { e.stopPropagation(); setSelectedFiles([]); }}
                       style={{ marginTop: "0.75rem", fontSize: "0.8rem", color: "#f87171", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
                     >
-                      파일 제거
+                      전체 제거
                     </button>
                   </>
                 ) : (
@@ -1569,8 +1687,9 @@ function TestRequestSection() {
               )}
 
               {/* 분석 요청 카운터: 화려하게 강조 */}
-              <div style={{ textAlign: "left", marginTop: "1.2rem" }}>
-                <span style={{ 
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "1.2rem", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{
                   display: "inline-flex",
                   alignItems: "center",
                   padding: "0.4rem 1rem",
@@ -1596,21 +1715,56 @@ function TestRequestSection() {
                   }} />
                   ANALYSIS REQUEST: {String(requestCount).padStart(4, '0')}
                 </span>
+                </div>
+
+                <div style={{ display: "flex", gap: "0.75rem" }}>
+                {[
+                  { label: "파일첨부 방식", icon: "📎" },
+                  { label: "분석 영상 확인 방법", icon: "🔍" },
+                ].map(({ label, icon }) => (
+                  <button
+                    key={label}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.45rem",
+                      padding: "0.55rem 1.1rem",
+                      borderRadius: "0.6rem",
+                      background: "rgba(96,165,250,0.07)",
+                      border: "1px solid rgba(96,165,250,0.25)",
+                      color: "#93c5fd",
+                      fontSize: "0.88rem",
+                      fontWeight: 600,
+                      fontFamily: "'HYGraphic', sans-serif",
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = "rgba(96,165,250,0.15)";
+                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = "rgba(96,165,250,0.07)";
+                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)";
+                    }}
+                  >
+                    <span>{icon}</span>
+                    <span>{label}</span>
+                  </button>
+                ))}
+                </div>
               </div>
             </div>
           </RevealSection>
         </div>
 
-        {/* 우측 뉴런 장식: 분석 완료 시의 활발한 뇌 활동 느낌 */}
-        <div style={{ flex: 1, height: "500px", position: "relative" }}>
-          <NeuralSynapseVisual mode="fast" color="236, 72, 153" opacity={0.9} />
-        </div>
       </div>
     </section>
   );
 }
 
 function ContactSection() {
+  const [descLang, setDescLang] = useState<"ko" | "en">("ko");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
@@ -1653,16 +1807,26 @@ function ContactSection() {
         <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <RevealSection>
             <SectionLabel>Contact</SectionLabel>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 300, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem", letterSpacing: "0.05em" }}>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
               <span style={{ whiteSpace: "nowrap" }}>Research Collaboration</span><br />
               <span style={{ whiteSpace: "nowrap" }}>& Technical Partnerships</span>
             </h2>
             <Divider />
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
-            <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem" }}>
-              <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
-              저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
+            <p
+              onClick={() => setDescLang(l => l === "ko" ? "en" : "ko")}
+              style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem", cursor: "pointer", transition: "opacity 0.2s ease" }}
+              title="클릭하여 언어 전환"
+            >
+              {descLang === "ko" ? <>
+                <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
+                저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
+              </> : <>
+                Thank you for your interest in <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>&apos;s AI solutions.<br />
+                We are currently operating a research-focused pilot program.<br />
+                For inquiries regarding research collaboration or technical partnerships, please contact us.
+              </>}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", maxWidth: "420px" }}>
               
@@ -1671,8 +1835,8 @@ function ContactSection() {
                 onClick={() => setIsFormOpen(true)}
                 style={{
                   position: "relative",
-                  padding: "1.2rem 1.5rem",
-                  borderRadius: "1.25rem",
+                  padding: "1rem 1.25rem",
+                  borderRadius: "0.875rem",
                   background: "linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.3) 100%)",
                   border: "1px solid rgba(96,165,250,0.5)",
                   boxShadow: "0 4px 20px rgba(59,130,246,0.2), inset 0 0 10px rgba(255,255,255,0.05)",
@@ -1858,7 +2022,7 @@ function ContactSection() {
              
              {/* Form Description */}
              <div style={{ color: "#94a3b8", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "2rem", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "1.5rem" }}>
-               <span style={{ color: "#e2e8f0", fontWeight: 600, fontFamily: "var(--font-bernhard)" }}>CLARUS</span>-<span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>에 관심 가져주셔서 감사합니다.<br/>
+               <span style={{ color: "#e2e8f0", fontWeight: 600, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>에 관심 가져주셔서 감사합니다.<br/>
                제품에 관한 사항, 기술제휴 및 협력 등의 문의를 남겨주시면 확인 후 빠르게 연락 드리겠습니다.
              </div>
 
@@ -1946,7 +2110,7 @@ function ContactSection() {
                        maxWidth: "560px", width: "90%", maxHeight: "80vh",
                        display: "flex", flexDirection: "column",
                        boxShadow: "0 25px 50px rgba(0,0,0,0.6)",
-                       fontFamily: "'Noto Sans KR', 'HYGraphic', 'Inter', sans-serif"
+                        fontFamily: "'HYGraphic', 'Inter', sans-serif"
                      }}>
                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
                        <h4 style={{ color: "#e2e8f0", fontSize: "1.25rem", fontWeight: 600, margin: 0 }}>개인정보 처리방침</h4>
@@ -2260,7 +2424,7 @@ export default function ClarusNPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 {/* 상단: 회사 기본 정보 (가로 배열) */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
-                  <span>대표자: 김시온</span>
+                    <span>대표자: 김시은</span>
                   <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
                   <span>사업자등록번호: 811-87-03349</span>
                   <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
@@ -2489,10 +2653,12 @@ function ClinicalLegend({ activeVideo }: { activeVideo: string | null }) {
             <span style={{ 
               paddingLeft: "16px", 
               color: "#f8fafc", 
-              fontSize: "0.85rem", 
-              fontWeight: 600, // 글씨도 살짝 더 또렷하게
+              fontSize: "1.05rem",
+              fontWeight: 600,
               fontFamily: "'Inter', sans-serif",
-              whiteSpace: "nowrap"
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+              lineHeight: 1.3
             }} >
               {item.label}
             </span>

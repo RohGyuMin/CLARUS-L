@@ -33,6 +33,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'ITC Eras Medium';
+  src: url('/fonts/ITC Eras Medium.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 
 :root {
@@ -69,7 +77,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Inter', 'HYGraphic', 'Noto Sans KR', 'Syne', sans-serif;
+  font-family: 'HYGraphic', 'Inter', 'Noto Sans KR', 'Syne', sans-serif;
   overflow-x: hidden;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -329,4 +337,3 @@ body::before {
     grid-template-columns: 1fr !important;
   }
 }
-

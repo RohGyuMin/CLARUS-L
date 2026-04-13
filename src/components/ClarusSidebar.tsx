@@ -133,8 +133,10 @@ export default function ClarusSidebar({
             >
               C<span style={{ letterSpacing: "0.08em" }}>LARUS</span>
               <span style={{ 
-                fontFamily: 'HYGraphic, sans-serif',
+                fontFamily: "'HYGraphic', sans-serif",
                 fontSize: "0.85em",
+                color: "#a855f7",
+                textShadow: "0 0 15px rgba(168,85,247,0.5)",
                 margin: "0 0.1em",
                 transform: "translateY(-0.03em)"
               }}>-</span>
@@ -210,7 +212,7 @@ export default function ClarusSidebar({
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    fontFamily: "'Arial Unicode MS', 'Arial', sans-serif",
+                    fontFamily: "'Arial Unicode MS', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain MRI</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -242,7 +244,7 @@ export default function ClarusSidebar({
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    fontFamily: "'Arial Unicode MS', 'Arial', sans-serif",
+                    fontFamily: "'Arial Unicode MS', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain CT</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -323,9 +325,9 @@ function NavBtn({
           ? "0 4px 15px rgba(0,0,0,0.3)"
           : "none",
         color: active ? "#ffffff" : hovered ? "#ffffff" : "rgba(226,232,240,0.85)",
-        fontSize: "1.2rem",
+        fontSize: "1.25rem",
         fontWeight: active ? 600 : 500,
-        fontFamily: "'Arial Black', sans-serif",
+        fontFamily: "'ITC Eras Medium', 'Arial Black', sans-serif",
         padding: "1rem 1.5rem",
         borderRadius: "0.75rem",
         textAlign: "left",
@@ -375,10 +377,10 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
           : "transparent",
         boxShadow: hovered ? "inset 2px 0 0 rgba(96,165,250,0.4)" : "none",
         color: hovered ? "#ffffff" : "rgba(203,213,225,0.75)",
-        fontSize: "1rem",
+        fontSize: "1.08rem",
         lineHeight: 1.5,
         fontWeight: 500,
-        fontFamily: "'Arial Unicode MS', 'Arial', sans-serif",
+        fontFamily: "'HYGraphic', sans-serif",
         padding: "0.625rem 1.15rem",
         borderRadius: "0.375rem",
         textAlign: "left",
