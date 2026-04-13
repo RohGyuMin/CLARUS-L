@@ -583,7 +583,7 @@ function BackgroundSection() {
     },
     {
       color: "#FFA47A",
-      title: <>A <span style={{ color: "#FFA47A" }}>Surge in Neurological Diseases</span> Due to an Ultra-Aged Society</>,
+      title: <><span style={{ color: "#FFA47A" }}>A Surge in Neurological Diseases</span> Due to an Ultra-Aged Society</>,
       subtitle: "초고령화 사회로 인한 신경계 질환의 급증",
       detail: "뇌졸중, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
       image: "/bg-disease-surge.png",
@@ -699,24 +699,12 @@ function BackgroundSection() {
                         fontSize: "1.32rem",
                         lineHeight: 1.25,
                         fontWeight: 700,
-                        color: isActive ? item.color : `${item.color}ff`,
+                        color: "#e2e8f0",
                         textShadow: isActive ? `0 0 16px ${item.color}44` : "none",
                         transition: "all 0.25s ease",
                       }}>
                         {item.title}
                       </div>
-                      {item.image && (
-                        <span style={{
-                          color: isActive ? item.color : "rgba(148,163,184,0.35)",
-                          fontSize: "1.1rem",
-                          lineHeight: 1,
-                          transform: isActive ? "translateY(-1px)" : "translateY(0)",
-                          transition: "all 0.25s ease",
-                          flexShrink: 0,
-                        }}>
-                          {isPinned ? "⌄" : "›"}
-                        </span>
-                      )}
                     </div>
                     {/* 한글 부제목 + 상세 설명 - 호버 시에만 표시 */}
                     <div style={{
@@ -741,29 +729,12 @@ function BackgroundSection() {
                         lineHeight: 1.5,
                         fontFamily: "'Inter', sans-serif",
                         fontStyle: "italic",
-                        paddingLeft: "0.8rem",
+                        paddingLeft: 0,
                       }}>
-                        : {item.detail}
+                        {item.detail}
                       </div>
                     </div>
                   </div>
-                  {/* 오른쪽: 화살표 (이미지 있는 항목만) */}
-                  {item.image && (
-                    <div style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      paddingRight: "1rem",
-                    }}>
-                      <span style={{
-                        color: isActive ? item.color : "rgba(148,163,184,0.25)",
-                        fontSize: "1rem",
-                        transition: "color 0.22s ease",
-                      }}>
-                        →
-                      </span>
-                    </div>
-                  )}
                 </div>
               );
             })}
@@ -909,7 +880,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
       id: "dwi-3",
       title: "ADC AI for Infarction <span style='color: #fdba74'>Onset</span> Detection",
       description: "Transferring DWI-predicted lesions to ADC to estimate time since onset.",
-      videoSrc: "/videos/KakaoTalk_20260406_122852533.mp4",
+      videoSrc: "/videos/6-Infarction-onset-ADC.mp4",
       theme: "purple",
       details: [
         "#Input: ADC images",
@@ -2688,7 +2659,7 @@ export default function ClarusNPage() {
 function ClinicalLegend({ activeVideo }: { activeVideo: string | null }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  if (!activeVideo || (!activeVideo.includes('territory') && !activeVideo.includes('onset') && !activeVideo.includes('KakaoTalk'))) {
+  if (!activeVideo || (!activeVideo.includes('territory') && !activeVideo.includes('onset') && !activeVideo.includes('onset'))) {
     return null;
   }
 
@@ -2705,7 +2676,7 @@ function ClinicalLegend({ activeVideo }: { activeVideo: string | null }) {
       { label: "PCA", color: "#fb923c" },
       { label: "BA & VA", color: "#a855f7" },
     ];
-  } else if (activeVideo === "/videos/KakaoTalk_20260406_122852533.mp4") {
+  } else if (activeVideo === "/videos/6-Infarction-onset-ADC.mp4") {
     title = "Onset Stage";
     items = [
       { label: "Acute stage", color: "#ef4444" },
