@@ -572,21 +572,21 @@ function BackgroundSection() {
       title: <>Ultra-aged society</>,
       koTitle: "2025년 초고령 사회 진입",
       koDetail: "65세 이상 노인이 전체 인구의 20% 이상을 차지합니다.",
-      image: "/bg-초고령.png",
+      image: "/bg-elderly.png",
     },
     {
       color: "#fb7185",
       title: <>Surge in neurological diseases associated with super-aging</>,
       koTitle: "초고령화 사회로 인한 신경계 질환의 급증",
       koDetail: "뇌출혈, 뇌위축, 치매와 같은 퇴행성 질환자가 증가하고 있습니다.",
-      image: "/bg-질환급증.png",
+      image: "/bg-disease-surge.png",
     },
     {
       color: "#a78bfa",
       title: <>Limited availability of neurological expertise</>,
       koTitle: "신경계 전문 인력의 희소성",
       koDetail: "신경외과, 신경과 전문의는 전체 의사의 5.7%에 불과합니다.",
-      image: "/bg-신경의희소성.png",
+      image: "/bg-neuro-rare.png",
     },
     {
       color: "#60a5fa",
@@ -599,14 +599,14 @@ function BackgroundSection() {
       title: <>The time-sensitive and life-threatening nature of brain disorders</>,
       koTitle: "신경계 질환의 긴급성과 생명과 직결되는 치명성",
       koDetail: "뇌종양은 단일질환 사망률 2위로, 신속한 판단이 매우 중요합니다.",
-      image: "/bg-신경긴급성.png",
+      image: "/bg-neuro-urgent.png",
     },
     {
       color: "#f59e0b",
       title: <>Regional imbalance in the distribution of general hospitals</>,
       koTitle: "병원 접근성의 지역별 불균형",
       koDetail: "강원, 제주지역은 3차 종합병원 진료가 매우 어렵습니다.",
-      image: "/bg-병원분포.png",
+      image: "/bg-hospital-map.png",
     },
   ];
 
