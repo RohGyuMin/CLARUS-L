@@ -89,6 +89,7 @@ function HeroSection() {
           <span style={{ 
             fontFamily: 'HYGraphic, sans-serif',
             fontSize: "0.85em",
+            color: "#a855f7",
             margin: "0 0.02em",
             display: "inline-block",
             transform: "translateY(-0.05em)" 
