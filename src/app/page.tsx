@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
 import ClarusSidebar from "@/components/ClarusSidebar";
 import ClarusCursor from "@/components/ClarusCursor";
 import ClarusHeroCanvas from "@/components/ClarusHeroCanvas";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 
+
+/* ─────────────────────────────────────────────
+   언어 컨텍스트
+───────────────────────────────────────────── */
+const LangContext = createContext<'ko' | 'en'>('ko');
 
 /* ─────────────────────────────────────────────
    인터섹션 옵저버 훅 – 뷰포트에 들어오면 visible
@@ -266,6 +271,7 @@ function Divider() {
 }
 
 function AboutSection() {
+  const lang = useContext(LangContext);
   return (
     <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "8rem" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "2rem" }}>
@@ -301,7 +307,7 @@ function AboutSection() {
               <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
                 <div style={{ fontSize: "1.08rem", color: "#cbd5e1", lineHeight: 1.7 }}>
                   <span style={{ marginRight: "0.4rem", fontSize: "1.13rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
-                  명확한, 분명한
+                  {lang === 'ko' ? '명확한, 분명한' : 'Clear, Distinct'}
                 </div>
                 <div style={{ fontSize: "0.93rem", color: "#94a3b8", lineHeight: 1.65 }}>
                   Comes from Latin, and its meaning includes:
@@ -558,6 +564,7 @@ function AboutStrengthsSection() {
 
 
 function BackgroundSection() {
+  const lang = useContext(LangContext);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [pinnedCard, setPinnedCard] = useState<number | null>(null);
 
@@ -566,6 +573,7 @@ function BackgroundSection() {
     title: React.ReactNode;
     koTitle: string;
     koDetail: string;
+    enDetail: string;
     image?: string;
   }[] = [
     {
@@ -573,6 +581,7 @@ function BackgroundSection() {
       title: <>Ultra-aged society</>,
       koTitle: "2025년 초고령 사회 진입",
       koDetail: "65세 이상 노인이 전체 인구의 20% 이상을 차지합니다.",
+      enDetail: "Adults aged 65+ now comprise over 20% of the total population.",
       image: "/bg-elderly.png",
     },
     {
@@ -580,6 +589,7 @@ function BackgroundSection() {
       title: <>Surge in neurological diseases associated with super-aging</>,
       koTitle: "초고령화 사회로 인한 신경계 질환의 급증",
       koDetail: "뇌출혈, 뇌위축, 치매와 같은 퇴행성 질환자가 증가하고 있습니다.",
+      enDetail: "Cases of hemorrhage, brain atrophy, and dementia are rapidly increasing.",
       image: "/bg-disease-surge.png",
     },
     {
@@ -587,6 +597,7 @@ function BackgroundSection() {
       title: <>Limited availability of neurological expertise</>,
       koTitle: "신경계 전문 인력의 희소성",
       koDetail: "신경외과, 신경과 전문의는 전체 의사의 5.7%에 불과합니다.",
+      enDetail: "Neurosurgeons and neurologists account for only 5.7% of all physicians.",
       image: "/bg-neuro-rare.png",
     },
     {
@@ -594,12 +605,14 @@ function BackgroundSection() {
       title: <>Complexity of neuroimaging interpretation</>,
       koTitle: "MRI, CT 영상 해석의 난해함",
       koDetail: "복잡한 영상 구조와 미세한 병변 때문에 판독 난이도가 높습니다.",
+      enDetail: "Complex imaging structures and subtle lesions make interpretation highly challenging.",
     },
     {
       color: "#34d399",
       title: <>The time-sensitive and life-threatening nature of brain disorders</>,
       koTitle: "신경계 질환의 긴급성과 생명과 직결되는 치명성",
       koDetail: "뇌종양은 단일질환 사망률 2위로, 신속한 판단이 매우 중요합니다.",
+      enDetail: "Brain tumors rank 2nd in single-disease mortality, making rapid assessment critical.",
       image: "/bg-neuro-urgent.png",
     },
     {
@@ -607,6 +620,7 @@ function BackgroundSection() {
       title: <>Regional imbalance in the distribution of general hospitals</>,
       koTitle: "병원 접근성의 지역별 불균형",
       koDetail: "강원, 제주지역은 3차 종합병원 진료가 매우 어렵습니다.",
+      enDetail: "Access to tertiary hospitals remains severely limited in rural regions like Gangwon and Jeju.",
       image: "/bg-hospital-map.png",
     },
   ];
@@ -691,7 +705,7 @@ function BackgroundSection() {
                         textShadow: isActive ? `0 0 16px ${item.color}44` : "none",
                         transition: "all 0.25s ease",
                       }}>
-                        {item.koTitle}
+                        {lang === 'ko' ? item.koTitle : item.title}
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
                         {item.image && (
@@ -734,7 +748,7 @@ function BackgroundSection() {
                         lineHeight: 1.6,
                         fontFamily: "'HYGraphic', sans-serif",
                       }}>
-                        {item.koDetail}
+                        {lang === 'ko' ? item.koDetail : item.enDetail}
                       </div>
                       <div style={{
                         marginTop: "0.4rem",
@@ -1383,6 +1397,7 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
 
 
 function TestRequestSection() {
+  const lang = useContext(LangContext);
   const [isUploadHovered, setIsUploadHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -1432,6 +1447,15 @@ function TestRequestSection() {
     "분석된 영상은 이메일로 24시간 이내로 보내드립니다",
     "빠른 영상분석이 필요시에는 파일 업로드 후 contact의 연락처로 문의 바랍니다."
   ];
+  const infoPointsEN = [
+    "All file formats supported (max 25MB)",
+    "All uploaded images are converted to NIfTI format",
+    "Patient data is automatically removed due to NIfTI specifications",
+    "Original files are deleted after NIfTI conversion",
+    "Analyzed results will be sent via email within 24 hours",
+    "For urgent analysis, contact us via the Contact section after uploading."
+  ];
+  const infoPoints = lang === 'ko' ? infoPointsKR : infoPointsEN;
 
   return (
     <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
@@ -1440,7 +1464,7 @@ function TestRequestSection() {
           <RevealSection>
             <SectionLabel>Research Analysis Request</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
-              연구용 데이터 AI 분석 의뢰
+              {lang === 'ko' ? '연구용 데이터 AI 분석 의뢰' : 'Research Data AI Analysis Request'}
             </h2>
             <Divider />
           </RevealSection>
@@ -1555,7 +1579,7 @@ function TestRequestSection() {
 
               {/* 상세 안내 리스트 */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-                {infoPointsKR.map((point, idx) => (
+                {infoPoints.map((point, idx) => (
                   <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
                     <span style={{ 
                       color: "#60a5fa", 
@@ -2216,6 +2240,7 @@ export default function ClarusNPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState<SectionId | "">("");
   const [performancePageIndex, setPerformancePageIndex] = useState(0);
+  const [lang, setLang] = useState<'ko' | 'en'>('ko');
   const scrollRef = useRef<HTMLDivElement>(null);
   const isSnapScrolling = useRef(false);
 
@@ -2432,7 +2457,52 @@ export default function ClarusNPage() {
           pointerEvents: showIntro ? "none" : "auto",
         }}
       >
+        {/* KO/EN 토글 버튼 */}
+        <button
+          onClick={() => setLang(l => l === 'ko' ? 'en' : 'ko')}
+          style={{
+            position: "fixed",
+            top: "1.5rem",
+            right: "2rem",
+            zIndex: 200,
+            display: "flex",
+            alignItems: "center",
+            gap: "0",
+            background: "rgba(10,18,36,0.85)",
+            border: "1px solid rgba(96,165,250,0.25)",
+            borderRadius: "2rem",
+            padding: "0.35rem 0.2rem",
+            backdropFilter: "blur(16px)",
+            cursor: "pointer",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+            transition: "border-color 0.2s ease",
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)"; }}
+        >
+          {(['ko', 'en'] as const).map((l) => (
+            <span
+              key={l}
+              style={{
+                padding: "0.2rem 0.75rem",
+                borderRadius: "1.5rem",
+                fontSize: "0.78rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                fontFamily: "'ITC Eras Medium', 'Arial', sans-serif",
+                background: lang === l ? "rgba(59,130,246,0.2)" : "transparent",
+                color: lang === l ? "#93c5fd" : "rgba(148,163,184,0.45)",
+                border: lang === l ? "1px solid rgba(96,165,250,0.35)" : "1px solid transparent",
+                transition: "all 0.25s ease",
+              }}
+            >
+              {l.toUpperCase()}
+            </span>
+          ))}
+        </button>
+
         {/* 스크롤 영역 */}
+        <LangContext.Provider value={lang}>
         <div
           ref={scrollRef}
           className="cn-sidebar-scroll"
@@ -2492,6 +2562,7 @@ export default function ClarusNPage() {
             </footer>
           </div>
         </div>
+        </LangContext.Provider>
 
         {/* 메뉴 열기 버튼 */}
         <button
