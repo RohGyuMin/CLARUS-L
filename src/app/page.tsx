@@ -705,31 +705,18 @@ function BackgroundSection() {
                       }}>
                         {item.title}
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
-                        {item.image && (
-                          <span style={{
-                            fontSize: "0.7rem",
-                            color: isPinned ? item.color : "rgba(148,163,184,0.4)",
-                            border: `1px solid ${isPinned ? item.color + "80" : "rgba(148,163,184,0.2)"}`,
-                            borderRadius: "0.3rem",
-                            padding: "0.1rem 0.35rem",
-                            letterSpacing: "0.04em",
-                            fontFamily: "'Inter', sans-serif",
-                            transition: "all 0.25s ease",
-                          }}>
-                            IMG
-                          </span>
-                        )}
+                      {item.image && (
                         <span style={{
                           color: isActive ? item.color : "rgba(148,163,184,0.35)",
                           fontSize: "1.1rem",
                           lineHeight: 1,
                           transform: isActive ? "translateY(-1px)" : "translateY(0)",
                           transition: "all 0.25s ease",
+                          flexShrink: 0,
                         }}>
                           {isPinned ? "⌄" : "›"}
                         </span>
-                      </div>
+                      )}
                     </div>
                     {/* 한글 부제목 + 상세 설명 - 호버 시에만 표시 */}
                     <div style={{
@@ -754,42 +741,29 @@ function BackgroundSection() {
                         lineHeight: 1.5,
                         fontFamily: "'Inter', sans-serif",
                         fontStyle: "italic",
+                        paddingLeft: "0.8rem",
                       }}>
                         : {item.detail}
                       </div>
                     </div>
                   </div>
-                  {/* 오른쪽: 이미지 뱃지 + 화살표 */}
-                  <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.35rem",
-                    paddingRight: "1rem",
-                  }}>
-                    {item.image && (
-                      <span style={{
-                        fontSize: "0.65rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.06em",
-                        color: isActive ? item.color : `${item.color}60`,
-                        border: `1px solid ${isActive ? item.color + "80" : item.color + "30"}`,
-                        borderRadius: "0.3rem",
-                        padding: "0.1rem 0.3rem",
-                        transition: "all 0.22s ease",
-                      }}>
-                        IMG
-                      </span>
-                    )}
-                    <span style={{
-                      color: isActive ? item.color : "rgba(148,163,184,0.25)",
-                      fontSize: "1rem",
-                      transition: "color 0.22s ease",
+                  {/* 오른쪽: 화살표 (이미지 있는 항목만) */}
+                  {item.image && (
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      paddingRight: "1rem",
                     }}>
-                      →
-                    </span>
-                  </div>
+                      <span style={{
+                        color: isActive ? item.color : "rgba(148,163,184,0.25)",
+                        fontSize: "1rem",
+                        transition: "color 0.22s ease",
+                      }}>
+                        →
+                      </span>
+                    </div>
+                  )}
                 </div>
               );
             })}
