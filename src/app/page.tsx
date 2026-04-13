@@ -73,7 +73,7 @@ function HeroSection() {
         style={{
           position: "absolute",
           bottom: "6rem",
-          left: "7rem",
+          left: "min(7rem, 9vw)",
           zIndex: 5,
           pointerEvents: "none",
         }}
@@ -273,147 +273,152 @@ function Divider() {
 function AboutSection() {
   const lang = useContext(LangContext);
   return (
-    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "8rem" }}>
-      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "2rem" }}>
+    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "5rem" }}>
+      <div style={{ width: "100%" }}>
+        {/* 섹션 라벨을 상단으로 분리하여 카드+사진 뭉치와 분리 */}
+        <RevealSection style={{ marginBottom: "1.25rem" }}>
+          <SectionLabel>About</SectionLabel>
+        </RevealSection>
 
-        {/* 좌측: 카드 두 개 */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <RevealSection>
-            <SectionLabel>About</SectionLabel>
-          </RevealSection>
+        <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "2rem" }}>
 
-          {/* CLARUS-N 의미 카드 */}
-          <RevealSection style={{ transitionDelay: "0.1s", flex: 1 }}>
-            <div style={{
-              height: "100%",
-              padding: "1.6rem 2rem",
-              borderRadius: "1.2rem",
-              background: "rgba(15,23,42,0.6)",
-              border: "1px solid rgba(168,85,247,0.18)",
-              backdropFilter: "blur(16px)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.9rem",
-              boxShadow: "0 0 40px rgba(168,85,247,0.05)",
-            }}>
-              {/* 타이틀 */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "0.85rem" }}>
-                <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
-                <span style={{ fontSize: "3.12rem", fontWeight: 800, fontFamily: "HYGraphic, sans-serif", color: "#a855f7", margin: "0 0.02em" }}>-</span>
-                <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>N</span>
-              </div>
-
-              {/* 의미 */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                <div style={{ fontSize: "1.08rem", color: "#cbd5e1", lineHeight: 1.7 }}>
-                  <span style={{ marginRight: "0.4rem", fontSize: "1.13rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
-                  {lang === 'ko' ? '명확한, 분명한' : 'Clear, Distinct'}
-                </div>
-                <div style={{ fontSize: "0.93rem", color: "#94a3b8", lineHeight: 1.65 }}>
-                  Comes from Latin, and its meaning includes:
-                </div>
-                <div style={{ fontSize: "0.98rem", color: "#94a3b8", lineHeight: 1.7 }}>
-                  Clear, Bright, Distinguished, Easily understood
-                </div>
-                <div style={{ fontSize: "0.93rem", color: "#64748b", lineHeight: 1.75 }}>
-                  "Clarus" reflects the goal of making complex brain imaging<br />clear, accurate, and accessible.
-                </div>
-              </div>
-
-              {/* -N 설명 */}
+          {/* 좌측: 카드 두 개 */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+            {/* CLARUS-N 의미 카드 */}
+            <RevealSection style={{ transitionDelay: "0.1s", flex: 1 }}>
               <div style={{
-                display: "inline-flex", alignItems: "center", gap: "0.45rem",
-                background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)",
-                borderRadius: "0.6rem", padding: "0.5rem 0.9rem", alignSelf: "flex-start",
-              }}>
-                <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
-                <span style={{ fontSize: "0.93rem", color: "#94a3b8" }}>: "hyphen N" means</span>
-                <span style={{ fontSize: "1.08rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
-              </div>
-            </div>
-          </RevealSection>
-
-          {/* CEO 카드 */}
-          <RevealSection style={{ transitionDelay: "0.2s", flex: 1 }}>
-            <div style={{
-              height: "100%",
-              padding: "1.6rem 2rem",
+                height: "100%",
+                padding: "1.6rem 2rem",
                 borderRadius: "1.2rem",
                 background: "rgba(15,23,42,0.6)",
-                border: "1px solid rgba(96,165,250,0.14)",
+                border: "1px solid rgba(168,85,247,0.18)",
                 backdropFilter: "blur(16px)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "0.9rem",
-                boxShadow: "0 0 40px rgba(96,165,250,0.04)",
+                boxShadow: "0 0 40px rgba(168,85,247,0.05)",
               }}>
-                {/* CEO 헤더 */}
-                <div style={{ display: "flex", alignItems: "center", gap: "1.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
-                  <span style={{
-                    fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.22em",
-                    color: "#60a5fa", background: "rgba(96,165,250,0.12)",
-                    border: "1px solid rgba(96,165,250,0.4)",
-                    padding: "0.35rem 0.85rem", borderRadius: "0.4rem",
-                    textShadow: "0 0 10px rgba(96,165,250,0.5)",
-                    flexShrink: 0,
-                    display: "inline-block",
-                    transform: "scale(1.18)",
-                    transformOrigin: "left center",
-                  }}>CEO</span>
-                  <div>
-                    <div style={{ fontSize: "2rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, fontFamily: "HYGraphic, sans-serif" }}>김시은</div>
-                    <div style={{ fontSize: "1.15rem", lineHeight: 1.55, color: "#64748b", fontWeight: 400, marginTop: "0.1rem", fontFamily: "'ITC Eras Medium', 'Arial', sans-serif", letterSpacing: "0.01em" }}>Sion Kim, M.D.</div>
+                {/* 타이틀 */}
+                <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "0.85rem" }}>
+                  <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
+                  <span style={{ fontSize: "3.12rem", fontWeight: 800, fontFamily: "HYGraphic, sans-serif", color: "#a855f7", margin: "0 0.02em" }}>-</span>
+                  <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>N</span>
+                </div>
+
+                {/* 의미 */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                  <div style={{ fontSize: "1.08rem", color: "#cbd5e1", lineHeight: 1.7 }}>
+                    <span style={{ marginRight: "0.4rem", fontSize: "1.13rem", fontStyle: "italic", fontWeight: 600, color: "#e2e8f0", letterSpacing: "0.01em" }}>Clārus :</span>
+                    {lang === 'ko' ? '명확한, 분명한' : 'Clear, Distinct'}
+                  </div>
+                  <div style={{ fontSize: "1.05rem", color: "#94a3b8", lineHeight: 1.65 }}>
+                    Comes from Latin, and its meaning includes:
+                  </div>
+                  <div style={{ fontSize: "1.05rem", color: "#94a3b8", lineHeight: 1.7 }}>
+                    Clear, Bright, Distinguished, Easily understood
+                  </div>
+                  <div style={{ fontSize: "1.05rem", color: "#64748b", lineHeight: 1.75 }}>
+                    "Clarus" reflects the goal of making complex brain imaging<br />clear, accurate, and accessible.
                   </div>
                 </div>
 
-                {/* Board-Certified */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-                  {[
-                    { label: "Neurosurgeon", color: "#a855f7" },
-                    { label: "Critical Care Specialist", color: "#60a5fa" },
-                    { label: "Specialist in Endovascular Neurosurgery", color: "#34d399" },
-                    { label: "Specialist by the Korean Society of Cerebrovascular Surgery", color: "#f59e0b" },
-                  ].map(item => (
-                    <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
-                      <span style={{ width: "2px", minHeight: "1.1rem", background: item.color, borderRadius: "1px", flexShrink: 0, marginTop: "0.2rem", opacity: 0.7 }} />
-                      <span style={{ color: "#94a3b8", fontSize: "1.15rem", lineHeight: 1.7 }}>{item.label}</span>
-                    </div>
-                  ))}
+                {/* -N 설명 */}
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: "0.45rem",
+                  background: "rgba(168,85,247,0.08)", border: "1px solid rgba(168,85,247,0.25)",
+                  borderRadius: "0.6rem", padding: "0.5rem 0.9rem", alignSelf: "flex-start",
+                  marginTop: "auto"
+                }}>
+                  <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
+                  <span style={{ fontSize: "0.93rem", color: "#94a3b8" }}>: "hyphen N" means</span>
+                  <span style={{ fontSize: "1.08rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
+                </div>
               </div>
+            </RevealSection>
+
+            {/* CEO 카드 */}
+            <RevealSection style={{ transitionDelay: "0.2s", flex: 1 }}>
+              <div style={{
+                height: "100%",
+                padding: "1.6rem 2rem",
+                  borderRadius: "1.2rem",
+                  background: "rgba(15,23,42,0.6)",
+                  border: "1px solid rgba(96,165,250,0.14)",
+                  backdropFilter: "blur(16px)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.9rem",
+                  boxShadow: "0 0 40px rgba(96,165,250,0.04)",
+                }}>
+                  {/* CEO 헤더 */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "1.6rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "1rem" }}>
+                    <span style={{
+                      fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.22em",
+                      color: "#60a5fa", background: "rgba(96,165,250,0.12)",
+                      border: "1px solid rgba(96,165,250,0.4)",
+                      padding: "0.35rem 0.85rem", borderRadius: "0.4rem",
+                      textShadow: "0 0 10px rgba(96,165,250,0.5)",
+                      flexShrink: 0,
+                      display: "inline-block",
+                      transform: "scale(1.18)",
+                      transformOrigin: "left center",
+                    }}>CEO</span>
+                    <div>
+                      <div style={{ fontSize: "2rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, fontFamily: "HYGraphic, sans-serif" }}>김시온</div>
+                      <div style={{ fontSize: "1.15rem", lineHeight: 1.55, color: "#64748b", fontWeight: 400, marginTop: "0.1rem", fontFamily: "'ITC Eras Medium', 'Arial', sans-serif", letterSpacing: "0.01em" }}>Sion Kim, M.D.</div>
+                    </div>
+                  </div>
+
+                  {/* Board-Certified */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                    {[
+                      { label: "Neurosurgeon", color: "#a855f7" },
+                      { label: "Critical Care Specialist", color: "#60a5fa" },
+                      { label: "Specialist in Endovascular Neurosurgery", color: "#34d399" },
+                      { label: "Specialist by the Korean Society of Cerebrovascular Surgery", color: "#f59e0b" },
+                    ].map(item => (
+                      <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "0.7rem" }}>
+                        <span style={{ width: "2px", minHeight: "1.1rem", background: item.color, borderRadius: "1px", flexShrink: 0, marginTop: "0.2rem", opacity: 0.7 }} />
+                        <span style={{ color: "#94a3b8", fontSize: "1.15rem", lineHeight: 1.7 }}>{item.label}</span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </RevealSection>
+          </div>
+
+          {/* 우측: CEO 사진 흑백 */}
+          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column" }}>
+            <div style={{
+              position: "relative",
+              borderRadius: "1.2rem",
+              overflow: "hidden",
+              width: "460px",
+              flex: 1, // 카드 전체 높이에 맞춰 확장
+              minHeight: "600px",
+              boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
+            }}>
+              <img
+                src="/ceo-photo.png"
+                alt="CEO Sion Kim"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "50% 24%",
+                  display: "block",
+                }}
+              />
+              {/* 하단 그라데이션 오버레이 */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0, height: "40%",
+                background: "linear-gradient(to top, rgba(3,7,18,0.7), transparent)",
+                pointerEvents: "none",
+              }} />
             </div>
           </RevealSection>
+
         </div>
-
-        {/* 우측: CEO 사진 흑백 */}
-        <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", alignItems: "center", paddingBottom: "0", marginTop: "2rem" }}>
-          <div style={{
-            position: "relative",
-            borderRadius: "1.2rem",
-            overflow: "hidden",
-            width: "460px",
-            height: "660px",
-            boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
-          }}>
-            <img
-              src="/ceo-photo.png"
-              alt="CEO Sion Kim"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "50% 24%",
-                display: "block",
-              }}
-            />
-            {/* 하단 그라데이션 오버레이 */}
-            <div style={{
-              position: "absolute", bottom: 0, left: 0, right: 0, height: "40%",
-              background: "linear-gradient(to top, rgba(3,7,18,0.7), transparent)",
-              pointerEvents: "none",
-            }} />
-          </div>
-        </RevealSection>
-
       </div>
     </section>
   );
@@ -462,12 +467,12 @@ function AboutStrengthsSection() {
   const [pinned, setPinned] = useState<number | null>(null);
 
   return (
-    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+    <section id="about-strengths" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
         <div style={{ flex: 1 }}>
           <RevealSection>
             <SectionLabel>About</SectionLabel>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2rem", lineHeight: 1.2 }}>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2.5rem", lineHeight: 1.2 }}>
               Distinctive Strengths of <span style={{ color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontFamily: "'HYGraphic', sans-serif" }}>-N</span>
             </h2>
           </RevealSection>
@@ -538,7 +543,7 @@ function AboutStrengthsSection() {
                         transition: "max-height 0.35s ease, opacity 0.3s ease",
                         marginTop: active ? "0.4rem" : "0",
                         paddingLeft: active ? "0.9rem" : "0",
-                        fontSize: "0.96rem",
+                        fontSize: "1.05rem",
                         color: "#94a3b8",
                         fontStyle: "italic",
                         lineHeight: 1.6,
@@ -632,16 +637,22 @@ function BackgroundSection() {
       <div style={{ width: "100%" }}>
         <RevealSection>
           <SectionLabel>Background</SectionLabel>
-          <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
+          <h2 style={{ 
+            fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", 
+            fontWeight: 700, 
+            color: "#e2e8f0", 
+            marginBottom: "1.25rem", 
+            lineHeight: 1.2,
+            maxWidth: "1440px",
+            margin: "0 auto 1.25rem"
+          }}>
             Research Context and Motivation
           </h2>
-          <p style={{ color: "#64748b", fontSize: "0.95rem", marginBottom: "2.5rem", maxWidth: "42rem", lineHeight: 1.7, fontFamily: "'HYGraphic', sans-serif" }}>
-            Cerebrovascular diseases require rapid diagnosis, making timing critical for survival. We solve challenges like radiologist shortages and interpretation delays through AI-driven automation.
-          </p>
+
         </RevealSection>
 
         <RevealSection style={{ transitionDelay: "0.1s" }}>
-          <div style={{ display: "flex", gap: "2.5rem", maxWidth: "1300px", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "3.5rem", maxWidth: "1440px", alignItems: "center", margin: "0 auto" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: 1, minWidth: 0 }}>
             {items.map((item, i) => {
               const isActive = activeIndex === i;
@@ -698,7 +709,7 @@ function BackgroundSection() {
                       gap: "1rem",
                     }}>
                       <div style={{
-                        fontSize: "1.22rem",
+                        fontSize: "1.32rem",
                         lineHeight: 1.25,
                         fontWeight: 700,
                         color: isActive ? item.color : `${item.color}ff`,
@@ -743,7 +754,7 @@ function BackgroundSection() {
                       borderLeft: isActive ? `2px solid ${item.color}` : "2px solid transparent",
                     }}>
                       <div style={{
-                        fontSize: "0.96rem",
+                        fontSize: "1.15rem",
                         color: "#cbd5e1",
                         lineHeight: 1.6,
                         fontFamily: "'HYGraphic', sans-serif",
@@ -752,7 +763,7 @@ function BackgroundSection() {
                       </div>
                       <div style={{
                         marginTop: "0.4rem",
-                        fontSize: "0.82rem",
+                        fontSize: "1.1rem",
                         color: `${item.color}90`,
                         lineHeight: 1.5,
                         fontFamily: "'Inter', sans-serif",
@@ -1860,8 +1871,8 @@ function ContactSection() {
                 onClick={() => setIsFormOpen(true)}
                 style={{
                   position: "relative",
-                  padding: "1rem 1.25rem",
-                  borderRadius: "0.875rem",
+                  padding: "1.25rem 1.5rem",
+                  borderRadius: "1rem",
                   background: "linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(37,99,235,0.3) 100%)",
                   border: "1px solid rgba(96,165,250,0.5)",
                   boxShadow: "0 4px 20px rgba(59,130,246,0.2), inset 0 0 10px rgba(255,255,255,0.05)",
@@ -1873,6 +1884,7 @@ function ContactSection() {
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                   textAlign: "left",
                   width: "100%",
+                  minHeight: "92px",
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.transform = "translateY(-4px)";
@@ -1892,14 +1904,18 @@ function ContactSection() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
-                  <div style={{ background: "rgba(255,255,255,0.05)", padding: "0.6rem", borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)" }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <div style={{ 
+                    width: "42px", height: "42px", 
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    background: "rgba(255,255,255,0.05)", borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)" 
+                  }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                     </svg>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <span style={{ color: "#ffffff", fontSize: "1.3rem", fontWeight: 700, letterSpacing: "0.02em" }}>Contact</span>
-                    <span style={{ color: "rgba(147,197,253,0.8)", fontSize: "0.8rem", marginTop: "0.2rem" }}>버튼을 클릭하여 온라인 문의 폼 열기</span>
+                    <span style={{ color: "rgba(147,197,253,0.8)", fontSize: "0.75rem", marginTop: "0.25rem" }}>버튼을 클릭하여 온라인 문의 폼 열기</span>
                   </div>
                 </div>
                 <div className="btn-arrow" style={{ transition: "transform 0.3s ease", display: "flex", alignItems: "center" }}>
@@ -1911,21 +1927,22 @@ function ContactSection() {
               </button>
 
               {/* 하위 항목 리스트 */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", paddingLeft: "0.75rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 <div 
                   onClick={handleCopyEmail}
                   style={{
                     display: "flex",
                     alignItems: "center",
                     gap: "1.25rem",
-                    padding: "1rem 1.25rem",
-                    borderRadius: "0.875rem",
+                    padding: "1.25rem 1.5rem",
+                    borderRadius: "1rem",
                     background: isCopied ? "rgba(59,130,246,0.15)" : "rgba(30,58,138,0.08)",
                     border: isCopied ? "1px solid rgba(96,165,250,0.6)" : "1px solid rgba(148,163,184,0.1)",
                     backdropFilter: "blur(4px)",
                     cursor: "pointer",
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    position: "relative"
+                    position: "relative",
+                    minHeight: "92px",
                   }}
                   onMouseEnter={e => {
                     if (!isCopied) {
@@ -1940,7 +1957,12 @@ function ContactSection() {
                     }
                   }}
                 >
-                  <div style={{ background: isCopied ? "rgba(96,165,250,0.3)" : "rgba(148,163,184,0.1)", padding: "0.6rem", borderRadius: "50%", display: "flex", transition: "all 0.3s" }}>
+                  <div style={{ 
+                    width: "42px", height: "42px", 
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    background: isCopied ? "rgba(96,165,250,0.3)" : "rgba(148,163,184,0.1)", 
+                    borderRadius: "50%", transition: "all 0.3s" 
+                  }}>
                     {isCopied ? (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
@@ -1953,14 +1975,14 @@ function ContactSection() {
                     )}
                   </div>
                   <div>
-                    <div style={{ fontSize: "0.75rem", color: isCopied ? "#93c5fd" : "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.15rem", fontWeight: isCopied ? 700 : 400 }}>
+                    <div style={{ fontSize: "0.75rem", color: isCopied ? "#93c5fd" : "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.25rem", fontWeight: isCopied ? 700 : 400 }}>
                       {isCopied ? "COPIED!" : "E-mail"}
                     </div>
-                    <div style={{ color: isCopied ? "#ffffff" : "#cbd5e1", fontSize: "1.05rem", fontWeight: isCopied ? 600 : 400, letterSpacing: "0.02em" }}>clarusnai@gmail.com</div>
+                    <div style={{ color: isCopied ? "#ffffff" : "#cbd5e1", fontSize: "1.15rem", fontWeight: isCopied ? 600 : 400, letterSpacing: "0.02em" }}>clarusnai@gmail.com</div>
                   </div>
                   {/* 클릭 유도 툴팁 (작게) */}
                   {!isCopied && (
-                    <div style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", fontSize: "0.7rem", color: "#475569", opacity: 0.6 }}>
+                    <div style={{ position: "absolute", right: "1.5rem", top: "50%", transform: "translateY(-50%)", fontSize: "0.7rem", color: "#475569", opacity: 0.6 }}>
                       Click to Copy
                     </div>
                   )}
@@ -1970,20 +1992,25 @@ function ContactSection() {
                   display: "flex",
                   alignItems: "center",
                   gap: "1.25rem",
-                  padding: "1rem 1.25rem",
-                  borderRadius: "0.875rem",
+                  padding: "1.25rem 1.5rem",
+                  borderRadius: "1rem",
                   background: "rgba(30,58,138,0.08)",
                   border: "1px solid rgba(148,163,184,0.1)",
                   backdropFilter: "blur(4px)",
+                  minHeight: "92px",
                 }}>
-                  <div style={{ background: "rgba(148,163,184,0.1)", padding: "0.6rem", borderRadius: "50%", display: "flex" }}>
+                  <div style={{ 
+                    width: "42px", height: "42px", 
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    background: "rgba(148,163,184,0.1)", borderRadius: "50%" 
+                  }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                     </svg>
                   </div>
                   <div>
-                    <div style={{ fontSize: "0.75rem", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.15rem" }}>Tel</div>
-                    <div style={{ color: "#cbd5e1", fontSize: "1.05rem", fontWeight: 400, letterSpacing: "0.05em" }}>+82-2-****-****</div>
+                    <div style={{ fontSize: "0.75rem", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.25rem" }}>Tel</div>
+                    <div style={{ color: "#cbd5e1", fontSize: "1.15rem", fontWeight: 400, letterSpacing: "0.05em" }}>+82-2-6956-5338</div>
                   </div>
                 </div>
               </div>
@@ -2230,9 +2257,9 @@ function ContactSection() {
 /* ─────────────────────────────────────────────
    메인 페이지
 ───────────────────────────────────────────── */
-const NAV_SECTIONS = ["about", "background", "performance", "test-request", "contact"] as const;
+const NAV_SECTIONS = ["about", "about-strengths", "background", "performance", "test-request", "contact"] as const;
 type SectionId = typeof NAV_SECTIONS[number];
-const SNAP_SECTION_IDS = ["hero", "about", "background", "performance", "test-request", "contact"];
+const SNAP_SECTION_IDS = ["hero", "about", "about-strengths", "background", "performance", "test-request", "contact"];
 
 export default function ClarusNPage() {
   const [showIntro, setShowIntro] = useState(true);
@@ -2496,7 +2523,7 @@ export default function ClarusNPage() {
                 transition: "all 0.25s ease",
               }}
             >
-              {l.toUpperCase()}
+              {l === 'ko' ? 'KOR' : 'ENG'}
             </span>
           ))}
         </button>
@@ -2508,17 +2535,38 @@ export default function ClarusNPage() {
           className="cn-sidebar-scroll"
           style={{
             position: "absolute",
-            top: 0, bottom: 0, right: 0,
-            left: isSidebarOpen ? "340px" : "0px",
+            top: 0, bottom: 0, left: 0, right: 0,
             overflowY: "scroll",
             overflowX: "hidden",
             zIndex: 10,
             backgroundColor: "#030712",
-            transition: "left 500ms cubic-bezier(0.4,0,0.2,1)",
+            paddingLeft: isSidebarOpen ? "340px" : "0px",
+            transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
           }}
         >
+          {/* 전역 배경 레이어: 와이드 화면 여백을 채움 */}
+          <div style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: -1,
+            pointerEvents: "none",
+            opacity: 0.25
+          }}>
+            <NeuralSynapseVisual mode="calm" color="147, 197, 253" opacity={0.3} />
+          </div>
+
           <HeroSection />
-          <div className="cn-content-padding" style={{ paddingLeft: "7rem", paddingRight: "4rem" }}>
+          {/* 본문 컨텐츠 컨테이너: 중앙 정렬 및 와이드 대응 */}
+          <div 
+            className="cn-content-padding" 
+            style={{ 
+              maxWidth: "1440px",
+              margin: "0 auto",
+              paddingLeft: "min(7rem, 8vw)", 
+              paddingRight: "min(4rem, 5vw)",
+              position: "relative"
+            }}
+          >
             <AboutSection />
             <AboutStrengthsSection />
             <BackgroundSection />
@@ -2537,11 +2585,11 @@ export default function ClarusNPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 {/* 상단: 회사 기본 정보 (가로 배열) */}
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
-                    <span>대표자: 김시은</span>
+                    <span>대표자: 김시온</span>
                   <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
                   <span>사업자등록번호: 811-87-03349</span>
                   <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
-                  <span>연락처: +82-2-****-****</span>
+                  <span>연락처: +82-2-6956-5338</span>
                   <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
                   <span>이메일: clarusnai@gmail.com</span>
                 </div>
