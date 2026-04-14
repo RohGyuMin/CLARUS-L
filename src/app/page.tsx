@@ -257,7 +257,8 @@ function Divider() {
   return (
     <div
       style={{
-        width: "100%",
+        width: "86%",
+        maxWidth: "980px",
         height: "1px",
         background: "linear-gradient(to right, rgba(96,165,250,0.4), transparent)",
         margin: "1.5rem 0",
@@ -384,7 +385,7 @@ function AboutSection() {
 
           {/* 우측: CEO 사진 흑백 */}
           <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column" }}>
-            <div style={{ transform: "translateX(15mm)" }}>
+            <div style={{ transform: "translateX(5mm)" }}>
               <div style={{
               position: "relative",
               borderRadius: "1.2rem",
@@ -2724,10 +2725,9 @@ export default function ClarusNPage() {
             style={{ 
               maxWidth: "1440px",
               margin: "0 auto",
-              paddingLeft: "min(7rem, 8vw)", 
+              paddingLeft: "calc(min(7rem, 8vw) - 1cm)", 
               paddingRight: "min(4rem, 5vw)",
               position: "relative",
-              transform: "translateX(-1cm)",
             }}
           >
             <AboutSection />

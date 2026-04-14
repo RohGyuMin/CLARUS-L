@@ -333,7 +333,7 @@ function NavBtn({
         color: active ? "#ffffff" : hovered ? "#ffffff" : "rgba(226,232,240,0.85)",
         fontSize: "1.25rem",
         fontWeight: active ? 600 : 500,
-        fontFamily: "'ITC Eras Medium', 'Arial Black', sans-serif",
+        fontFamily: "'Arial Black', 'Arial Unicode MS', sans-serif",
         padding: "1rem 1.5rem",
         borderRadius: "0.75rem",
         textAlign: "left",
