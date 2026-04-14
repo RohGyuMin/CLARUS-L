@@ -1991,7 +1991,7 @@ function ContactSection() {
           <RevealSection style={{ transitionDelay: "0.1s" }}>
             <button
               type="button"
-              onClick={() => setIsContactIntroEnglish(true)}
+              onClick={() => setIsContactIntroEnglish(prev => !prev)}
               style={{
                 color: "#94a3b8",
                 lineHeight: 1.85,
@@ -2005,7 +2005,7 @@ function ContactSection() {
                 width: "100%",
                 cursor: "pointer",
               }}
-              title="Click to switch to English"
+              title={isContactIntroEnglish ? "Click to switch to Korean" : "Click to switch to English"}
             >
               {isContactIntroEnglish ? (
                 <>
