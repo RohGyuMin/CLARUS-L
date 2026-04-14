@@ -383,8 +383,9 @@ function AboutSection() {
           </div>
 
           {/* 우측: CEO 사진 흑백 */}
-          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column", transform: "translateX(15mm)" }}>
-            <div style={{
+          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column" }}>
+            <div style={{ transform: "translateX(15mm)" }}>
+              <div style={{
               position: "relative",
               borderRadius: "1.2rem",
               overflow: "hidden",
@@ -392,24 +393,25 @@ function AboutSection() {
               flex: 1, // 카드 전체 높이에 맞춰 확장
               minHeight: "600px",
               boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
-            }}>
-              <img
-                src="/ceo-photo.png"
-                alt="CEO Sion Kim"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "50% 24%",
-                  display: "block",
-                }}
-              />
-              {/* 하단 그라데이션 오버레이 */}
-              <div style={{
-                position: "absolute", bottom: 0, left: 0, right: 0, height: "40%",
-                background: "linear-gradient(to top, rgba(3,7,18,0.7), transparent)",
-                pointerEvents: "none",
-              }} />
+              }}>
+                <img
+                  src="/ceo-photo.png"
+                  alt="CEO Sion Kim"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "50% 24%",
+                    display: "block",
+                  }}
+                />
+                {/* 하단 그라데이션 오버레이 */}
+                <div style={{
+                  position: "absolute", bottom: 0, left: 0, right: 0, height: "40%",
+                  background: "linear-gradient(to top, rgba(3,7,18,0.7), transparent)",
+                  pointerEvents: "none",
+                }} />
+              </div>
             </div>
           </RevealSection>
 
