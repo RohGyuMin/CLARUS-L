@@ -268,7 +268,7 @@ function Divider() {
 
 function AboutSection() {
   return (
-    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "5rem" }}>
+    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "2.5rem" }}>
       <div style={{ width: "100%" }}>
         {/* 섹션 라벨을 상단으로 분리하여 카드+사진 뭉치와 분리 */}
         <RevealSection style={{ marginBottom: "1.25rem" }}>
@@ -585,7 +585,7 @@ function BackgroundSection() {
       color: "#FFA47A",
       title: <><span style={{ color: "#FFA47A" }}>A Surge in Neurological Diseases</span> Due to an Ultra-Aged Society</>,
       subtitle: "초고령화 사회로 인한 신경계 질환의 급증",
-      detail: "죄졸증, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
+      detail: "뇌졸증, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
       image: "/bg-disease-surge.png",
     },
     {
@@ -1502,6 +1502,28 @@ function TestRequestSection() {
     setSelectedFiles(prev => [...prev, ...arr]);
   };
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadRequestCount = async () => {
+      try {
+        const res = await fetch("/api/analysis-count", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { count?: unknown };
+        if (!cancelled && typeof data.count === "number" && Number.isFinite(data.count)) {
+          setRequestCount(Math.floor(data.count));
+        }
+      } catch {
+        // Keep fallback state value when request fails.
+      }
+    };
+
+    loadRequestCount();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const handleAnalysisSubmit = async () => {
     if (selectedFiles.length === 0) { alert("파일을 선택해주세요."); return; }
     if (!emailValue) { alert("이메일을 입력해주세요."); return; }
@@ -1513,9 +1535,14 @@ function TestRequestSection() {
       form.append("email", emailValue);
       form.append("fileType", fileType);
       const res = await fetch("/api/analysis", { method: "POST", body: form });
+      const data = (await res.json()) as { count?: unknown };
       if (!res.ok) throw new Error();
       setSubmitState("success");
-      setRequestCount(prev => prev + 1);
+      if (typeof data.count === "number" && Number.isFinite(data.count)) {
+        setRequestCount(Math.floor(data.count));
+      } else {
+        setRequestCount(prev => prev + 1);
+      }
       setSelectedFiles([]);
       setEmailValue("");
       setFileType("");
@@ -1900,6 +1927,7 @@ function ContactSection() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [isContactIntroEnglish, setIsContactIntroEnglish] = useState(false);
   const [privacyAgreed, setPrivacyAgreed] = useState(false);
   const [formData, setFormData] = useState({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -1946,10 +1974,37 @@ function ContactSection() {
             <Divider />
           </RevealSection>
           <RevealSection style={{ transitionDelay: "0.1s" }}>
-            <p style={{ color: "#94a3b8", lineHeight: 1.85, fontSize: "1.05rem", fontWeight: 300, marginBottom: "2rem" }}>
-              <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
-              저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
-            </p>
+            <button
+              type="button"
+              onClick={() => setIsContactIntroEnglish(true)}
+              style={{
+                color: "#94a3b8",
+                lineHeight: 1.85,
+                fontSize: "1.05rem",
+                fontWeight: 300,
+                marginBottom: "2rem",
+                background: "none",
+                border: "none",
+                padding: 0,
+                textAlign: "left",
+                width: "100%",
+                cursor: "pointer",
+              }}
+              title="Click to switch to English"
+            >
+              {isContactIntroEnglish ? (
+                <>
+                  Thank you for your interest in <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>&apos;s AI solutions.<br />
+                  We are currently operating a pilot program for research purposes only.<br />
+                  Please contact us if you have any questions about research collaboration or technical partnerships.
+                </>
+              ) : (
+                <>
+                  <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>의 다양한 AI solutions에 대해 관심을 주셔서 감사합니다.<br />현재 <span style={{ color: "#e2e8f0", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>는 연구목적의 파일럿 프로그램만 운용중입니다.<br />
+                  저희와 연구 협력 및 기술 제휴 등의 궁금한 점이 있으시면 문의해 주세요.
+                </>
+              )}
+            </button>
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", maxWidth: "420px" }}>
               
               {/* 타이틀 버튼 스타일 - 팝업 트리거 버튼으로 변경 */}
