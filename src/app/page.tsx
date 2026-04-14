@@ -727,7 +727,7 @@ function BackgroundSection() {
                         fontSize: "1.1rem",
                         color: `${item.color}90`,
                         lineHeight: 1.5,
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'HYGraphic', sans-serif",
                         fontStyle: "italic",
                         paddingLeft: 0,
                       }}>
@@ -779,6 +779,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
 }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [hasNudged, setHasNudged] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -963,9 +964,11 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
     if (activeVideo === videoSrc) {
       setActiveVideo(null);
       setIsPlaying(false);
+      setIsLegendCollapsed(false);
     } else {
       setActiveVideo(videoSrc);
       setIsPlaying(false);
+      setIsLegendCollapsed(false);
     }
   };
 
@@ -1220,11 +1223,25 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                     boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
                   }}
                 >
-                  <div style={{
-                    padding: "0.35rem 0.8rem",
-                    borderBottom: "1px solid rgba(255,255,255,0.07)",
-                    background: "rgba(255,255,255,0.04)",
-                  }}>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsLegendCollapsed(prev => !prev);
+                    }}
+                    style={{
+                      width: "100%",
+                      padding: "0.35rem 0.8rem",
+                      border: "none",
+                      borderBottom: isLegendCollapsed ? "none" : "1px solid rgba(255,255,255,0.07)",
+                      background: "rgba(255,255,255,0.04)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      cursor: "pointer",
+                    }}
+                    aria-label={isLegendCollapsed ? "Expand legend" : "Collapse legend"}
+                  >
                     <span style={{
                       color: "rgba(148,163,184,0.7)",
                       fontSize: "0.67rem",
@@ -1235,28 +1252,43 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                     }}>
                       Legend
                     </span>
-                  </div>
-                  <div style={{ padding: "0.5rem 0.8rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                    {activeLegendItems.map(item => (
-                      <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        <div style={{
-                          width: "9px", height: "9px",
-                          borderRadius: "2px",
-                          background: item.color,
-                          flexShrink: 0,
-                          boxShadow: `0 0 6px ${item.color}88`,
-                        }} />
-                        <span style={{
-                          color: "rgba(226,232,240,0.88)",
-                          fontSize: "0.73rem",
-                          fontFamily: "'Inter', sans-serif",
-                          whiteSpace: "nowrap",
-                        }}>
-                          {item.label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="rgba(148,163,184,0.85)"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ transform: isLegendCollapsed ? "rotate(-90deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                  {!isLegendCollapsed && (
+                    <div style={{ padding: "0.5rem 0.8rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                      {activeLegendItems.map(item => (
+                        <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <div style={{
+                            width: "9px", height: "9px",
+                            borderRadius: "2px",
+                            background: item.color,
+                            flexShrink: 0,
+                            boxShadow: `0 0 6px ${item.color}88`,
+                          }} />
+                          <span style={{
+                            color: "rgba(226,232,240,0.88)",
+                            fontSize: "0.73rem",
+                            fontFamily: "'Inter', sans-serif",
+                            whiteSpace: "nowrap",
+                          }}>
+                            {item.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
