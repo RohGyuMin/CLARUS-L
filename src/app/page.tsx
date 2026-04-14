@@ -499,7 +499,7 @@ function AboutStrengthsSection() {
                   >
                     {/* 왼쪽 컬러 액센트 바 */}
                     <div style={{
-                      width: "5px",
+                    width: "6px",
                       flexShrink: 0,
                       background: active ? item.color : `${item.color}40`,
                       transition: "background 0.3s ease",
@@ -670,7 +670,7 @@ function BackgroundSection() {
                 >
                   {/* 왼쪽 컬러 바 */}
                   <div style={{
-                    width: "4px",
+                    width: "6px",
                     flexShrink: 0,
                     background: isActive ? item.color : `${item.color}50`,
                     transition: "background 0.22s ease",
@@ -701,7 +701,7 @@ function BackgroundSection() {
                       marginBottom: "0.3rem",
                     }}>
                       <div style={{
-                        fontSize: "clamp(0.95rem, 1.45vw, 1.12rem)",
+                        fontSize: "1.3rem",
                         lineHeight: 1.2,
                         fontWeight: 700,
                         color: "#e2e8f0",
