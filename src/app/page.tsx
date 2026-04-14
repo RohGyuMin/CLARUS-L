@@ -669,6 +669,7 @@ function BackgroundSection() {
                   style={{
                     display: "flex",
                     alignItems: "stretch",
+                    minHeight: "5rem",
                     borderRadius: "0.75rem",
                     overflow: "hidden",
                     background: isActive ? `${item.color}10` : "rgba(15,23,42,0.55)",
@@ -702,7 +703,7 @@ function BackgroundSection() {
                     {String(i + 1).padStart(2, "0")}
                   </div>
                   {/* 본문 */}
-                  <div style={{ flex: 1, padding: "0.85rem 1.2rem 0.85rem 0" }}>
+                  <div style={{ flex: 1, padding: "0.85rem 1.2rem 0.85rem 0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     {/* 영문 제목 */}
                     <div style={{
                       fontSize: "1.3rem",
