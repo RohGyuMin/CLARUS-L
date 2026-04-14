@@ -585,7 +585,7 @@ function BackgroundSection() {
       color: "#FFA47A",
       title: <><span style={{ color: "#FFA47A" }}>A Surge in Neurological Diseases</span> Due to an Ultra-Aged Society</>,
       subtitle: "초고령화 사회로 인한 신경계 질환의 급증",
-      detail: "뇌졸중, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
+      detail: "죄졸증, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
       image: "/bg-disease-surge.png",
     },
     {
@@ -1536,7 +1536,7 @@ function TestRequestSection() {
   return (
     <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
-        <div style={{ flex: 1, width: "100%", maxWidth: "46rem" }}>
+        <div style={{ flex: 1, width: "100%", maxWidth: "42rem" }}>
           <RevealSection>
             <SectionLabel>Research Analysis Request</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
@@ -1802,8 +1802,9 @@ function TestRequestSection() {
                 <span style={{
                   display: "inline-flex",
                   alignItems: "center",
+                  height: "2.28rem",
                   whiteSpace: "nowrap",
-                  padding: "0.38rem 0.9rem",
+                  padding: "0 0.9rem",
                   borderRadius: "2rem",
                   background: "rgba(59,130,246,0.08)",
                   border: "1px solid rgba(59,130,246,0.3)",
@@ -1811,6 +1812,7 @@ function TestRequestSection() {
                   fontSize: "0.9rem", 
                   fontFamily: "'Inter', sans-serif", 
                   fontWeight: 600, 
+                  lineHeight: 1,
                   letterSpacing: "0.06em",
                   textShadow: "0 0 12px rgba(96,165,250,0.4)",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
@@ -1841,14 +1843,16 @@ function TestRequestSection() {
                       style={{
                         display: "flex",
                         alignItems: "center",
+                        height: "2.28rem",
                         gap: "0.28rem",
-                        padding: "0.44rem 0.6rem",
+                        padding: "0 0.6rem",
                         borderRadius: "0.6rem",
                         background: isActive ? "rgba(96,165,250,0.2)" : "rgba(96,165,250,0.07)",
                         border: `1px solid ${isActive ? "rgba(96,165,250,0.6)" : "rgba(96,165,250,0.25)"}`,
                         color: isActive ? "#bfdbfe" : "#93c5fd",
                         fontSize: "0.76rem",
                         fontWeight: 600,
+                        lineHeight: 1,
                         fontFamily: "'HYGraphic', sans-serif",
                         whiteSpace: "nowrap",
                         cursor: "pointer",
