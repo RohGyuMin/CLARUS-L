@@ -11,6 +11,7 @@ export default function ClarusCursor() {
   const ringRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const [pulses, setPulses] = useState<ClickPulse[]>([]);
+  const [isTouchLike, setIsTouchLike] = useState(false);
 
   // 마우스 실제 위치
   const mx = useRef(0), my = useRef(0);
@@ -20,6 +21,16 @@ export default function ClarusCursor() {
   const gx = useRef(0), gy = useRef(0);
 
   useEffect(() => {
+    const touchQuery = window.matchMedia("(hover: none), (pointer: coarse)");
+    const updateDeviceMode = () => setIsTouchLike(touchQuery.matches);
+    updateDeviceMode();
+    touchQuery.addEventListener("change", updateDeviceMode);
+    return () => touchQuery.removeEventListener("change", updateDeviceMode);
+  }, []);
+
+  useEffect(() => {
+    if (isTouchLike) return;
+
     // 기본 커서 숨기기 (CLARUS-N 페이지에서만)
     document.documentElement.style.cursor = "none";
 
@@ -106,7 +117,9 @@ export default function ClarusCursor() {
       window.removeEventListener("mousedown", onMouseDown);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [isTouchLike]);
+
+  if (isTouchLike) return null;
 
   return (
     <>

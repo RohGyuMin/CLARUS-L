@@ -347,4 +347,45 @@ body::before {
   .cn-stat-grid {
     grid-template-columns: 1fr !important;
   }
+  .cn-request-meta-row {
+    flex-wrap: wrap !important;
+    gap: 0.6rem !important;
+  }
+  .cn-request-meta-count-wrap {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+  .cn-request-count-pill {
+    max-width: 100%;
+    font-size: 0.82rem !important;
+  }
+  .cn-request-meta-actions {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+  .cn-request-help-btn {
+    flex: 1 1 calc(50% - 0.25rem) !important;
+    min-width: 0 !important;
+    height: 2.4rem !important;
+    padding: 0 0.55rem !important;
+    font-size: 0.72rem !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .cn-request-help-btn {
+    flex: 1 1 100% !important;
+  }
+  .cn-request-count-pill {
+    font-size: 0.76rem !important;
+    padding: 0 0.7rem !important;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
 }

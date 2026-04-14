@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 interface ClarusSidebarProps {
   isOpen: boolean;
+  isMobile?: boolean;
   onToggle: () => void;
   activeSection?: string;
   onNavClick?: (id: string) => void;
@@ -15,6 +16,7 @@ const brainCtItems = ["Hemorrhage", "CTA Vessel 3D"];
 
 export default function ClarusSidebar({
   isOpen,
+  isMobile = false,
   onToggle,
   activeSection = "",
   onNavClick,
@@ -35,7 +37,7 @@ export default function ClarusSidebar({
         position: "fixed",
         top: 0, left: 0,
         height: "100%",
-        width: "340px",
+        width: isMobile ? "min(340px, 88vw)" : "340px",
         background: "linear-gradient(180deg, rgba(2,8,20,0.97) 0%, rgba(4,12,30,0.95) 60%, rgba(3,10,26,0.97) 100%)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",

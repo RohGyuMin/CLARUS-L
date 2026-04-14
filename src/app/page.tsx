@@ -1820,7 +1820,9 @@ function TestRequestSection() {
               )}
 
               {/* 분석 요청 카운터: 화려하게 강조 */}
-              <div style={{
+              <div
+                className="cn-request-meta-row"
+                style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "flex-start",
@@ -1829,9 +1831,12 @@ function TestRequestSection() {
                 flexWrap: "nowrap",
                 width: "100%",
                 minWidth: 0,
-              }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
-                <span style={{
+              }}
+              >
+                <div className="cn-request-meta-count-wrap" style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
+                <span
+                  className="cn-request-count-pill"
+                  style={{
                   display: "inline-flex",
                   alignItems: "center",
                   height: "2.28rem",
@@ -1848,7 +1853,8 @@ function TestRequestSection() {
                   letterSpacing: "0.06em",
                   textShadow: "0 0 12px rgba(96,165,250,0.4)",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
-                }}>
+                }}
+                >
                   <span style={{ 
                     display: "inline-block", 
                     width: "8px", 
@@ -1862,7 +1868,7 @@ function TestRequestSection() {
                 </span>
                 </div>
 
-                <div style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap", flex: 1, minWidth: 0 }}>
+                <div className="cn-request-meta-actions" style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap", flex: 1, minWidth: 0 }}>
                 {([
                   { label: "DICOM 파일 추출 방법", icon: "📎", key: "dicom" as const },
                   { label: "분석영상 확인방법", icon: "🔍", key: "analysis" as const },
@@ -1871,6 +1877,7 @@ function TestRequestSection() {
                   return (
                     <button
                       key={key}
+                      className="cn-request-help-btn"
                       onClick={() => setSelectedPdf(isActive ? null : key)}
                       style={{
                         display: "flex",
@@ -2456,12 +2463,28 @@ export default function ClarusNPage() {
   const [showIntro, setShowIntro] = useState(true);
   const [isIntroEnding, setIsIntroEnding] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isCompactLayout, setIsCompactLayout] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [performancePageIndex, setPerformancePageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const isSnapScrolling = useRef(false);
 
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
+
+  // 화면 너비가 좁아지면 모바일/태블릿 레이아웃으로 전환
+  useEffect(() => {
+    const updateLayoutMode = () => setIsCompactLayout(window.innerWidth <= 1024);
+    updateLayoutMode();
+    window.addEventListener("resize", updateLayoutMode);
+    return () => window.removeEventListener("resize", updateLayoutMode);
+  }, []);
+
+  // 모바일/태블릿 진입 시 사이드바를 기본 닫힘으로 전환
+  useEffect(() => {
+    if (isCompactLayout) {
+      setIsSidebarOpen(false);
+    }
+  }, [isCompactLayout]);
 
   // 스크롤 위치 추적 → 현재 활성 섹션(Sidebar 강조용) 파악
   useEffect(() => {
@@ -2703,7 +2726,7 @@ export default function ClarusNPage() {
             overflowX: "hidden",
             zIndex: 10,
             backgroundColor: "#030712",
-            paddingLeft: isSidebarOpen ? "340px" : "0px",
+            paddingLeft: isSidebarOpen && !isCompactLayout ? "340px" : "0px",
             transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
           }}
         >
@@ -2774,13 +2797,30 @@ export default function ClarusNPage() {
           </div>
         </div>
 
+        {isCompactLayout && isSidebarOpen && (
+          <button
+            aria-label="사이드바 닫기"
+            onClick={toggleSidebar}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 38,
+              border: "none",
+              background: "rgba(2, 6, 23, 0.55)",
+              backdropFilter: "blur(2px)",
+              cursor: "pointer",
+            }}
+          />
+        )}
+
         {/* 메뉴 열기 버튼 */}
         <button
           onClick={toggleSidebar}
           aria-label="메뉴 열기"
           style={{
             position: "fixed",
-            top: "2rem", left: "2rem",
+            top: isCompactLayout ? "1rem" : "2rem",
+            left: isCompactLayout ? "1rem" : "2rem",
             zIndex: 40,
             padding: "0.75rem",
             borderRadius: "0.75rem",
@@ -2788,7 +2828,7 @@ export default function ClarusNPage() {
             border: "1px solid rgba(255,255,255,0.1)",
             backdropFilter: "blur(12px)",
             color: "white",
-            cursor: "none",
+            cursor: "pointer",
             opacity: isSidebarOpen ? 0 : 1,
             pointerEvents: isSidebarOpen ? "none" : "auto",
             transition: "opacity 0.3s ease, background 0.2s ease",
@@ -2806,6 +2846,7 @@ export default function ClarusNPage() {
         {/* 사이드바 */}
         <ClarusSidebar
           isOpen={isSidebarOpen}
+          isMobile={isCompactLayout}
           onToggle={toggleSidebar}
           activeSection={activeSection}
           onNavClick={handleNavClick}
