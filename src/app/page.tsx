@@ -1946,6 +1946,11 @@ function TestRequestSection() {
           </RevealSection>
         </div>
 
+        {/* 우측 뉴런 장식 */}
+        <div style={{ flex: 1, height: "500px", position: "relative" }}>
+          <NeuralSynapseVisual mode="dense" color="147, 197, 253" opacity={0.55} />
+        </div>
+
       </div>
 
       {/* PDF 팝업 모달 */}
