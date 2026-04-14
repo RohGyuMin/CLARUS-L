@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { incrementAnalysisRequestCount } from "@/lib/analysisRequestCount";
+
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
@@ -52,5 +55,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true });
+  try {
+    const count = await incrementAnalysisRequestCount();
+    return NextResponse.json({ ok: true, count });
+  } catch (err) {
+    console.error("[analysis count increment error]", err);
+    // Email send succeeded; return ok without blocking the client flow.
+    return NextResponse.json({ ok: true });
+  }
 }

@@ -161,7 +161,7 @@ export default function ClarusSidebar({
             <NavBtn
               label="About"
               sectionId="about"
-              active={activeSection === "about" || activeSection === "about-strengths"}
+              active={activeSection === "about"}
               onClick={onNavClick}
             />
             <NavBtn
@@ -386,7 +386,7 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
         fontSize: "1.08rem",
         lineHeight: 1.5,
         fontWeight: 500,
-        fontFamily: "'HYGraphic', sans-serif",
+        fontFamily: "'Arial Unicode MS', sans-serif",
         padding: "0.625rem 1.15rem",
         borderRadius: "0.375rem",
         textAlign: "left",

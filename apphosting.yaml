@@ -10,3 +10,11 @@ env:
     secret: MAIL_USER
   - variable: MAIL_PASS
     secret: MAIL_PASS
+  - variable: KV_REST_API_URL
+    secret: KV_REST_API_URL
+  - variable: KV_REST_API_TOKEN
+    secret: KV_REST_API_TOKEN
+  - variable: UPSTASH_REDIS_REST_URL
+    secret: UPSTASH_REDIS_REST_URL
+  - variable: UPSTASH_REDIS_REST_TOKEN
+    secret: UPSTASH_REDIS_REST_TOKEN

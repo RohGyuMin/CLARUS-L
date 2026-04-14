@@ -383,7 +383,7 @@ function AboutSection() {
           </div>
 
           {/* 우측: CEO 사진 흑백 */}
-          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column" }}>
+          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column", transform: "translateX(15mm)" }}>
             <div style={{
               position: "relative",
               borderRadius: "1.2rem",
@@ -466,10 +466,11 @@ function AboutStrengthsSection() {
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
         <div style={{ flex: 1 }}>
           <RevealSection>
-            <SectionLabel>About</SectionLabel>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "2.5rem", lineHeight: 1.2 }}>
+            <SectionLabel>Strengths</SectionLabel>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
               Distinctive Strengths of <span style={{ color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontFamily: "'HYGraphic', sans-serif" }}>-N</span>
             </h2>
+            <Divider />
           </RevealSection>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -628,13 +629,14 @@ function BackgroundSection() {
             fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", 
             fontWeight: 700, 
             color: "#e2e8f0", 
-            marginBottom: "1.25rem", 
+            marginBottom: "0.75rem", 
             lineHeight: 1.2,
             maxWidth: "1440px",
-            margin: "0 auto 1.25rem"
+            margin: "0 auto 0.75rem"
           }}>
             Research Context and Motivation
           </h2>
+          <Divider />
 
         </RevealSection>
 
@@ -1552,10 +1554,10 @@ function TestRequestSection() {
   };
   
   const infoPoints = [
-    "파일 형식 지원 (최대 25MB)",
-    "전송된 영상은 NIfTI 파일형식으로 모두 전환됩니다",
+    "DICOM 파일 형식 지원 (최대 25MB)",
+    "전송된 파일은 NIfTI 파일형식으로 모두 전환됩니다",
     "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다",
-    "원본 파일도 NIfTI 전환 후 모두 삭제됩니다",
+    "전송된 파일도 NIfTI 전환 후 모두 삭제됩니다",
     "분석된 영상은 이메일로 24시간 이내로 보내드립니다",
     "빠른 영상분석이 필요시에는 파일 업로드 후 contact의 연락처로 문의 바랍니다."
   ];
@@ -1822,10 +1824,10 @@ function TestRequestSection() {
                 gap: "0.45rem",
                 marginTop: "1.2rem",
                 flexWrap: "nowrap",
-                overflowX: "auto",
-                paddingBottom: "0.1rem",
+                width: "100%",
+                minWidth: 0,
               }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
                 <span style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -1857,10 +1859,10 @@ function TestRequestSection() {
                 </span>
                 </div>
 
-                <div style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap" }}>
+                <div style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap", flex: 1, minWidth: 0 }}>
                 {([
-                  { label: "분석영상 확인방법", icon: "🔍", key: "analysis" as const },
                   { label: "DICOM 파일 추출 방법", icon: "📎", key: "dicom" as const },
+                  { label: "분석영상 확인방법", icon: "🔍", key: "analysis" as const },
                 ] as const).map(({ label, icon, key }) => {
                   const isActive = selectedPdf === key;
                   return (
@@ -1870,9 +1872,12 @@ function TestRequestSection() {
                       style={{
                         display: "flex",
                         alignItems: "center",
+                        justifyContent: "center",
+                        flex: 1,
+                        minWidth: 0,
                         height: "2.28rem",
                         gap: "0.28rem",
-                        padding: "0 0.6rem",
+                        padding: "0 0.75rem",
                         borderRadius: "0.6rem",
                         background: isActive ? "rgba(96,165,250,0.2)" : "rgba(96,165,250,0.07)",
                         border: `1px solid ${isActive ? "rgba(96,165,250,0.6)" : "rgba(96,165,250,0.25)"}`,
@@ -2460,27 +2465,53 @@ export default function ClarusNPage() {
     const container = scrollRef.current;
     if (!container) return;
 
-    const observers: IntersectionObserver[] = [];
-    NAV_SECTIONS.forEach(id => {
-      const el = container.querySelector(`#${id}`);
-      if (!el) return;
-      const io = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { root: container, threshold: 0.15 }
-      );
-      io.observe(el);
-      observers.push(io);
-    });
+    let rafId: number | null = null;
 
-    return () => observers.forEach(io => io.disconnect());
+    const updateActiveSection = () => {
+      const containerRect = container.getBoundingClientRect();
+      let next: SectionId = NAV_SECTIONS[0];
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      for (const id of NAV_SECTIONS) {
+        const el = container.querySelector(`#${id}`) as HTMLElement | null;
+        if (!el) continue;
+
+        const top = el.getBoundingClientRect().top - containerRect.top;
+        const distance = Math.abs(top);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          next = id;
+        }
+      }
+
+      setActiveSection(prev => (prev === next ? prev : next));
+    };
+
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        updateActiveSection();
+        rafId = null;
+      });
+    };
+
+    updateActiveSection();
+    container.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      container.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", updateActiveSection);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // 메뉴 클릭 → 해당 섹션으로 부드럽게 스크롤
   const handleNavClick = useCallback((id: string) => {
     const container = scrollRef.current;
     if (!container) return;
+    setActiveSection(id);
     const el = container.querySelector(`#${id}`);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
@@ -2693,7 +2724,8 @@ export default function ClarusNPage() {
               margin: "0 auto",
               paddingLeft: "min(7rem, 8vw)", 
               paddingRight: "min(4rem, 5vw)",
-              position: "relative"
+              position: "relative",
+              transform: "translateX(-1cm)",
             }}
           >
             <AboutSection />
