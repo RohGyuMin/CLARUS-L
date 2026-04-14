@@ -600,7 +600,7 @@ function BackgroundSection() {
       color: "#FFA47A",
       title: <><span style={{ color: "#FFA47A" }}>A Surge in Neurological Diseases</span> Due to an Ultra-Aged Society</>,
       subtitle: "초고령화 사회로 인한 신경계 질환의 급증",
-      detail: "뇌졸증, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
+      detail: "뇌졸중, 뇌위축, 치매와 같은 뇌질환 환자의 기하급수적 증가",
       image: "/bg-disease-surge.png",
     },
     {
@@ -620,7 +620,7 @@ function BackgroundSection() {
       color: "#34d399",
       title: <>The <span style={{ color: "#34d399" }}>Urgency and Fatality</span> of Neurological Diseases</>,
       subtitle: "신경계 질환의 긴급성과 직결되는 치명성",
-      detail: "뇌졸증은 단일질환 사망률 2위",
+      detail: "뇌졸중은 단일질환 사망률 2위",
       image: "/bg-neuro-urgent.png",
     },
     {
@@ -767,18 +767,17 @@ function BackgroundSection() {
               minHeight: "420px",
               borderRadius: "1.1rem",
               overflow: "hidden",
-              opacity: pinnedCard !== null && items[pinnedCard].image ? 1 : 0.9,
-              transform: pinnedCard !== null && items[pinnedCard].image ? "translateX(0)" : "translateX(16px)",
+              opacity: 1,
+              transform: "translateX(0)",
               transition: "opacity 0.3s ease, transform 0.3s ease",
               pointerEvents: "none",
             }}>
               <div style={{
                 position: "absolute",
                 inset: 0,
-                opacity: 0.5,
                 pointerEvents: "none",
               }}>
-                <NeuralSynapseVisual mode="fast" color="96, 165, 250" opacity={0.34} />
+                <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
               </div>
               {pinnedCard !== null && items[pinnedCard].image && (
                 <img
