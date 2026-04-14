@@ -696,10 +696,13 @@ function BackgroundSection() {
                       marginBottom: "0.3rem",
                     }}>
                       <div style={{
-                        fontSize: "1.32rem",
-                        lineHeight: 1.25,
+                        fontSize: "clamp(0.95rem, 1.45vw, 1.12rem)",
+                        lineHeight: 1.2,
                         fontWeight: 700,
                         color: "#e2e8f0",
+                        whiteSpace: "normal",
+                        wordBreak: "keep-all",
+                        letterSpacing: "-0.01em",
                         textShadow: isActive ? `0 0 16px ${item.color}44` : "none",
                         transition: "all 0.25s ease",
                       }}>
@@ -719,6 +722,7 @@ function BackgroundSection() {
                         color: "#cbd5e1",
                         lineHeight: 1.6,
                         fontFamily: "'HYGraphic', sans-serif",
+                        paddingLeft: "1ch",
                       }}>
                         {item.subtitle}
                       </div>
@@ -729,7 +733,7 @@ function BackgroundSection() {
                         lineHeight: 1.5,
                         fontFamily: "'HYGraphic', sans-serif",
                         fontStyle: "italic",
-                        paddingLeft: 0,
+                        paddingLeft: "1ch",
                       }}>
                         {item.detail}
                       </div>
@@ -1266,8 +1270,28 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </button>
-                  {!isLegendCollapsed && (
-                    <div style={{ padding: "0.5rem 0.8rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                  <div
+                    aria-hidden={isLegendCollapsed}
+                    style={{
+                      maxHeight: isLegendCollapsed
+                        ? "0px"
+                        : `${Math.max(96, activeLegendItems.length * 30 + 18)}px`,
+                      opacity: isLegendCollapsed ? 0 : 1,
+                      overflow: "hidden",
+                      pointerEvents: isLegendCollapsed ? "none" : "auto",
+                      transition: "max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease",
+                    }}
+                  >
+                    <div
+                      style={{
+                        padding: isLegendCollapsed ? "0 0.8rem" : "0.5rem 0.8rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.3rem",
+                        transform: isLegendCollapsed ? "translateY(-4px)" : "translateY(0)",
+                        transition: "padding 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
+                      }}
+                    >
                       {activeLegendItems.map(item => (
                         <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                           <div style={{
@@ -1288,7 +1312,7 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
                         </div>
                       ))}
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
             </div>
@@ -1512,7 +1536,7 @@ function TestRequestSection() {
   return (
     <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
-        <div style={{ flex: 1, maxWidth: "38rem" }}>
+        <div style={{ flex: 1, width: "100%", maxWidth: "46rem" }}>
           <RevealSection>
             <SectionLabel>Research Analysis Request</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
@@ -1764,20 +1788,30 @@ function TestRequestSection() {
               )}
 
               {/* 분석 요청 카운터: 화려하게 강조 */}
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "1.2rem", flexWrap: "wrap" }}>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                gap: "0.45rem",
+                marginTop: "1.2rem",
+                flexWrap: "nowrap",
+                overflowX: "auto",
+                paddingBottom: "0.1rem",
+              }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <span style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  padding: "0.4rem 1rem",
+                  whiteSpace: "nowrap",
+                  padding: "0.38rem 0.9rem",
                   borderRadius: "2rem",
                   background: "rgba(59,130,246,0.08)",
                   border: "1px solid rgba(59,130,246,0.3)",
                   color: "#60a5fa", 
-                  fontSize: "0.95rem", 
+                  fontSize: "0.9rem", 
                   fontFamily: "'Inter', sans-serif", 
                   fontWeight: 600, 
-                  letterSpacing: "0.08em",
+                  letterSpacing: "0.06em",
                   textShadow: "0 0 12px rgba(96,165,250,0.4)",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
                 }}>
@@ -1794,7 +1828,7 @@ function TestRequestSection() {
                 </span>
                 </div>
 
-                <div style={{ display: "flex", gap: "0.75rem" }}>
+                <div style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap" }}>
                 {([
                   { label: "분석영상 확인방법", icon: "🔍", key: "analysis" as const },
                   { label: "DICOM 파일 추출 방법", icon: "📎", key: "dicom" as const },
@@ -1807,15 +1841,16 @@ function TestRequestSection() {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        gap: "0.45rem",
-                        padding: "0.55rem 1.1rem",
+                        gap: "0.28rem",
+                        padding: "0.44rem 0.6rem",
                         borderRadius: "0.6rem",
                         background: isActive ? "rgba(96,165,250,0.2)" : "rgba(96,165,250,0.07)",
                         border: `1px solid ${isActive ? "rgba(96,165,250,0.6)" : "rgba(96,165,250,0.25)"}`,
                         color: isActive ? "#bfdbfe" : "#93c5fd",
-                        fontSize: "0.88rem",
+                        fontSize: "0.76rem",
                         fontWeight: 600,
                         fontFamily: "'HYGraphic', sans-serif",
+                        whiteSpace: "nowrap",
                         cursor: "pointer",
                         transition: "all 0.2s ease",
                       }}

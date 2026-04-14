@@ -81,9 +81,9 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
         padding: "2rem",
         animation: "fadeIn 0.22s ease",
         /* 방사형 비네트 + 블러 */
-        background: "radial-gradient(ellipse at center, rgba(3,7,20,0.78) 0%, rgba(0,0,0,0.92) 100%)",
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
+        background: "radial-gradient(ellipse at center, rgba(3,7,20,0.62) 0%, rgba(0,0,0,0.8) 100%)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
       }}
     >
       /* ── 모달 패널 ── */
