@@ -384,8 +384,19 @@ function AboutSection() {
           </div>
 
           {/* 우측: CEO 사진 흑백 */}
-          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column" }}>
-            <div style={{ transform: "translateX(5mm)" }}>
+          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column", position: "relative" }}>
+            <div
+              style={{
+                position: "absolute",
+                inset: "-1.75rem -2rem",
+                opacity: 0.35,
+                pointerEvents: "none",
+                filter: "blur(0.2px)",
+              }}
+            >
+              <NeuralSynapseVisual mode="calm" color="147, 197, 253" opacity={0.28} />
+            </div>
+            <div style={{ transform: "translateX(5mm)", position: "relative", zIndex: 1 }}>
               <div style={{
               position: "relative",
               borderRadius: "1.2rem",
@@ -752,25 +763,37 @@ function BackgroundSection() {
             <div style={{
               width: "600px",
               flexShrink: 0,
+              position: "relative",
+              minHeight: "420px",
               borderRadius: "1.1rem",
               overflow: "hidden",
-              opacity: pinnedCard !== null && items[pinnedCard].image ? 1 : 0,
+              opacity: pinnedCard !== null && items[pinnedCard].image ? 1 : 0.9,
               transform: pinnedCard !== null && items[pinnedCard].image ? "translateX(0)" : "translateX(16px)",
               transition: "opacity 0.3s ease, transform 0.3s ease",
               pointerEvents: "none",
             }}>
+              <div style={{
+                position: "absolute",
+                inset: 0,
+                opacity: 0.5,
+                pointerEvents: "none",
+              }}>
+                <NeuralSynapseVisual mode="fast" color="96, 165, 250" opacity={0.34} />
+              </div>
               {pinnedCard !== null && items[pinnedCard].image && (
                 <img
                   src={items[pinnedCard].image}
                   alt="Background Detail"
                   style={{
                     width: "100%",
-                    maxHeight: "420px",
+                    height: "100%",
                     objectFit: "contain",
                     objectPosition: "center",
                     display: "block",
                     borderRadius: "1.1rem",
                     border: `1px solid ${items[pinnedCard].color}30`,
+                    position: "relative",
+                    zIndex: 1,
                   }}
                 />
               )}
