@@ -3,8 +3,8 @@ import { Redis } from "@upstash/redis";
 const DEFAULT_ANALYSIS_REQUEST_COUNT = 231;
 const ANALYSIS_COUNT_KEY = "analysis:count";
 
-const kvUrl = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
-const kvToken = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+const kvUrl = (process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL)?.trim();
+const kvToken = (process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN)?.trim();
 
 let redisClient: Redis | null | undefined;
 let memoryFallbackCount = DEFAULT_ANALYSIS_REQUEST_COUNT;
