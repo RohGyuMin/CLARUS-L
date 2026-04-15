@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { createPortal } from "react-dom";
 import ClarusSidebar from "@/components/ClarusSidebar";
 import ClarusCursor from "@/components/ClarusCursor";
 import ClarusHeroCanvas from "@/components/ClarusHeroCanvas";
+import LegalModal from "@/components/LegalModal";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 import PdfModal from "@/components/PdfModal";
 
@@ -266,6 +266,20 @@ function Divider() {
     />
   );
 }
+
+type LegalModalKey = "privacy" | "terms" | "email-refusal";
+
+type FooterProps = {
+  onOpenEmailRefusal: () => void;
+  onOpenPrivacy: () => void;
+  onOpenTerms: () => void;
+};
+
+type ContactSectionProps = {
+  onOpenPrivacy: () => void;
+  privacyAgreed: boolean;
+  setPrivacyAgreed: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 function AboutSection() {
   return (
@@ -1979,12 +1993,10 @@ function TestRequestSection() {
   );
 }
 
-function ContactSection() {
+function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed }: ContactSectionProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isContactIntroEnglish, setIsContactIntroEnglish] = useState(false);
-  const [privacyAgreed, setPrivacyAgreed] = useState(false);
   const [formData, setFormData] = useState({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -2335,82 +2347,13 @@ function ContactSection() {
                  <label htmlFor="privacy-agree" style={{ color: "#94a3b8", fontSize: "0.85rem", lineHeight: 1.5 }}>
                    <button
                      type="button"
-                     onClick={() => setIsPrivacyOpen(true)}
+                     onClick={onOpenPrivacy}
                      style={{ color: "#60a5fa", textDecoration: "underline", background: "none", border: "none", cursor: "pointer", fontSize: "inherit", padding: 0 }}
                    >
                      개인정보 처리방침
                    </button>에 동의합니다 (필수)
                  </label>
                </div>
-
-               {isPrivacyOpen && typeof document !== "undefined" && createPortal(
-                 <div
-                   onClick={() => setIsPrivacyOpen(false)}
-                   style={{
-                     position: "fixed", inset: 0, zIndex: 9999,
-                     display: "flex", alignItems: "center", justifyContent: "center",
-                     background: "rgba(0,0,0,0.7)", backdropFilter: "blur(4px)"
-                   }}>
-                   <div
-                     onClick={e => e.stopPropagation()}
-                     style={{
-                       background: "rgba(15,23,42,0.97)", border: "1px solid rgba(96,165,250,0.2)",
-                       borderRadius: "1.25rem", padding: "2rem",
-                       maxWidth: "560px", width: "90%", maxHeight: "80vh",
-                       display: "flex", flexDirection: "column",
-                       boxShadow: "0 25px 50px rgba(0,0,0,0.6)",
-                        fontFamily: "'HYGraphic', 'Inter', sans-serif"
-                     }}>
-                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-                       <h4 style={{ color: "#e2e8f0", fontSize: "1.25rem", fontWeight: 600, margin: 0 }}>개인정보 처리방침</h4>
-                       <button
-                         onClick={() => setIsPrivacyOpen(false)}
-                         style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#94a3b8", cursor: "pointer", padding: "0.4rem", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}
-                         onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.12)"; e.currentTarget.style.color = "#fff"; }}
-                         onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "#94a3b8"; }}
-                       >
-                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                           <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
-                         </svg>
-                       </button>
-                     </div>
-                     <div style={{ overflowY: "auto", fontSize: "0.9rem", color: "#94a3b8", lineHeight: 1.7, paddingRight: "0.5rem" }}>
-                       <p style={{ marginTop: 0 }}>CLARUS-N은 고객님의 소중한 개인정보를 보호하기 위해 최선을 다하고 있습니다.</p>
-
-                       <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>1. 수집하는 개인정보 항목</h5>
-                       <p style={{ marginBottom: "1.25rem" }}>이름, 지역, 기관명/병원명, 직함, 이메일 주소, 연락처, 문의내용</p>
-
-                       <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>2. 수집 및 이용목적</h5>
-                       <p style={{ marginBottom: "1.25rem" }}>서비스 이용에 따른 본인확인, 원활한 의사소통 경로 확보, 최신 정보 안내 및 문의사항 응대</p>
-
-                       <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>3. 보유 및 이용기간</h5>
-                       <p style={{ marginBottom: "1.25rem" }}>수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. (단, 관련 법령의 규정에 의하여 보존할 필요가 있는 경우 해당 기간 동안 보관)</p>
-
-                       <p style={{ marginBottom: 0 }}>위와 같은 개인정보 수집 및 이용에 대하여 동의를 거부할 권리가 있으며, 거부 시 문의 서비스 이용이 제한될 수 있습니다.</p>
-                     </div>
-                     <button
-                       onClick={() => { setPrivacyAgreed(true); setIsPrivacyOpen(false); }}
-                       style={{
-                         marginTop: "2rem",
-                         padding: "1.1rem",
-                         borderRadius: "0.875rem",
-                         background: "rgba(59,130,246,0.15)",
-                         border: "1px solid rgba(96,165,250,0.3)",
-                         color: "#93c5fd",
-                         fontSize: "1rem",
-                         fontWeight: 600,
-                         cursor: "pointer",
-                         transition: "all 0.2s"
-                       }}
-                       onMouseEnter={e => { e.currentTarget.style.background = "rgba(59,130,246,0.25)"; e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)"; }}
-                       onMouseLeave={e => { e.currentTarget.style.background = "rgba(59,130,246,0.15)"; e.currentTarget.style.borderColor = "rgba(96,165,250,0.3)"; }}
-                     >
-                       확인했습니다
-                     </button>
-                   </div>
-                 </div>,
-                 document.body
-               )}
 
                {submitState === "success" && (
                  <div style={{ padding: "1rem", borderRadius: "0.75rem", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", color: "#86efac", fontSize: "0.95rem", textAlign: "center" }}>
@@ -2451,7 +2394,7 @@ function ContactSection() {
   );
 }
 
-function Footer() {
+function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps) {
   return (
     <footer style={{
       padding: "3rem 0 4rem 0",
@@ -2478,6 +2421,77 @@ function Footer() {
         {/* 중단: 주소 */}
         <div>
           <span>주소: 서울특별시 금천구 가산디지털1로 168, A동 10층 1012호 (가산동, 우림라이온스밸리)</span>
+        </div>
+      </div>
+      <div style={{
+        marginTop: "1.5rem",
+        paddingTop: "1rem",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+      }}>
+        <div style={{
+          marginBottom: "0.7rem",
+          color: "#93c5fd",
+          fontSize: "0.72rem",
+          fontWeight: 700,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+        }}>
+          Legal Notices
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
+          <button
+            type="button"
+            onClick={onOpenPrivacy}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              color: "#93c5fd",
+              fontWeight: 700,
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              textDecoration: "underline",
+              textUnderlineOffset: "0.2em",
+            }}
+          >
+            개인정보처리방침
+          </button>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+          <button
+            type="button"
+            onClick={onOpenTerms}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              color: "#93c5fd",
+              fontWeight: 700,
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              textDecoration: "underline",
+              textUnderlineOffset: "0.2em",
+            }}
+          >
+            이용약관
+          </button>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+          <button
+            type="button"
+            onClick={onOpenEmailRefusal}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              color: "#93c5fd",
+              fontWeight: 700,
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              textDecoration: "underline",
+              textUnderlineOffset: "0.2em",
+            }}
+          >
+            이메일 무단 수집 거부
+          </button>
         </div>
       </div>
       {/* 하단: 카피라이트 */}
@@ -2507,6 +2521,8 @@ export default function ClarusNPage() {
   const [isCompactLayout, setIsCompactLayout] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [performancePageIndex, setPerformancePageIndex] = useState(0);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
+  const [activeLegalModal, setActiveLegalModal] = useState<LegalModalKey | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const isSnapScrolling = useRef(false);
 
@@ -2799,43 +2815,74 @@ export default function ClarusNPage() {
             <BackgroundSection />
             <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} />
             <TestRequestSection />
-            <ContactSection />
-            <footer style={{
-              padding: "3rem 0 4rem 0",
-              borderTop: "1px solid rgba(255,255,255,0.06)",
-              color: "rgba(148, 163, 184, 0.6)",
-              fontSize: "0.85rem",
-              fontFamily: "'Inter', sans-serif",
-              lineHeight: "1.8",
-              letterSpacing: "0.02em",
-            }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                {/* 상단: 회사 기본 정보 (가로 배열) */}
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
-                    <span>대표자: 김시온</span>
-                  <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
-                  <span>사업자등록번호: 811-87-03349</span>
-                  <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
-                  <span>연락처: +82-2-6956-5338</span>
-                  <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
-                  <span>이메일: clarusnai@gmail.com</span>
-                </div>
-                {/* 중단: 주소 */}
-                <div>
-                  <span>주소: 서울특별시 금천구 가산디지털1로 168, A동 10층 1012호 (가산동, 우림라이온스밸리)</span>
-                </div>
-              </div>
-              {/* 하단: 카피라이트 */}
-              <div style={{ 
-                marginTop: "2rem", 
-                color: "rgba(148, 163, 184, 0.4)", 
-                fontWeight: 500,
-                fontSize: "0.8rem",
-              }}>
-                Copyright 2026. CLARUS-N Co., Ltd. All rights reserved.
-              </div>
-            </footer>
+            <ContactSection
+              onOpenPrivacy={() => setActiveLegalModal("privacy")}
+              privacyAgreed={privacyAgreed}
+              setPrivacyAgreed={setPrivacyAgreed}
+            />
+            <Footer
+              onOpenEmailRefusal={() => setActiveLegalModal("email-refusal")}
+              onOpenPrivacy={() => setActiveLegalModal("privacy")}
+              onOpenTerms={() => setActiveLegalModal("terms")}
+            />
           </div>
+
+          <LegalModal
+            isOpen={activeLegalModal === "privacy"}
+            title="개인정보 처리방침"
+            onClose={() => setActiveLegalModal(null)}
+            confirmLabel="확인했습니다"
+            onConfirm={() => {
+              setPrivacyAgreed(true);
+              setActiveLegalModal(null);
+            }}
+          >
+            <p style={{ marginTop: 0 }}>
+              CLARUS-N은 고객님의 소중한 개인정보를 보호하기 위해 최선을 다하고 있습니다.
+            </p>
+            <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>1. 수집하는 개인정보 항목</h5>
+            <p style={{ marginBottom: "1.25rem" }}>이름, 지역, 기관명/병원명, 직함, 이메일 주소, 연락처, 문의내용</p>
+            <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>2. 수집 및 이용목적</h5>
+            <p style={{ marginBottom: "1.25rem" }}>서비스 이용에 따른 본인확인, 원활한 의사소통 경로 확보, 최신 정보 안내 및 문의사항 응대</p>
+            <h5 style={{ color: "#cbd5e1", marginBottom: "0.5rem", fontSize: "0.95rem" }}>3. 보유 및 이용기간</h5>
+            <p style={{ marginBottom: 0 }}>수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관련 법령의 규정에 의하여 보존할 필요가 있는 경우 해당 기간 동안 보관합니다.</p>
+          </LegalModal>
+
+          <LegalModal
+            isOpen={activeLegalModal === "terms"}
+            title="이용약관"
+            onClose={() => setActiveLegalModal(null)}
+          >
+            <p style={{ marginTop: 0 }}>
+              본 서비스는 연구 목적의 AI 분석 웹사이트로 제공되며, 다음과 같은 조건을 따릅니다.
+            </p>
+            <ol style={{ paddingLeft: "1.2rem", margin: "1rem 0 1.25rem" }}>
+              <li style={{ marginBottom: "0.75rem" }}>서비스 내용, 구성, 기능은 예고 없이 변경되거나 중단될 수 있습니다.</li>
+              <li style={{ marginBottom: "0.75rem" }}>이용자는 정확한 정보를 입력하고, 시스템을 비정상적으로 사용해서는 안 됩니다.</li>
+              <li style={{ marginBottom: "0.75rem" }}>분석 결과는 참고용이며, 최종 의료 판단은 담당 전문의의 책임 하에 이루어져야 합니다.</li>
+              <li style={{ marginBottom: "0.75rem" }}>서비스와 관련된 콘텐츠 및 디자인의 권리는 CLARUS-N에 있습니다.</li>
+              <li>문의 및 협업 요청은 지정된 문의 채널을 통해 진행해 주세요.</li>
+            </ol>
+            <p style={{ marginBottom: 0 }}>
+              본 서비스를 이용함으로써 위 약관에 동의한 것으로 간주됩니다.
+            </p>
+          </LegalModal>
+
+          <LegalModal
+            isOpen={activeLegalModal === "email-refusal"}
+            title="이메일 무단 수집 거부"
+            onClose={() => setActiveLegalModal(null)}
+          >
+            <p style={{ marginTop: 0 }}>
+              본 웹사이트에 게시된 이메일 주소가 전자우편 수집 프로그램이나 그 밖의 기술적 장치를 이용하여 무단으로 수집되는 것을 거부합니다.
+            </p>
+            <p style={{ marginBottom: "1.25rem" }}>
+              이를 위반할 경우 정보통신망 이용촉진 및 정보보호 등에 관한 법률에 따라 처벌받을 수 있습니다.
+            </p>
+            <p style={{ marginBottom: 0 }}>
+              문의는 사이트의 문의 폼 또는 안내된 공식 연락처를 이용해 주세요.
+            </p>
+          </LegalModal>
         </div>
 
         {isCompactLayout && isSidebarOpen && (
