@@ -1897,9 +1897,9 @@ function TestRequestSection() {
 
                 <div className="cn-request-meta-actions" style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap", flex: 1, minWidth: 0 }}>
                 {([
-                  { label: "DICOM 파일 추출 방법", icon: "📎", key: "dicom" as const },
-                  { label: "분석영상 확인방법", icon: "🔍", key: "analysis" as const },
-                ] as const).map(({ label, icon, key }) => {
+                  { label: "DICOM 파일 추출 방법", key: "dicom" as const },
+                  { label: "분석영상 확인방법", key: "analysis" as const },
+                ] as const).map(({ label, key }) => {
                   const isActive = selectedPdf === key;
                   return (
                     <button
@@ -1940,13 +1940,9 @@ function TestRequestSection() {
                         }
                       }}
                     >
-                      {key === "analysis" ? (
+                      {key === "analysis" && (
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                        </svg>
-                      ) : (
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
                         </svg>
                       )}
                       <span>{label}</span>
@@ -1970,7 +1966,7 @@ function TestRequestSection() {
       {selectedPdf && (
         <PdfModal
           src={selectedPdf === "analysis" ? "/analysis-guide.pdf" : "/dicom-guide.pdf"}
-          title={selectedPdf === "analysis" ? "🔍 분석영상 확인방법" : "📎 DICOM 파일 추출 방법"}
+          title={selectedPdf === "analysis" ? "분석영상 확인방법" : "DICOM 파일 추출 방법"}
           onClose={() => setSelectedPdf(null)}
         />
       )}

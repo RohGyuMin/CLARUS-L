@@ -66,6 +66,7 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
   }, [onClose, totalPages]);
 
   const progress = totalPages > 1 ? (currentPage - 1) / (totalPages - 1) : 1;
+  const cleanTitle = title.replace(/^[^\p{L}\p{N}]+/u, "").trim();
 
   return createPortal(
     /* ── 배경 오버레이 ── */
@@ -132,23 +133,6 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
         }}>
           {/* 제목 */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-            <div style={{
-              width: "28px", height: "28px",
-              borderRadius: "0.5rem",
-              background: "linear-gradient(135deg, rgba(99,102,241,0.3) 0%, rgba(168,85,247,0.3) 100%)",
-              border: "1px solid rgba(99,102,241,0.4)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              {title.startsWith("🔍") ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-                </svg>
-              )}
-            </div>
             <span style={{
               color: "#e2e8f0",
               fontSize: "0.92rem",
@@ -156,7 +140,7 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
               fontFamily: "'HYGraphic', sans-serif",
               letterSpacing: "0.02em",
             }}>
-              {title.replace(/^[🔍📎]\s*/, "")}
+              {cleanTitle}
             </span>
             {!isLoading && totalPages > 0 && (
               <span style={{
