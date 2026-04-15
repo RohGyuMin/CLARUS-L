@@ -750,7 +750,7 @@ function BackgroundSection() {
                     </div>
                     {/* 한글 부제목 + 상세 설명 - 호버 시에만 표시 */}
                     <div style={{
-                      maxHeight: isActive ? "10rem" : "0",
+                      maxHeight: isActive ? "20rem" : "0",
                       opacity: isActive ? 1 : 0,
                       overflow: "hidden",
                       transition: "max-height 0.3s ease, opacity 0.22s ease",
@@ -776,57 +776,65 @@ function BackgroundSection() {
                       }}>
                         {item.detail}
                       </div>
+                      {/* 모바일: 이미지 카드 안에 인라인으로 표시 */}
+                      {isMobile && item.image && (
+                        <img
+                          src={item.image}
+                          alt={item.subtitle}
+                          style={{
+                            display: "block",
+                            width: "100%",
+                            maxHeight: "160px",
+                            objectFit: "cover",
+                            borderRadius: "0.5rem",
+                            marginTop: "0.75rem",
+                            border: `1px solid ${item.color}30`,
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
               );
             })}
             </div>
-            {/* 이미지 패널 */}
-            {(() => {
-              const imgIndex = isMobile ? activeIndex : pinnedCard;
-              const hasImg = imgIndex !== null && items[imgIndex]?.image;
-              return (
-                <div style={{
-                  width: isMobile ? "100%" : "600px",
-                  flexShrink: 0,
-                  position: "relative",
-                  minHeight: isMobile ? (hasImg ? "220px" : "0") : "420px",
-                  borderRadius: "1.1rem",
-                  overflow: "hidden",
-                  opacity: isMobile && !hasImg ? 0 : 1,
-                  maxHeight: isMobile && !hasImg ? "0" : undefined,
-                  transition: "opacity 0.3s ease, min-height 0.3s ease",
-                  pointerEvents: "none",
-                }}>
-                  {(!isMobile || hasImg) && (
-                    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-                      <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
-                    </div>
-                  )}
-                  {hasImg && (
-                    <img
-                      src={items[imgIndex!].image}
-                      alt="Background Detail"
-                      style={{
-                        width: "auto",
-                        height: "auto",
-                        maxWidth: "95%",
-                        maxHeight: isMobile ? "200px" : "420px",
-                        objectFit: "contain",
-                        objectPosition: "center",
-                        display: "block",
-                        margin: "auto",
-                        borderRadius: "0.75rem",
-                        border: `1px solid ${items[imgIndex!].color}30`,
-                        position: "relative",
-                        zIndex: 1,
-                      }}
-                    />
-                  )}
+            {/* 이미지 패널 - PC only */}
+            {!isMobile && (
+              <div style={{
+                width: "600px",
+                flexShrink: 0,
+                position: "relative",
+                minHeight: "420px",
+                borderRadius: "1.1rem",
+                overflow: "hidden",
+                transition: "opacity 0.3s ease, transform 0.3s ease",
+                pointerEvents: "none",
+              }}>
+                <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+                  <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
                 </div>
-              );
-            })()}
+                {pinnedCard !== null && items[pinnedCard].image && (
+                  <img
+                    src={items[pinnedCard].image}
+                    alt="Background Detail"
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      maxWidth: "95%",
+                      maxHeight: "420px",
+                      objectFit: "contain",
+                      objectPosition: "center",
+                      display: "block",
+                      margin: "auto",
+                      borderRadius: "0.75rem",
+                      border: `1px solid ${items[pinnedCard].color}30`,
+                      position: "relative",
+                      zIndex: 1,
+                    }}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </RevealSection>
       </div>
