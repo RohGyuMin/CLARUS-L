@@ -212,14 +212,17 @@ function HeroSection() {
 function RevealSection({
   children,
   style,
+  className,
 }: {
   children: React.ReactNode;
   style?: React.CSSProperties;
+  className?: string;
 }) {
   const ref = useReveal();
   return (
     <div
       ref={ref}
+      className={className}
       style={{
         opacity: 0,
         transform: "translateY(40px)",
@@ -273,17 +276,27 @@ type FooterProps = {
   onOpenEmailRefusal: () => void;
   onOpenPrivacy: () => void;
   onOpenTerms: () => void;
+  isCompactLayout: boolean;
 };
 
 type ContactSectionProps = {
   onOpenPrivacy: () => void;
   privacyAgreed: boolean;
   setPrivacyAgreed: React.Dispatch<React.SetStateAction<boolean>>;
+  isCompactLayout: boolean;
 };
 
-function AboutSection() {
+function AboutSection({ isCompactLayout }: { isCompactLayout: boolean }) {
   return (
-    <section id="about" style={{ minHeight: "100vh", display: "flex", alignItems: "center", paddingTop: "2.5rem" }}>
+    <section
+      id="about"
+      style={{
+        minHeight: isCompactLayout ? "auto" : "100vh",
+        display: "flex",
+        alignItems: "center",
+        paddingTop: "2.5rem",
+      }}
+    >
       <div style={{ width: "100%" }}>
         {/* 섹션 라벨을 상단으로 분리하여 카드+사진 뭉치와 분리 */}
         <RevealSection style={{ marginBottom: "1.25rem" }}>
@@ -398,11 +411,22 @@ function AboutSection() {
           </div>
 
           {/* 우측: CEO 사진 흑백 */}
-          <RevealSection style={{ flexShrink: 0, transitionDelay: "0.15s", display: "flex", flexDirection: "column", position: "relative" }}>
+          <RevealSection
+            className="cn-about-photo-panel"
+            style={{
+              flexShrink: 0,
+              transitionDelay: "0.15s",
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+              width: isCompactLayout ? "100%" : undefined,
+              alignSelf: isCompactLayout ? "center" : undefined,
+            }}
+          >
             <div
               style={{
                 position: "absolute",
-                inset: "-1.75rem -2rem",
+                inset: isCompactLayout ? "-1rem" : "-1.75rem -2rem",
                 opacity: 0.35,
                 pointerEvents: "none",
                 filter: "blur(0.2px)",
@@ -410,14 +434,23 @@ function AboutSection() {
             >
               <NeuralSynapseVisual mode="calm" color="147, 197, 253" opacity={0.28} />
             </div>
-            <div style={{ transform: "translateX(5mm)", position: "relative", zIndex: 1 }}>
+            <div
+              style={{
+                transform: isCompactLayout ? "none" : "translateX(5mm)",
+                position: "relative",
+                zIndex: 1,
+                width: isCompactLayout ? "100%" : undefined,
+                display: "flex",
+                justifyContent: isCompactLayout ? "center" : "flex-start",
+              }}
+            >
               <div style={{
               position: "relative",
               borderRadius: "1.2rem",
               overflow: "hidden",
-              width: "460px",
+              width: isCompactLayout ? "min(100%, 24rem)" : "460px",
               flex: 1, // 카드 전체 높이에 맞춰 확장
-              minHeight: "600px",
+              minHeight: isCompactLayout ? "clamp(22rem, 78vw, 34rem)" : "600px",
               boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
               }}>
                 <img
@@ -2012,7 +2045,7 @@ function TestRequestSection() {
   );
 }
 
-function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed }: ContactSectionProps) {
+function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isCompactLayout }: ContactSectionProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isContactIntroEnglish, setIsContactIntroEnglish] = useState(false);
@@ -2049,8 +2082,16 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed }: Cont
   };
 
   return (
-    <section id="contact" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: "4rem" }}>
+    <section
+      id="contact"
+      style={{
+        minHeight: isCompactLayout ? "auto" : "100vh",
+        display: "flex",
+        alignItems: isCompactLayout ? "flex-start" : "center",
+        paddingBottom: isCompactLayout ? "1.5rem" : undefined,
+      }}
+    >
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: isCompactLayout ? "2rem" : "4rem" }}>
         <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <RevealSection>
             <SectionLabel>Contact</SectionLabel>
@@ -2413,10 +2454,12 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed }: Cont
   );
 }
 
-function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps) {
+function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms, isCompactLayout }: FooterProps) {
   return (
     <footer style={{
-      padding: "1.2rem 1.2rem 1.5rem 1.2rem",
+      padding: isCompactLayout
+        ? "1.2rem 1.2rem calc(4.5rem + env(safe-area-inset-bottom, 0px)) 1.2rem"
+        : "1.2rem 1.2rem 1.5rem 1.2rem",
       borderTop: "1px solid rgba(255,255,255,0.06)",
       color: "rgba(148, 163, 184, 0.6)",
       fontSize: "0.72rem",
@@ -2796,7 +2839,7 @@ export default function ClarusNPage() {
           zIndex: 10,
           backgroundColor: "#030712",
           paddingLeft: isSidebarOpen && !isCompactLayout ? "340px" : "0px",
-          paddingBottom: isCompactLayout ? "3rem" : "0px",
+          paddingBottom: "0px",
           transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
         }}
         >
@@ -2823,7 +2866,7 @@ export default function ClarusNPage() {
               position: "relative",
             }}
           >
-            <AboutSection />
+            <AboutSection isCompactLayout={isCompactLayout} />
             <AboutStrengthsSection />
             <BackgroundSection />
             <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} />
@@ -2832,11 +2875,13 @@ export default function ClarusNPage() {
               onOpenPrivacy={() => setActiveLegalModal("privacy")}
               privacyAgreed={privacyAgreed}
               setPrivacyAgreed={setPrivacyAgreed}
+              isCompactLayout={isCompactLayout}
             />
             <Footer
               onOpenEmailRefusal={() => setActiveLegalModal("email-refusal")}
               onOpenPrivacy={() => setActiveLegalModal("privacy")}
               onOpenTerms={() => setActiveLegalModal("terms")}
+              isCompactLayout={isCompactLayout}
             />
           </div>
 

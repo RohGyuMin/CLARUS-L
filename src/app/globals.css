@@ -326,6 +326,9 @@ body::before {
   .cn-section-flex > div:last-child {
     display: none;
   }
+  .cn-section-flex > .cn-about-photo-panel {
+    display: flex !important;
+  }
 }
 
 /* 모바일 (768px 이하) */
