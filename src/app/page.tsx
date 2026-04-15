@@ -2081,7 +2081,7 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed }: Cont
                 </>
               )}
             </button>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", maxWidth: "420px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.75rem", width: "100%", maxWidth: "420px" }}>
               
               {/* 타이틀 버튼 스타일 - 팝업 트리거 버튼으로 변경 */}
               <button 
