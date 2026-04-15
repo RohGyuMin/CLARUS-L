@@ -309,10 +309,10 @@ function AboutSection() {
                 boxShadow: "0 0 40px rgba(168,85,247,0.05)",
               }}>
                 {/* 타이틀 */}
-                <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "0.85rem" }}>
-                  <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
-                  <span style={{ fontSize: "3.12rem", fontWeight: 800, fontFamily: "HYGraphic, sans-serif", color: "#a855f7", margin: "0 0.02em" }}>-</span>
-                  <span style={{ fontSize: "3.12rem", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>N</span>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: "0.85rem", flexWrap: "nowrap" }}>
+                  <span style={{ fontSize: "clamp(1.8rem, 7vw, 3.12rem)", fontWeight: 800, letterSpacing: "0.12em", color: "#ffffff", fontFamily: "var(--font-bernhard)" }}>CLARUS</span>
+                  <span style={{ fontSize: "clamp(1.8rem, 7vw, 3.12rem)", fontWeight: 800, fontFamily: "HYGraphic, sans-serif", color: "#a855f7", margin: "0 0.02em" }}>-</span>
+                  <span style={{ fontSize: "clamp(1.8rem, 7vw, 3.12rem)", fontWeight: 800, letterSpacing: "0.12em", color: "#a855f7", fontFamily: "var(--font-bernhard)" }}>N</span>
                 </div>
 
                 {/* 의미 */}
