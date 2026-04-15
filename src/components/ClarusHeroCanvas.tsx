@@ -351,6 +351,15 @@ export default function ClarusHeroCanvas() {
       fadeGrad.addColorStop(1, "rgba(3,7,18,1)");
       ctx.fillStyle = fadeGrad;
       ctx.fillRect(0, 0, W, H);
+
+      // 모바일: 왼쪽 끝 페이드
+      if (isMobileCanvas) {
+        const leftFade = ctx.createLinearGradient(0, 0, W * 0.18, 0);
+        leftFade.addColorStop(0, "rgba(3,7,18,1)");
+        leftFade.addColorStop(1, "rgba(3,7,18,0)");
+        ctx.fillStyle = leftFade;
+        ctx.fillRect(0, 0, W, H);
+      }
       
       raf = requestAnimationFrame(tick);
     }
