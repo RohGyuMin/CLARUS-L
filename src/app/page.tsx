@@ -2814,6 +2814,7 @@ export default function ClarusNPage() {
           zIndex: 10,
           backgroundColor: "#030712",
           paddingLeft: isSidebarOpen && !isCompactLayout ? "340px" : "0px",
+          paddingBottom: isCompactLayout ? "3.5rem" : "0px",
           transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
         }}
         >
@@ -2931,35 +2932,37 @@ export default function ClarusNPage() {
           />
         )}
 
-        {/* 메뉴 열기 버튼 */}
-        <button
-          onClick={toggleSidebar}
-          aria-label="메뉴 열기"
-          style={{
-            position: "fixed",
-            top: isCompactLayout ? "1rem" : "2rem",
-            left: isCompactLayout ? "1rem" : "2rem",
-            zIndex: 40,
-            padding: "0.75rem",
-            borderRadius: "0.75rem",
-            background: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            backdropFilter: "blur(12px)",
-            color: "white",
-            cursor: "pointer",
-            opacity: isSidebarOpen ? 0 : 1,
-            pointerEvents: isSidebarOpen ? "none" : "auto",
-            transition: "opacity 0.3s ease, background 0.2s ease",
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
-          onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
+        {/* 메뉴 열기 버튼 - PC 전용 */}
+        {!isCompactLayout && (
+          <button
+            onClick={toggleSidebar}
+            aria-label="메뉴 열기"
+            style={{
+              position: "fixed",
+              top: "2rem",
+              left: "2rem",
+              zIndex: 40,
+              padding: "0.75rem",
+              borderRadius: "0.75rem",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              backdropFilter: "blur(12px)",
+              color: "white",
+              cursor: "pointer",
+              opacity: isSidebarOpen ? 0 : 1,
+              pointerEvents: isSidebarOpen ? "none" : "auto",
+              transition: "opacity 0.3s ease, background 0.2s ease",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.1)")}
+            onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        )}
 
         {/* 사이드바 */}
         <ClarusSidebar

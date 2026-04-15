@@ -14,6 +14,61 @@ interface ClarusSidebarProps {
 const brainMriItems = ["MRA Vessel 3D", "Aneurysm", "Stenosis", "Infarction", "Carotid Vessel 3D", "Carotid Stenosis"];
 const brainCtItems = ["Hemorrhage", "CTA Vessel 3D"];
 
+const bottomNavItems = [
+  {
+    id: "about",
+    label: "About",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+      </svg>
+    ),
+  },
+  {
+    id: "background",
+    label: "Background",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+    ),
+  },
+  {
+    id: "performance",
+    label: "Performance",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+      </svg>
+    ),
+  },
+  {
+    id: "test-request",
+    label: "Request",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="12" y1="18" x2="12" y2="12" />
+        <line x1="9" y1="15" x2="15" y2="15" />
+      </svg>
+    ),
+  },
+  {
+    id: "contact",
+    label: "Contact",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+      </svg>
+    ),
+  },
+];
+
 export default function ClarusSidebar({
   isOpen,
   isMobile = false,
@@ -24,20 +79,89 @@ export default function ClarusSidebar({
 }: ClarusSidebarProps) {
   const [isPerformanceOpen, setIsPerformanceOpen] = useState(activeSection === "performance");
 
-  // activeSection이 변경될 때 Performance 메뉴 자동 열림 처리
   useEffect(() => {
     if (activeSection === "performance") {
       setIsPerformanceOpen(true);
     }
   }, [activeSection]);
 
+  /* ── 모바일: 하단 가로 네비게이션 바 ── */
+  if (isMobile) {
+    return (
+      <nav
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "3.5rem",
+          background: "linear-gradient(180deg, rgba(2,8,20,0.97) 0%, rgba(4,12,30,0.98) 100%)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderTop: "1px solid rgba(59,130,246,0.2)",
+          boxShadow: "0 -4px 24px rgba(0,0,0,0.6)",
+          display: "flex",
+          alignItems: "stretch",
+          zIndex: 50,
+        }}
+      >
+        {bottomNavItems.map((item) => {
+          const isActive =
+            activeSection === item.id ||
+            (item.id === "about" && (activeSection === "about" || activeSection === "about-strengths"));
+          return (
+            <button
+              key={item.id}
+              onClick={() => onNavClick?.(item.id)}
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.2rem",
+                background: "none",
+                border: "none",
+                color: isActive ? "#60a5fa" : "rgba(148,163,184,0.6)",
+                fontSize: "0.6rem",
+                fontFamily: "'Arial Unicode MS', sans-serif",
+                fontWeight: isActive ? 700 : 400,
+                letterSpacing: "0.03em",
+                cursor: "pointer",
+                padding: "0.25rem 0",
+                transition: "color 0.2s ease",
+                position: "relative",
+              }}
+            >
+              {isActive && (
+                <div style={{
+                  position: "absolute",
+                  top: 0,
+                  left: "20%",
+                  right: "20%",
+                  height: "2px",
+                  borderRadius: "0 0 2px 2px",
+                  background: "#60a5fa",
+                  boxShadow: "0 0 8px rgba(96,165,250,0.8)",
+                }} />
+              )}
+              {item.icon}
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
+    );
+  }
+
+  /* ── PC: 기존 좌측 사이드바 ── */
   return (
     <aside
       style={{
         position: "fixed",
         top: 0, left: 0,
         height: "100%",
-        width: isMobile ? "min(340px, 88vw)" : "340px",
+        width: "340px",
         background: "linear-gradient(180deg, rgba(2,8,20,0.97) 0%, rgba(4,12,30,0.95) 60%, rgba(3,10,26,0.97) 100%)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
@@ -105,10 +229,10 @@ export default function ClarusSidebar({
           alignItems: "center",
           justifyContent: "flex-end",
         }}>
-          <div 
+          <div
             style={{
               fontSize: "1.1rem",
-              letterSpacing: "-0.01em", 
+              letterSpacing: "-0.01em",
               color: "rgba(96,165,250,0.95)",
               textTransform: "uppercase",
               fontWeight: 700,
@@ -129,12 +253,12 @@ export default function ClarusSidebar({
                 cursor: "pointer",
               }}
             />
-            <span 
+            <span
               onClick={() => onNavClick?.("about")}
               style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
             >
               C<span style={{ letterSpacing: "0.08em" }}>LARUS</span>
-              <span style={{ 
+              <span style={{
                 fontFamily: "'HYGraphic', sans-serif",
                 fontSize: "0.85em",
                 color: "#a855f7",
@@ -208,7 +332,7 @@ export default function ClarusSidebar({
                 transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
               }}>
                 {/* Brain MRI */}
-                <div style={{ 
+                <div style={{
                   transform: isPerformanceOpen ? "translateY(0)" : "translateY(-10px)",
                   transition: "transform 0.4s ease",
                 }}>
@@ -229,9 +353,9 @@ export default function ClarusSidebar({
                       if (item === "Infarction") targetIdx = 1;
                       if (item.includes("Carotid")) targetIdx = 2;
                       return (
-                        <SubBtn 
-                          key={item} 
-                          label={item} 
+                        <SubBtn
+                          key={item}
+                          label={item}
                           onClick={() => onSubNavClick?.(targetIdx)}
                         />
                       );
@@ -240,7 +364,7 @@ export default function ClarusSidebar({
                 </div>
 
                 {/* Brain CT */}
-                <div style={{ 
+                <div style={{
                   transform: isPerformanceOpen ? "translateY(0)" : "translateY(-10px)",
                   transition: "transform 0.5s ease",
                 }}>
@@ -257,9 +381,9 @@ export default function ClarusSidebar({
                   }}>Brain CT</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
                     {brainCtItems.map(item => (
-                      <SubBtn 
-                        key={item} 
-                        label={item} 
+                      <SubBtn
+                        key={item}
+                        label={item}
                         onClick={() => onSubNavClick?.(3)}
                       />
                     ))}
@@ -349,8 +473,8 @@ function NavBtn({
     >
       <span>{label}</span>
       {hasDropdown && (
-        <svg 
-          width="18" height="18" viewBox="0 0 24 24" fill="none" 
+        <svg
+          width="18" height="18" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
           style={{
             transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
