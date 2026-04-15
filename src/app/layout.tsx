@@ -23,6 +23,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
+      <head>
+        <meta
+          name="naver-site-verification"
+          content="a319b3216518dc55fbda5e9610361fbd22ec0a26"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

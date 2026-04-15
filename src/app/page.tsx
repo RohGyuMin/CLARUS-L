@@ -286,6 +286,14 @@ type ContactSectionProps = {
   isCompactLayout: boolean;
 };
 
+const sharedCardTitleStyle: React.CSSProperties = {
+  fontSize: "1.15rem",
+  fontWeight: 600,
+  color: "#e2e8f0",
+  lineHeight: 1.3,
+  letterSpacing: "-0.01em",
+};
+
 function AboutSection({ isCompactLayout }: { isCompactLayout: boolean }) {
   return (
     <section
@@ -587,7 +595,7 @@ function AboutStrengthsSection() {
                     {/* 본문 */}
                     <div style={{ flex: 1, padding: "1.3rem 1.4rem 1.3rem 0.25rem" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
-                        <div style={{ fontSize: "1.3rem", fontWeight: 600, color: "#e2e8f0" }}>
+                        <div style={sharedCardTitleStyle}>
                           {item.title}
                         </div>
                       </div>
@@ -761,25 +769,15 @@ function BackgroundSection() {
                   <div style={{ flex: 1, padding: "0.85rem 1.2rem 0.85rem 0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     {/* 영문 제목 */}
                     <div style={{
-                      fontSize: isMobile ? "0.95rem" : "1.3rem",
+                      ...sharedCardTitleStyle,
                       fontWeight: 600,
-                      color: "#e2e8f0",
-                      lineHeight: 1.3,
+                      whiteSpace: "normal",
+                      wordBreak: "keep-all",
                       marginBottom: "0.3rem",
+                      textShadow: isActive ? `0 0 16px ${item.color}44` : "none",
+                      transition: "all 0.25s ease",
                     }}>
-                      <div style={{
-                        fontSize: isMobile ? "0.95rem" : "1.3rem",
-                        lineHeight: 1.2,
-                        fontWeight: 700,
-                        color: "#e2e8f0",
-                        whiteSpace: "normal",
-                        wordBreak: "keep-all",
-                        letterSpacing: "-0.01em",
-                        textShadow: isActive ? `0 0 16px ${item.color}44` : "none",
-                        transition: "all 0.25s ease",
-                      }}>
-                        {item.title}
-                      </div>
+                      {item.title}
                     </div>
                     {/* 한글 부제목 + 상세 설명 - 호버 시에만 표시 */}
                     <div style={{
@@ -817,10 +815,10 @@ function BackgroundSection() {
                           style={{
                             display: "block",
                             width: "100%",
-                            maxHeight: "160px",
+                            maxHeight: "120px",
                             objectFit: "cover",
                             borderRadius: "0.5rem",
-                            marginTop: "0.75rem",
+                            marginTop: "0.7rem",
                             border: `1px solid ${item.color}30`,
                           }}
                         />
