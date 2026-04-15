@@ -2416,24 +2416,22 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed }: Cont
 function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps) {
   return (
     <footer style={{
-      padding: "3rem 0 4rem 0",
+      padding: "1.2rem 1.2rem 1.5rem 1.2rem",
       borderTop: "1px solid rgba(255,255,255,0.06)",
       color: "rgba(148, 163, 184, 0.6)",
-      fontSize: "0.85rem",
+      fontSize: "0.72rem",
       fontFamily: "'Inter', sans-serif",
-      lineHeight: "1.8",
+      lineHeight: "1.6",
       letterSpacing: "0.02em",
-      paddingLeft: "7rem",
-      paddingRight: "4rem"
     }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
         {/* 상단: 회사 기본 정보 (가로 배열) */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
-            <span>대표자: 김시은</span>
+            <span>대표자: 김시온</span>
           <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
           <span>사업자등록번호: 811-87-03349</span>
           <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
-          <span>연락처: +82-2-****-****</span>
+          <span>연락처: +82-2-6956-5338</span>
           <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
           <span>이메일: clarusnai@gmail.com</span>
         </div>
@@ -2443,21 +2441,13 @@ function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps)
         </div>
       </div>
       <div style={{
-        marginTop: "1.5rem",
-        paddingTop: "1rem",
+        marginTop: "0.8rem",
+        paddingTop: "0.6rem",
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}>
-        <div style={{
-          marginBottom: "0.7rem",
-          color: "#93c5fd",
-          fontSize: "0.72rem",
-          fontWeight: 700,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-        }}>
-          Legal Notices
-        </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.8rem", alignItems: "center" }}>
+          <span style={{ color: "#93c5fd", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginRight: "0.2rem" }}>Legal Notices</span>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
           <button
             type="button"
             onClick={onOpenPrivacy}
@@ -2467,7 +2457,7 @@ function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps)
               padding: 0,
               color: "#93c5fd",
               fontWeight: 700,
-              fontSize: "0.9rem",
+              fontSize: "0.72rem",
               cursor: "pointer",
               textDecoration: "underline",
               textUnderlineOffset: "0.2em",
@@ -2485,7 +2475,7 @@ function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps)
               padding: 0,
               color: "#93c5fd",
               fontWeight: 700,
-              fontSize: "0.9rem",
+              fontSize: "0.72rem",
               cursor: "pointer",
               textDecoration: "underline",
               textUnderlineOffset: "0.2em",
@@ -2503,7 +2493,7 @@ function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps)
               padding: 0,
               color: "#93c5fd",
               fontWeight: 700,
-              fontSize: "0.9rem",
+              fontSize: "0.72rem",
               cursor: "pointer",
               textDecoration: "underline",
               textUnderlineOffset: "0.2em",
@@ -2513,15 +2503,7 @@ function Footer({ onOpenEmailRefusal, onOpenPrivacy, onOpenTerms }: FooterProps)
           </button>
         </div>
       </div>
-      {/* 하단: 카피라이트 */}
-      <div style={{ 
-        marginTop: "2rem", 
-        color: "rgba(148, 163, 184, 0.4)", 
-        fontWeight: 500,
-        fontSize: "0.8rem",
-      }}>
-        Copyright 2026. CLARUS-N Co., Ltd. All rights reserved.
-      </div>
+
     </footer>
   );
 }
@@ -2814,7 +2796,7 @@ export default function ClarusNPage() {
           zIndex: 10,
           backgroundColor: "#030712",
           paddingLeft: isSidebarOpen && !isCompactLayout ? "340px" : "0px",
-          paddingBottom: isCompactLayout ? "3.5rem" : "0px",
+          paddingBottom: isCompactLayout ? "3rem" : "0px",
           transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
         }}
         >
