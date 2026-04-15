@@ -339,7 +339,7 @@ body::before {
     bottom: 3rem !important;
   }
   .cn-scroll-hint {
-    right: 1.5rem !important;
+    display: none !important;
   }
   .cn-form-row {
     flex-direction: column !important;

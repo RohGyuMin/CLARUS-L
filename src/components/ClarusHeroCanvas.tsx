@@ -48,9 +48,10 @@ export default function ClarusHeroCanvas() {
 
     /* ── 설정 및 초기화 ── */
     const nodeCount = 50; // 노드 수
-    let brainCenterX = W * 0.75; 
+    const isMobileCanvas = W < 768;
+    let brainCenterX = isMobileCanvas ? W * 0.58 : W * 0.75;
     let brainCenterY = H * 0.45;
-    let brainBaseScale = Math.min(W, H) * 0.32;
+    let brainBaseScale = Math.min(W, H) * (isMobileCanvas ? 0.38 : 0.32);
 
     const nodes: Node[] = Array.from({ length: nodeCount }, (_, i) => {
       const ang = Math.random() * Math.PI * 2;
@@ -81,9 +82,10 @@ export default function ClarusHeroCanvas() {
       const oldCenterX = brainCenterX, oldCenterY = brainCenterY;
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
-      brainCenterX = W * 0.75; 
+      const mobile = W < 768;
+      brainCenterX = mobile ? W * 0.58 : W * 0.75;
       brainCenterY = H * 0.45;
-      brainBaseScale = Math.min(W, H) * 0.32;
+      brainBaseScale = Math.min(W, H) * (mobile ? 0.38 : 0.32);
 
       const dx = brainCenterX - oldCenterX;
       const dy = brainCenterY - oldCenterY;
