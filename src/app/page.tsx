@@ -595,6 +595,13 @@ function AboutStrengthsSection() {
 function BackgroundSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [pinnedCard, setPinnedCard] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const items: {
     color: string;
@@ -646,10 +653,10 @@ function BackgroundSection() {
     },
   ];
 
-  const activeIndex = hoveredCard ?? pinnedCard;
+  const activeIndex = isMobile ? (pinnedCard ?? 0) : (hoveredCard ?? pinnedCard);
 
   return (
-    <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
+    <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: isMobile ? "2rem 1.25rem" : undefined }}>
       <div style={{ width: "100%" }}>
         <RevealSection>
           <SectionLabel>Background</SectionLabel>
@@ -669,7 +676,7 @@ function BackgroundSection() {
         </RevealSection>
 
         <RevealSection style={{ transitionDelay: "0.1s" }}>
-          <div style={{ display: "flex", gap: "3.5rem", maxWidth: "1440px", alignItems: "center", margin: "0 auto" }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? "1.5rem" : "3.5rem", maxWidth: "1440px", alignItems: "center", margin: "0 auto" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: 1, minWidth: 0 }}>
             {items.map((item, i) => {
               const isActive = activeIndex === i;
@@ -721,14 +728,14 @@ function BackgroundSection() {
                   <div style={{ flex: 1, padding: "0.85rem 1.2rem 0.85rem 0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     {/* 영문 제목 */}
                     <div style={{
-                      fontSize: "1.3rem",
+                      fontSize: isMobile ? "0.95rem" : "1.3rem",
                       fontWeight: 600,
                       color: "#e2e8f0",
                       lineHeight: 1.3,
                       marginBottom: "0.3rem",
                     }}>
                       <div style={{
-                        fontSize: "1.3rem",
+                        fontSize: isMobile ? "0.95rem" : "1.3rem",
                         lineHeight: 1.2,
                         fontWeight: 700,
                         color: "#e2e8f0",
@@ -743,14 +750,14 @@ function BackgroundSection() {
                     </div>
                     {/* 한글 부제목 + 상세 설명 - 호버 시에만 표시 */}
                     <div style={{
-                      maxHeight: isActive ? "6rem" : "0",
+                      maxHeight: isActive ? "10rem" : "0",
                       opacity: isActive ? 1 : 0,
                       overflow: "hidden",
                       transition: "max-height 0.3s ease, opacity 0.22s ease",
                       marginTop: isActive ? "0.25rem" : "0",
                     }}>
                       <div style={{
-                        fontSize: "1.15rem",
+                        fontSize: isMobile ? "0.88rem" : "1.15rem",
                         color: "#cbd5e1",
                         lineHeight: 1.6,
                         fontFamily: "'HYGraphic', sans-serif",
@@ -760,7 +767,7 @@ function BackgroundSection() {
                       </div>
                       <div style={{
                         marginTop: "0.4rem",
-                        fontSize: "1.1rem",
+                        fontSize: isMobile ? "0.85rem" : "1.1rem",
                         color: `${item.color}90`,
                         lineHeight: 1.5,
                         fontFamily: "'HYGraphic', sans-serif",
@@ -777,6 +784,7 @@ function BackgroundSection() {
             </div>
             {/* 이미지 패널 */}
             <div style={{
+              display: isMobile ? "none" : undefined,
               width: "600px",
               flexShrink: 0,
               position: "relative",
@@ -2644,6 +2652,16 @@ export default function ClarusNPage() {
     if (!container) return;
 
     const handleWheel = (e: WheelEvent) => {
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      const atTop = container.scrollTop <= 0;
+      const atBottom = container.scrollTop >= maxScrollTop - 2;
+
+      // 스크롤 경계에서는 브라우저 바운스/되튐을 막고, 실제로 더 이동할 수 있을 때만 스냅 처리
+      if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+        e.preventDefault();
+        return;
+      }
+
       // 이미 스크롤 중이면 중복 처리 방지
       if (isSnapScrolling.current) {
         e.preventDefault();
@@ -2776,16 +2794,17 @@ export default function ClarusNPage() {
         <div
           ref={scrollRef}
           className="cn-sidebar-scroll"
-          style={{
-            position: "absolute",
-            top: 0, bottom: 0, left: 0, right: 0,
-            overflowY: "scroll",
-            overflowX: "hidden",
-            zIndex: 10,
-            backgroundColor: "#030712",
-            paddingLeft: isSidebarOpen && !isCompactLayout ? "340px" : "0px",
-            transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
-          }}
+        style={{
+          position: "absolute",
+          top: 0, bottom: 0, left: 0, right: 0,
+          overflowY: "scroll",
+          overflowX: "hidden",
+          overscrollBehaviorY: "contain",
+          zIndex: 10,
+          backgroundColor: "#030712",
+          paddingLeft: isSidebarOpen && !isCompactLayout ? "340px" : "0px",
+          transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
+        }}
         >
           {/* 전역 배경 레이어: 와이드 화면 여백을 채움 */}
           <div style={{
