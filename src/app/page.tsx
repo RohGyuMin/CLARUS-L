@@ -669,7 +669,8 @@ function BackgroundSection() {
                   style={{
                     display: "flex",
                     alignItems: "stretch",
-                    minHeight: "5rem",
+                    height: isActive ? "auto" : "5.5rem",
+                    minHeight: "5.5rem",
                     borderRadius: "0.75rem",
                     overflow: "hidden",
                     background: isActive ? `${item.color}10` : "rgba(15,23,42,0.55)",
@@ -785,12 +786,15 @@ function BackgroundSection() {
                   src={items[pinnedCard].image}
                   alt="Background Detail"
                   style={{
-                    width: "100%",
-                    height: "100%",
+                    width: "auto",
+                    height: "auto",
+                    maxWidth: "95%",
+                    maxHeight: "420px",
                     objectFit: "contain",
                     objectPosition: "center",
                     display: "block",
-                    borderRadius: "1.1rem",
+                    margin: "auto",
+                    borderRadius: "0.75rem",
                     border: `1px solid ${items[pinnedCard].color}30`,
                     position: "relative",
                     zIndex: 1,
@@ -1908,14 +1912,14 @@ function TestRequestSection() {
                         justifyContent: "center",
                         flex: 1,
                         minWidth: 0,
-                        height: "2.28rem",
-                        gap: "0.28rem",
-                        padding: "0 0.75rem",
-                        borderRadius: "0.6rem",
+                        height: "2.7rem",
+                        gap: "0.35rem",
+                        padding: "0 1rem",
+                        borderRadius: "0.7rem",
                         background: isActive ? "rgba(96,165,250,0.2)" : "rgba(96,165,250,0.07)",
                         border: `1px solid ${isActive ? "rgba(96,165,250,0.6)" : "rgba(96,165,250,0.25)"}`,
                         color: isActive ? "#bfdbfe" : "#93c5fd",
-                        fontSize: "0.76rem",
+                        fontSize: "0.88rem",
                         fontWeight: 600,
                         lineHeight: 1,
                         fontFamily: "'HYGraphic', sans-serif",
@@ -1936,7 +1940,15 @@ function TestRequestSection() {
                         }
                       }}
                     >
-                      <span>{icon}</span>
+                      {key === "analysis" ? (
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                      ) : (
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                      )}
                       <span>{label}</span>
                     </button>
                   );

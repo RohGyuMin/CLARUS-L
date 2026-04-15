@@ -138,9 +138,16 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
               background: "linear-gradient(135deg, rgba(99,102,241,0.3) 0%, rgba(168,85,247,0.3) 100%)",
               border: "1px solid rgba(99,102,241,0.4)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: "0.8rem",
             }}>
-              {title.startsWith("🔍") ? "🔍" : "📎"}
+              {title.startsWith("🔍") ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                </svg>
+              )}
             </div>
             <span style={{
               color: "#e2e8f0",
