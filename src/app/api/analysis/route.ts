@@ -5,7 +5,7 @@ import { createDrivePermission, uploadFileToDrive } from "@/lib/googleDrive";
 
 export const runtime = "nodejs";
 
-const MAX_ANALYSIS_FILE_SIZE = 25 * 1024 * 1024;
+const MAX_ANALYSIS_FILE_SIZE = 500 * 1024 * 1024;
 const DEFAULT_DRIVE_FOLDER_ID = "16j-r6G57AJYSok6vaMdGOTnvFzVTvwUs";
 const ANALYSIS_RECIPIENT_EMAIL = "kkimsion@hanmail.net";
 
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   const oversized = files.filter(file => file.size > MAX_ANALYSIS_FILE_SIZE);
   if (oversized.length > 0) {
-    return NextResponse.json({ error: "파일 크기는 25MB 이하여야 합니다." }, { status: 400 });
+    return NextResponse.json({ error: "파일 크기는 500MB 이하여야 합니다." }, { status: 400 });
   }
 
   const transporter = nodemailer.createTransport({
