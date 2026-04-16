@@ -12,6 +12,10 @@ type DriveUploadSessionInput = {
   folderId: string;
 };
 
+type DriveFileUploadInput = DriveUploadSessionInput & {
+  content: Buffer | Uint8Array | ArrayBuffer;
+};
+
 type DrivePermissionInput = {
   fileId: string;
   emailAddress: string;
@@ -19,7 +23,8 @@ type DrivePermissionInput = {
 
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive";
 const TOKEN_URI = "https://oauth2.googleapis.com/token";
-const DRIVE_UPLOAD_URI = "https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&fields=id,name,webViewLink";
+const DRIVE_UPLOAD_URI =
+  "https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&supportsAllDrives=true&fields=id,name,webViewLink";
 
 function base64UrlEncode(value: Buffer | string) {
   return Buffer.from(value)
@@ -137,6 +142,59 @@ export async function createDriveUploadSession({
   }
 
   return uploadUrl;
+}
+
+export async function uploadFileToDrive({
+  fileName,
+  mimeType,
+  fileSize,
+  folderId,
+  content,
+}: DriveFileUploadInput) {
+  const uploadUrl = await createDriveUploadSession({
+    fileName,
+    mimeType,
+    fileSize,
+    folderId,
+  });
+
+  const body =
+    content instanceof Buffer
+      ? content
+      : content instanceof ArrayBuffer
+        ? Buffer.from(content)
+        : Buffer.from(content);
+
+  const res = await fetch(uploadUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": mimeType,
+      "Content-Range": `bytes 0-${fileSize - 1}/${fileSize}`,
+    },
+    body,
+  });
+
+  if (!res.ok) {
+    throw new Error(`Drive 파일 업로드 실패: ${await res.text()}`);
+  }
+
+  const uploadData = (await res.json()) as {
+    id?: string;
+    name?: string;
+    webViewLink?: string;
+  };
+
+  if (!uploadData.id) {
+    throw new Error("Drive 업로드 결과에서 파일 ID를 받지 못했습니다.");
+  }
+
+  return {
+    fileId: uploadData.id,
+    fileName: uploadData.name ?? fileName,
+    webViewLink: uploadData.webViewLink ?? `https://drive.google.com/file/d/${uploadData.id}/view`,
+    mimeType,
+    size: fileSize,
+  };
 }
 
 export async function createDrivePermission({ fileId, emailAddress }: DrivePermissionInput) {

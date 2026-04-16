@@ -1663,8 +1663,8 @@ function TestRequestSection() {
       form.append("email", emailValue);
       form.append("fileType", fileType);
       const res = await fetch("/api/analysis", { method: "POST", body: form });
-      const data = (await res.json()) as { count?: unknown };
-      if (!res.ok) throw new Error();
+      const data = (await res.json().catch(() => null)) as { count?: unknown; error?: string } | null;
+      if (!res.ok) throw new Error(data?.error ?? "분석 의뢰 전송에 실패했습니다.");
       setSubmitState("success");
       if (typeof data.count === "number" && Number.isFinite(data.count)) {
         setRequestCount(Math.floor(data.count));
@@ -1674,7 +1674,8 @@ function TestRequestSection() {
       setSelectedFiles([]);
       setEmailValue("");
       setFileType("");
-    } catch {
+    } catch (error) {
+      console.error("[analysis submit error]", error);
       setSubmitState("error");
     }
   };
@@ -1684,7 +1685,7 @@ function TestRequestSection() {
     "전송된 파일은 NIfTI 파일형식으로 모두 전환됩니다",
     "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다",
     "전송된 파일도 NIfTI 전환 후 모두 삭제됩니다",
-    "분석된 영상은 이메일로 24시간 이내로 보내드립니다",
+    "분석된 영상은 Google Drive에 저장 후 이메일로 24시간 이내로 보내드립니다",
     "빠른 영상분석이 필요시에는 파일 업로드 후 contact의 연락처로 문의 바랍니다."
   ];
 
