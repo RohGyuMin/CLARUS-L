@@ -844,7 +844,36 @@ function BackgroundSection() {
                 <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
                   <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
                 </div>
-                {pinnedCard !== null && items[pinnedCard].image && (
+                {pinnedCard === null ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "2rem",
+                      zIndex: 1,
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: "#22d3ee",
+                        fontSize: "clamp(1.3rem, 2.2vw, 2rem)",
+                        lineHeight: 1.25,
+                        fontFamily: "'HYGraphic', 'Inter', sans-serif",
+                        fontWeight: 500,
+                        textAlign: "center",
+                        letterSpacing: "0.01em",
+                        textShadow: "0 0 18px rgba(34, 211, 238, 0.35)",
+                        transform: "rotate(-2deg)",
+                      }}
+                    >
+                      Click an item to view the graph
+                    </div>
+                  </div>
+                ) : (
                   <img
                     src={items[pinnedCard].image}
                     alt="Background Detail"
@@ -1263,12 +1292,16 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
           {!activeVideo && (
             <p style={{
               position: "absolute",
-              bottom: "1.5rem",
-              left: 0, right: 0,
+              right: "3.5rem",
+              bottom: "4rem",
+              width: "min(100%, 360px)",
               textAlign: "center",
-              color: "rgba(148,163,184,0.45)",
-              fontSize: "0.8rem",
-              letterSpacing: "0.05em",
+              color: "rgba(148,163,184,0.62)",
+              fontSize: "0.92rem",
+              lineHeight: 1.35,
+              letterSpacing: "0.03em",
+              fontWeight: 500,
+              textShadow: "0 0 14px rgba(148,163,184,0.12)",
               pointerEvents: "none",
             }}>
               Click a pipeline to view the AI analysis results
