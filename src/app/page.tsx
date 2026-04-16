@@ -860,12 +860,12 @@ function BackgroundSection() {
                         bottom: "4rem",
                         width: "min(100%, 360px)",
                         color: "#22d3ee",
-                        fontSize: "0.92rem",
-                        lineHeight: 1.35,
-                        fontFamily: "'HYGraphic', 'Inter', sans-serif",
-                        fontWeight: 500,
+                        fontSize: "0.88rem",
+                        lineHeight: 1.2,
+                        fontFamily: "'HYGraphic', sans-serif",
+                        fontWeight: 600,
                         textAlign: "center",
-                        letterSpacing: "0.03em",
+                        letterSpacing: "0.02em",
                         textShadow: "0 0 14px rgba(34, 211, 238, 0.18)",
                       }}
                     >
