@@ -2077,6 +2077,7 @@ function TestRequestSection() {
 }
 
 function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isCompactLayout }: ContactSectionProps) {
+  const MAX_CONTACT_FILE_SIZE = 500 * 1024 * 1024;
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isContactIntroEnglish, setIsContactIntroEnglish] = useState(false);
@@ -2092,6 +2093,10 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
     e.preventDefault();
     if (!privacyAgreed) { alert("개인정보 처리방침에 동의해주세요."); return; }
     if (!formData.name || !formData.email || !formData.message) { alert("이름, 이메일, 문의내용은 필수입니다."); return; }
+    if (selectedFile && selectedFile.size > MAX_CONTACT_FILE_SIZE) {
+      alert("파일 크기는 500MB 이하여야 합니다.");
+      return;
+    }
     setSubmitState("loading");
     try {
       let driveFile: {
@@ -2175,6 +2180,11 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
+    if (file && file.size > MAX_CONTACT_FILE_SIZE) {
+      alert("파일 크기는 500MB 이하여야 합니다.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
     setSelectedFile(file);
   };
 
@@ -2564,7 +2574,7 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
                    </div>
                  </div>
                  <p style={{ color: "#94a3b8", fontSize: "0.78rem", lineHeight: 1.5 }}>
-                   파일이 첨부되면 제출 시 담당자 Google Drive 폴더로 자동 업로드되고, 메일에 다운로드 링크가 포함됩니다.
+                   파일이 첨부되면 제출 시 담당자 Google Drive 폴더로 자동 업로드되고, 메일에 다운로드 링크가 포함됩니다. (최대 500MB)
                  </p>
                </div>
 
