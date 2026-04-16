@@ -10,6 +10,10 @@ env:
     secret: MAIL_USER
   - variable: MAIL_PASS
     secret: MAIL_PASS
+  - variable: GOOGLE_SERVICE_ACCOUNT_JSON
+    secret: GOOGLE_SERVICE_ACCOUNT_JSON
+  - variable: GOOGLE_DRIVE_FOLDER_ID
+    secret: GOOGLE_DRIVE_FOLDER_ID
   - variable: UPSTASH_REDIS_REST_URL
     secret: UPSTASH_REDIS_REST_URL
   - variable: UPSTASH_REDIS_REST_TOKEN
