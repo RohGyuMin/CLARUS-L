@@ -67,7 +67,7 @@ export function BackgroundSection() {
     },
   ];
 
-  const activeIndex = isMobile ? (pinnedCard ?? 0) : (hoveredCard ?? pinnedCard);
+  const activeIndex = isMobile ? pinnedCard : (hoveredCard ?? pinnedCard);
 
   return (
     <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: isMobile ? "2rem 1.25rem" : undefined }}>

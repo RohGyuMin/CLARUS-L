@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
@@ -241,6 +241,13 @@ export function AboutStrengthsSection() {
 
   const [hovered, setHovered] = useState<number | null>(null);
   const [pinned, setPinned] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <section id="about-strengths" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
@@ -307,7 +314,7 @@ export function AboutStrengthsSection() {
                     {/* 본문 */}
                     <div style={{ flex: 1, padding: "1.3rem 1.4rem 1.3rem 0.25rem" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
-                        <div style={{ fontSize: "1.3rem", fontWeight: 600, color: "#e2e8f0" }}>
+                        <div style={{ fontSize: isMobile ? "0.95rem" : "1.3rem", fontWeight: 600, color: "#e2e8f0" }}>
                           {item.title}
                         </div>
                       </div>

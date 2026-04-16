@@ -324,7 +324,7 @@ body::before {
     gap: 2rem !important;
   }
   .cn-section-flex > div:last-child {
-    display: none;
+    display: none !important;
   }
   .cn-section-flex > .cn-about-photo-panel {
     display: flex !important;
