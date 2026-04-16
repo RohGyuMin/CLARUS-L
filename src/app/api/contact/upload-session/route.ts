@@ -3,6 +3,8 @@ import { createDriveUploadSession } from "@/lib/googleDrive";
 
 export const runtime = "nodejs";
 
+const DEFAULT_DRIVE_FOLDER_ID = "16j-r6G57AJYSok6vaMdGOTnvFzVTvwUs";
+
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as {
@@ -14,14 +16,10 @@ export async function POST(req: NextRequest) {
     const fileName = body.fileName?.trim();
     const mimeType = body.mimeType?.trim() || "application/octet-stream";
     const fileSize = Number(body.fileSize);
-    const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID?.trim();
+    const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID?.trim() || DEFAULT_DRIVE_FOLDER_ID;
 
     if (!fileName || !Number.isFinite(fileSize) || fileSize <= 0) {
       return NextResponse.json({ error: "파일 정보가 누락되었습니다." }, { status: 400 });
-    }
-
-    if (!folderId) {
-      return NextResponse.json({ error: "GOOGLE_DRIVE_FOLDER_ID가 설정되지 않았습니다." }, { status: 500 });
     }
 
     const uploadUrl = await createDriveUploadSession({
