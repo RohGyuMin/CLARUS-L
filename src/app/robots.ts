@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://clarus-n.web.app/sitemap.xml",
-    host: "https://clarus-n.web.app",
+    sitemap: "https://www.clarusn.com/sitemap.xml",
+    host: "https://www.clarusn.com",
   };
 }
