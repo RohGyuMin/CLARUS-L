@@ -2048,7 +2048,9 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
   const [isCopied, setIsCopied] = useState(false);
   const [isContactIntroEnglish, setIsContactIntroEnglish] = useState(false);
   const [formData, setFormData] = useState({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleField = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setFormData(prev => ({ ...prev, [field]: e.target.value }));
@@ -2059,19 +2061,93 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
     if (!formData.name || !formData.email || !formData.message) { alert("이름, 이메일, 문의내용은 필수입니다."); return; }
     setSubmitState("loading");
     try {
+      let driveFile: {
+        fileId: string;
+        fileName: string;
+        webViewLink: string;
+        mimeType: string;
+        size: number;
+      } | null = null;
+
+      if (selectedFile) {
+        const sessionRes = await fetch("/api/contact/upload-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fileName: selectedFile.name,
+            mimeType: selectedFile.type || "application/octet-stream",
+            fileSize: selectedFile.size,
+          }),
+        });
+
+        if (!sessionRes.ok) {
+          throw new Error((await sessionRes.json().catch(() => null))?.error ?? "업로드 세션 생성에 실패했습니다.");
+        }
+
+        const sessionData = (await sessionRes.json()) as { uploadUrl?: string };
+        if (!sessionData.uploadUrl) {
+          throw new Error("업로드 세션 URL을 받지 못했습니다.");
+        }
+
+        const uploadRes = await fetch(sessionData.uploadUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": selectedFile.type || "application/octet-stream",
+            "Content-Range": `bytes 0-${selectedFile.size - 1}/${selectedFile.size}`,
+          },
+          body: selectedFile,
+        });
+
+        if (!uploadRes.ok) {
+          throw new Error(await uploadRes.text());
+        }
+
+        const uploadData = (await uploadRes.json()) as {
+          id?: string;
+          webViewLink?: string;
+          name?: string;
+        };
+
+        if (!uploadData.id) {
+          throw new Error("Drive 업로드 결과에서 파일 ID를 받지 못했습니다.");
+        }
+
+        driveFile = {
+          fileId: uploadData.id,
+          fileName: uploadData.name ?? selectedFile.name,
+          webViewLink: uploadData.webViewLink ?? `https://drive.google.com/file/d/${uploadData.id}/view`,
+          mimeType: selectedFile.type || "application/octet-stream",
+          size: selectedFile.size,
+        };
+      }
+
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          driveFile,
+        }),
       });
       if (!res.ok) throw new Error();
       setSubmitState("success");
       setFormData({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
+      setSelectedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       setPrivacyAgreed(false);
     } catch {
       setSubmitState("error");
     }
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    setSelectedFile(file);
+  };
+
+  const fileSizeLabel = selectedFile
+    ? `${(selectedFile.size / (1024 * 1024)).toFixed(selectedFile.size >= 1024 * 1024 ? 1 : 2)} MB`
+    : "";
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText('clarusnai@gmail.com');
@@ -2379,6 +2455,87 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
                ))}
 
                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                 <label style={{ color: "#cbd5e1", fontSize: "0.85rem", fontWeight: 500 }}>
+                   첨부파일
+                 </label>
+                 <input
+                   ref={fileInputRef}
+                   type="file"
+                   accept=".pdf,.zip,.dcm,.dicom,.png,.jpg,.jpeg,.mp4,.mov,.txt,.csv,application/*,image/*,video/*"
+                   style={{ display: "none" }}
+                   onChange={handleFileChange}
+                 />
+                 <div
+                   style={{
+                     display: "flex",
+                     flexDirection: isCompactLayout ? "column" : "row",
+                     alignItems: isCompactLayout ? "stretch" : "center",
+                     gap: "0.75rem",
+                   }}
+                 >
+                   <button
+                     type="button"
+                     onClick={() => fileInputRef.current?.click()}
+                     style={{
+                       padding: "0.9rem 1rem",
+                       borderRadius: "0.75rem",
+                       background: "rgba(96,165,250,0.12)",
+                       border: "1px solid rgba(96,165,250,0.35)",
+                       color: "#bfdbfe",
+                       fontSize: "0.9rem",
+                       fontWeight: 600,
+                       cursor: "pointer",
+                       whiteSpace: "nowrap",
+                     }}
+                   >
+                     파일 선택
+                   </button>
+                   <div
+                     style={{
+                       flex: 1,
+                       minHeight: "3.1rem",
+                       borderRadius: "0.75rem",
+                       border: "1px dashed rgba(148,163,184,0.25)",
+                       background: "rgba(255,255,255,0.02)",
+                       color: selectedFile ? "#e2e8f0" : "#64748b",
+                       fontSize: "0.88rem",
+                       padding: "0.85rem 1rem",
+                       display: "flex",
+                       alignItems: "center",
+                       justifyContent: "space-between",
+                       gap: "0.75rem",
+                     }}
+                   >
+                     <span style={{ wordBreak: "break-all" }}>
+                       {selectedFile ? `${selectedFile.name} (${fileSizeLabel})` : "선택된 파일 없음"}
+                     </span>
+                     {selectedFile && (
+                       <button
+                         type="button"
+                         onClick={() => {
+                           setSelectedFile(null);
+                           if (fileInputRef.current) fileInputRef.current.value = "";
+                         }}
+                         style={{
+                           background: "none",
+                           border: "none",
+                           color: "#94a3b8",
+                           cursor: "pointer",
+                           fontSize: "0.82rem",
+                           whiteSpace: "nowrap",
+                         }}
+                       >
+                         삭제
+                       </button>
+                     )}
+                   </div>
+                 </div>
+                 <p style={{ color: "#94a3b8", fontSize: "0.78rem", lineHeight: 1.5 }}>
+                   파일이 첨부되면 제출 시 담당자 Google Drive 폴더로 자동 업로드되고, 메일에 다운로드 링크가 포함됩니다.
+                 </p>
+               </div>
+
+               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                  <label htmlFor="message" style={{ color: "#cbd5e1", fontSize: "0.85rem", fontWeight: 500 }}>
                    문의내용
                  </label>
@@ -2442,7 +2599,11 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
                  onMouseEnter={e => { if (submitState !== "loading") { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(37,99,235,0.5)"; } }}
                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 15px rgba(37,99,235,0.3)"; }}
                >
-                 {submitState === "loading" ? "전송 중..." : "제출하기"}
+                 {submitState === "loading"
+                   ? selectedFile
+                     ? "Drive 업로드 중..."
+                     : "전송 중..."
+                   : "제출하기"}
                </button>
              </form>
           </div>

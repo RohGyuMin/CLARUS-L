@@ -2,17 +2,33 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CLARUS-N | AI for Unlocking Neuroimages",
-  description: "뇌혈관 질환 진단을 위한 AI 솔루션. MRA, DWI, CT 기반 혈관 재구성, 동맥류 탐지, 협착 분석을 제공합니다.",
+  metadataBase: new URL("https://www.clarusn.com"),
+  title: {
+    default: "CLARUS-N | Neuroimaging AI for Brain MRI, MRA, DWI, and CT",
+    template: "%s | CLARUS-N",
+  },
+  description:
+    "CLARUS-N develops neurosurgeon-annotated AI for neuroimaging. Explore brain MRI, MRA, DWI, and CT reconstruction, aneurysm detection, stenosis analysis, and clinical decision support.",
   keywords: ["CLARUS-N", "neuroimaging", "AI", "brain MRI", "cerebrovascular", "aneurysm detection", "뇌혈관", "AI 진단"],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "CLARUS-N | AI for Unlocking Neuroimages",
-    description: "뇌혈관 질환 진단을 위한 AI 솔루션",
-    url: "https://clarus-n.web.app",
+    title: "CLARUS-N | Neuroimaging AI for Brain MRI, MRA, DWI, and CT",
+    description:
+      "CLARUS-N develops neurosurgeon-annotated AI for neuroimaging, including brain MRI, MRA, DWI, and CT workflows.",
+    url: "https://www.clarusn.com",
     siteName: "CLARUS-N",
     locale: "ko_KR",
     type: "website",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CLARUS-N | Neuroimaging AI for Brain MRI, MRA, DWI, and CT",
+    description:
+      "CLARUS-N develops neurosurgeon-annotated AI for neuroimaging workflows.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
