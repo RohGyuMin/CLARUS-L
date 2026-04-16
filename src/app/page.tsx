@@ -849,25 +849,24 @@ function BackgroundSection() {
                     style={{
                       position: "absolute",
                       inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "2rem",
                       zIndex: 1,
                       pointerEvents: "none",
                     }}
                   >
                     <div
                       style={{
+                        position: "absolute",
+                        right: "3.5rem",
+                        bottom: "4rem",
+                        width: "min(100%, 360px)",
                         color: "#22d3ee",
-                        fontSize: "clamp(1.3rem, 2.2vw, 2rem)",
-                        lineHeight: 1.25,
+                        fontSize: "0.92rem",
+                        lineHeight: 1.35,
                         fontFamily: "'HYGraphic', 'Inter', sans-serif",
                         fontWeight: 500,
                         textAlign: "center",
-                        letterSpacing: "0.01em",
-                        textShadow: "0 0 18px rgba(34, 211, 238, 0.35)",
-                        transform: "rotate(-2deg)",
+                        letterSpacing: "0.03em",
+                        textShadow: "0 0 14px rgba(34, 211, 238, 0.18)",
                       }}
                     >
                       Click an item to view the graph
