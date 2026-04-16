@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { createDrivePermission } from "@/lib/googleDrive";
+import { createMailTransporter } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 
@@ -34,19 +34,12 @@ export async function POST(req: NextRequest) {
   const body = (await req.json()) as ContactBody;
   const { name, region, company, job, email, phone, message, driveFile } = body;
   const recipientEmail = process.env.CONTACT_RECIPIENT_EMAIL?.trim() || "kkimsion@hanmail.net";
-  const senderEmail = "right-heart@hanmail.net";
 
   if (!name || !email || !message) {
     return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
-  });
+  const transporter = createMailTransporter();
 
   const safeName = escapeHtml(name);
   const safeRegion = escapeHtml(region ?? "-");
@@ -91,7 +84,7 @@ export async function POST(req: NextRequest) {
 
   try {
     await transporter.sendMail({
-      from: `"CLARUS-N 문의" <${senderEmail}>`,
+      from: `"CLARUS-N 문의" <${process.env.MAIL_USER}>`,
       to: recipientEmail,
       subject: `[CLARUS-N 문의] ${subjectName} (${subjectCompany})`,
       html: `

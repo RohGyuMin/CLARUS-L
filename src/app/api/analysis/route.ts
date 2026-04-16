@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { incrementAnalysisRequestCount } from "@/lib/analysisRequestCount";
+import { createMailTransporter } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 
 const MAX_ANALYSIS_FILE_SIZE = 500 * 1024 * 1024;
-const ANALYSIS_FROM_EMAIL = "right-heart@hanmail.net";
 const ANALYSIS_RECIPIENT_EMAIL = "kkimsion@hanmail.net";
 
 export async function POST(req: NextRequest) {
@@ -23,13 +22,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "파일 크기는 500MB 이하여야 합니다." }, { status: 400 });
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
-  });
+  const transporter = createMailTransporter();
 
   try {
     const attachments = await Promise.all(
@@ -40,7 +33,7 @@ export async function POST(req: NextRequest) {
     );
 
     await transporter.sendMail({
-      from: `"${email}" <${ANALYSIS_FROM_EMAIL}>`,
+      from: `"CLARUS-N 분석 의뢰" <${process.env.MAIL_USER}>`,
       to: ANALYSIS_RECIPIENT_EMAIL,
       subject: `[CLARUS-N 분석 의뢰] ${fileType} - ${files[0].name}`,
       html: `
