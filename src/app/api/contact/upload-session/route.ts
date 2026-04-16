@@ -4,7 +4,6 @@ import { createDriveUploadSession } from "@/lib/googleDrive";
 export const runtime = "nodejs";
 
 const DEFAULT_DRIVE_FOLDER_ID = "16j-r6G57AJYSok6vaMdGOTnvFzVTvwUs";
-const MAX_CONTACT_FILE_SIZE = 500 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,9 +20,6 @@ export async function POST(req: NextRequest) {
 
     if (!fileName || !Number.isFinite(fileSize) || fileSize <= 0) {
       return NextResponse.json({ error: "파일 정보가 누락되었습니다." }, { status: 400 });
-    }
-    if (fileSize > MAX_CONTACT_FILE_SIZE) {
-      return NextResponse.json({ error: "파일 크기는 500MB 이하여야 합니다." }, { status: 400 });
     }
 
     const uploadUrl = await createDriveUploadSession({
