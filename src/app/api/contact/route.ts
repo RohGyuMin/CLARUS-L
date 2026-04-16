@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
   const body = (await req.json()) as ContactBody;
   const { name, region, company, job, email, phone, message, driveFile } = body;
   const recipientEmail = process.env.CONTACT_RECIPIENT_EMAIL?.trim() || "kkimsion@hanmail.net";
+  const senderEmail = "right-heart@hanmail.net";
 
   if (!name || !email || !message) {
     return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest) {
 
   try {
     await transporter.sendMail({
-      from: `"CLARUS-N 문의" <${process.env.MAIL_USER}>`,
+      from: `"CLARUS-N 문의" <${senderEmail}>`,
       to: recipientEmail,
       subject: `[CLARUS-N 문의] ${subjectName} (${subjectCompany})`,
       html: `

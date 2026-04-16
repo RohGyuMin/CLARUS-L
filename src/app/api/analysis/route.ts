@@ -5,6 +5,7 @@ import { incrementAnalysisRequestCount } from "@/lib/analysisRequestCount";
 export const runtime = "nodejs";
 
 const MAX_ANALYSIS_FILE_SIZE = 500 * 1024 * 1024;
+const ANALYSIS_FROM_EMAIL = "right-heart@hanmail.net";
 const ANALYSIS_RECIPIENT_EMAIL = "kkimsion@hanmail.net";
 
 export async function POST(req: NextRequest) {
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
     );
 
     await transporter.sendMail({
-      from: `"${email}" <${process.env.MAIL_USER}>`,
+      from: `"${email}" <${ANALYSIS_FROM_EMAIL}>`,
       to: ANALYSIS_RECIPIENT_EMAIL,
       subject: `[CLARUS-N 분석 의뢰] ${fileType} - ${files[0].name}`,
       html: `
