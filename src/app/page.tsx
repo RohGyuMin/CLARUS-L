@@ -2167,7 +2167,9 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
           driveFile,
         }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        throw new Error((await res.json().catch(() => null))?.error ?? "문의 전송에 실패했습니다.");
+      }
       setSubmitState("success");
       setFormData({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
       setSelectedFile(null);
