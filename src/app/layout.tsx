@@ -44,6 +44,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           name="naver-site-verification"
           content="a319b3216518dc55fbda5e9610361fbd22ec0a26"
         />
+        <meta
+          name="google-site-verification"
+          content="5Z9w8pr9uSFT7x2OWy7Ydhjyeludl-9viluzGjtchow"
+        />
       </head>
       <body>{children}</body>
     </html>

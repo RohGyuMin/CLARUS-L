@@ -844,7 +844,36 @@ function BackgroundSection() {
                 <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
                   <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
                 </div>
-                {pinnedCard !== null && items[pinnedCard].image && (
+                {pinnedCard === null ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "2rem",
+                      zIndex: 1,
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: "#22d3ee",
+                        fontSize: "clamp(1.3rem, 2.2vw, 2rem)",
+                        lineHeight: 1.25,
+                        fontFamily: "'HYGraphic', 'Inter', sans-serif",
+                        fontWeight: 500,
+                        textAlign: "center",
+                        letterSpacing: "0.01em",
+                        textShadow: "0 0 18px rgba(34, 211, 238, 0.35)",
+                        transform: "rotate(-2deg)",
+                      }}
+                    >
+                      Click an item to view the graph
+                    </div>
+                  </div>
+                ) : (
                   <img
                     src={items[pinnedCard].image}
                     alt="Background Detail"
@@ -1263,12 +1292,16 @@ function PerformanceSection({ pageIndex, setPageIndex }: {
           {!activeVideo && (
             <p style={{
               position: "absolute",
-              bottom: "1.5rem",
-              left: 0, right: 0,
+              right: "3.5rem",
+              bottom: "4rem",
+              width: "min(100%, 360px)",
               textAlign: "center",
-              color: "rgba(148,163,184,0.45)",
-              fontSize: "0.8rem",
-              letterSpacing: "0.05em",
+              color: "rgba(148,163,184,0.62)",
+              fontSize: "0.92rem",
+              lineHeight: 1.35,
+              letterSpacing: "0.03em",
+              fontWeight: 500,
+              textShadow: "0 0 14px rgba(148,163,184,0.12)",
               pointerEvents: "none",
             }}>
               Click a pipeline to view the AI analysis results
@@ -2044,6 +2077,7 @@ function TestRequestSection() {
 }
 
 function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isCompactLayout }: ContactSectionProps) {
+  const MAX_CONTACT_FILE_SIZE = 500 * 1024 * 1024;
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isContactIntroEnglish, setIsContactIntroEnglish] = useState(false);
@@ -2059,6 +2093,10 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
     e.preventDefault();
     if (!privacyAgreed) { alert("개인정보 처리방침에 동의해주세요."); return; }
     if (!formData.name || !formData.email || !formData.message) { alert("이름, 이메일, 문의내용은 필수입니다."); return; }
+    if (selectedFile && selectedFile.size > MAX_CONTACT_FILE_SIZE) {
+      alert("파일 크기는 500MB 이하여야 합니다.");
+      return;
+    }
     setSubmitState("loading");
     try {
       let driveFile: {
@@ -2129,7 +2167,9 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
           driveFile,
         }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        throw new Error((await res.json().catch(() => null))?.error ?? "문의 전송에 실패했습니다.");
+      }
       setSubmitState("success");
       setFormData({ name: "", region: "", company: "", job: "", email: "", phone: "", message: "" });
       setSelectedFile(null);
@@ -2142,6 +2182,11 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
+    if (file && file.size > MAX_CONTACT_FILE_SIZE) {
+      alert("파일 크기는 500MB 이하여야 합니다.");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
     setSelectedFile(file);
   };
 
@@ -2531,7 +2576,7 @@ function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed, isComp
                    </div>
                  </div>
                  <p style={{ color: "#94a3b8", fontSize: "0.78rem", lineHeight: 1.5 }}>
-                   파일이 첨부되면 제출 시 담당자 Google Drive 폴더로 자동 업로드되고, 메일에 다운로드 링크가 포함됩니다.
+                   파일이 첨부되면 제출 시 담당자 Google Drive 폴더로 자동 업로드되고, 메일에 다운로드 링크가 포함됩니다. (최대 500MB)
                  </p>
                </div>
 

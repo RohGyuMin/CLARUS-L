@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
   const subjectCompany = (company ?? "").replace(/[\r\n]+/g, " ").trim();
 
   let driveLinkBlock = "";
+  let drivePermissionFailed = false;
 
   if (driveFile?.fileId) {
     const driveLink = driveFile.webViewLink?.trim() || `https://drive.google.com/file/d/${driveFile.fileId}/view`;
@@ -69,10 +70,7 @@ export async function POST(req: NextRequest) {
       });
     } catch (error) {
       console.error("[contact drive permission error]", error);
-      return NextResponse.json(
-        { error: "Google Drive 권한 설정에 실패했습니다. 담당자 계정과 공유 폴더 설정을 확인해주세요." },
-        { status: 500 }
-      );
+      drivePermissionFailed = true;
     }
 
     driveLinkBlock = `
@@ -82,6 +80,11 @@ export async function POST(req: NextRequest) {
         <strong>${escapeHtml(driveFile.fileName ?? "첨부 파일")}</strong><br />
         <a href="${driveLink}" target="_blank" rel="noreferrer" style="color: #2563eb; text-decoration: underline;">Google Drive 파일 열기</a>
       </p>
+      ${drivePermissionFailed ? `
+        <p style="color: #b45309; font-size: 13px; margin-top: 8px;">
+          파일 업로드는 완료되었지만, 권한 공유는 자동 설정에 실패했습니다. Drive 폴더 공유 상태를 확인해주세요.
+        </p>
+      ` : ""}
     `;
   }
 
