@@ -56,6 +56,7 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
         minHeight: isCompactLayout ? "auto" : "100vh",
         display: "flex",
         alignItems: isCompactLayout ? "flex-start" : "center",
+        paddingTop: isCompactLayout ? "4rem" : undefined,
         paddingBottom: isCompactLayout ? "1.5rem" : undefined,
       }}
     >
@@ -317,12 +318,12 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
             {/* Form Fields */}
             <form style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }} onSubmit={handleSubmit}>
               {[
-                { id: "name", label: "이름", ph: "ex. 홍길동" },
-                { id: "region", label: "지역", ph: "ex. 서울시 서초구" },
-                { id: "company", label: "기관명/병원명", ph: "ex. 클라루스엔" },
-                { id: "job", label: "직함", ph: "ex. 신경외과 과장" },
-                { id: "email", label: "이메일", ph: "ex. clarusnai@gmail.com", type: "email" },
-                { id: "phone", label: "연락처", ph: "ex. 010-****-****", type: "tel" },
+                { id: "name", label: "이름 / Name", ph: "ex. 홍길동" },
+                { id: "region", label: "지역 / Region", ph: "ex. 서울시 서초구" },
+                { id: "company", label: "기관명/병원명 / Organization", ph: "ex. 클라루스엔" },
+                { id: "job", label: "직함 / Title", ph: "ex. 신경외과 과장" },
+                { id: "email", label: "이메일 / Email", ph: "ex. clarusnai@gmail.com", type: "email" },
+                { id: "phone", label: "연락처 / Contact", ph: "ex. 010-****-****", type: "tel" },
               ].map((field) => (
                 <div key={field.id} style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                   <label htmlFor={field.id} style={{ color: "#cbd5e1", fontSize: "0.85rem", fontWeight: 500 }}>
@@ -348,7 +349,7 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
 
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                 <label htmlFor="message" style={{ color: "#cbd5e1", fontSize: "0.85rem", fontWeight: 500 }}>
-                  문의내용
+                  문의내용 / Message
                 </label>
                 <textarea
                   id="message"
@@ -410,12 +411,178 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
                 onMouseEnter={e => { if (submitState !== "loading") { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(37,99,235,0.5)"; } }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 15px rgba(37,99,235,0.3)"; }}
               >
-                {submitState === "loading" ? "전송 중..." : "제출하기"}
+                {submitState === "loading" ? "전송 중... / Submitting..." : "제출하기 / Submit"}
               </button>
             </form>
           </div>
         </div>
       </div>
+      {/* 모바일 폼 모달 */}
+      {isCompactLayout && isFormOpen && (
+        <div
+          onClick={() => setIsFormOpen(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            background: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(8px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1.5rem",
+          }}
+        >
+        <div
+          onClick={e => e.stopPropagation()}
+          style={{
+            width: "100%",
+            maxWidth: "360px",
+            maxHeight: "85vh",
+            overflowY: "auto",
+            WebkitOverflowScrolling: "touch",
+            background: "rgba(15, 23, 42, 0.97)",
+            border: "1px solid rgba(96,165,250,0.25)",
+            borderRadius: "1.25rem",
+            boxShadow: "0 25px 60px rgba(0,0,0,0.7), 0 0 30px rgba(59,130,246,0.12)",
+            padding: "1.5rem",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem", flexShrink: 0 }}>
+            <h3 style={{ color: "#e2e8f0", fontSize: "1.5rem", fontWeight: 500, margin: 0, letterSpacing: "0.02em" }}>
+              Contact
+            </h3>
+            <button
+              onClick={() => setIsFormOpen(false)}
+              style={{
+                background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)",
+                color: "#94a3b8", cursor: "pointer", padding: "0.6rem", borderRadius: "50%",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          {/* Description */}
+          <div style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "1.5rem", borderBottom: "1px solid rgba(255,255,255,0.05)", paddingBottom: "1.25rem", flexShrink: 0 }}>
+            <span style={{ color: "#e2e8f0", fontWeight: 600, fontFamily: "var(--font-bernhard)" }}>CLARUS</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "'HYGraphic', sans-serif" }}>-</span><span style={{ color: "#a855f7", fontWeight: 700, fontFamily: "var(--font-bernhard)" }}>N</span>에 관심 가져주셔서 감사합니다.<br />
+            문의를 남겨주시면 확인 후 빠르게 연락 드리겠습니다.
+          </div>
+
+          {/* Form */}
+          <form style={{ display: "flex", flexDirection: "column", gap: "1.25rem", flex: 1 }} onSubmit={handleSubmit}>
+            {[
+              { id: "name", label: "이름 / Name", ph: "ex. 홍길동" },
+              { id: "region", label: "지역 / Region", ph: "ex. 서울시 서초구" },
+              { id: "company", label: "기관명/병원명 / Organization", ph: "ex. 클라루스엔" },
+              { id: "job", label: "직함 / Title", ph: "ex. 신경외과 과장" },
+              { id: "email", label: "이메일 / Email", ph: "ex. clarusnai@gmail.com", type: "email" },
+              { id: "phone", label: "연락처 / Contact", ph: "ex. 010-****-****", type: "tel" },
+            ].map((field) => (
+              <div key={`m-${field.id}`} style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                <label htmlFor={`m-${field.id}`} style={{ color: "#cbd5e1", fontSize: "0.82rem", fontWeight: 500 }}>
+                  {field.label}
+                </label>
+                <input
+                  id={`m-${field.id}`}
+                  type={field.type || "text"}
+                  placeholder={field.ph}
+                  value={formData[field.id as keyof typeof formData]}
+                  onChange={handleField(field.id)}
+                  style={{
+                    width: "100%", padding: "0.85rem 1rem", borderRadius: "0.65rem",
+                    background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                    color: "#f8fafc", fontSize: "0.95rem", outline: "none",
+                  }}
+                />
+              </div>
+            ))}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              <label htmlFor="m-message" style={{ color: "#cbd5e1", fontSize: "0.82rem", fontWeight: 500 }}>
+                문의내용 / Message
+              </label>
+              <textarea
+                id="m-message"
+                rows={4}
+                value={formData.message}
+                onChange={handleField("message")}
+                placeholder="문의 내용을 입력해 주세요..."
+                style={{
+                  width: "100%", padding: "0.85rem 1rem", borderRadius: "0.65rem",
+                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#f8fafc", fontSize: "0.95rem", outline: "none", resize: "none",
+                }}
+              />
+            </div>
+
+            {/* 개인정보 동의 */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <input type="checkbox" id="m-privacy-agree" checked={privacyAgreed} onChange={e => setPrivacyAgreed(e.target.checked)} style={{ width: "1rem", height: "1rem", accentColor: "#3b82f6" }} />
+              <label htmlFor="m-privacy-agree" style={{ color: "#94a3b8", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                <button
+                  type="button"
+                  onClick={onOpenPrivacy}
+                  style={{ color: "#60a5fa", textDecoration: "underline", background: "none", border: "none", cursor: "pointer", fontSize: "inherit", padding: 0 }}
+                >
+                  개인정보 처리방침
+                </button>에 동의합니다 (필수)
+              </label>
+            </div>
+
+            {submitState === "success" && (
+              <div style={{ padding: "0.85rem", borderRadius: "0.65rem", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", color: "#86efac", fontSize: "0.9rem", textAlign: "center" }}>
+                문의가 성공적으로 전송되었습니다. 빠른 시일 내에 연락드리겠습니다.
+              </div>
+            )}
+            {submitState === "error" && (
+              <div style={{ padding: "0.85rem", borderRadius: "0.65rem", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5", fontSize: "0.9rem", textAlign: "center" }}>
+                전송에 실패했습니다. 잠시 후 다시 시도해주세요.
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={submitState === "loading"}
+              style={{
+                marginTop: "0.5rem", width: "100%", padding: "1rem", borderRadius: "0.65rem",
+                background: submitState === "loading"
+                  ? "rgba(59,130,246,0.4)"
+                  : "linear-gradient(135deg, rgba(59,130,246,0.8) 0%, rgba(37,99,235,0.9) 100%)",
+                border: "1px solid rgba(96,165,250,0.5)",
+                color: "white", fontSize: "1rem", fontWeight: 600,
+                cursor: submitState === "loading" ? "not-allowed" : "pointer",
+                letterSpacing: "0.05em",
+                marginBottom: "env(safe-area-inset-bottom, 1rem)",
+              }}
+            >
+              {submitState === "loading" ? "전송 중... / Submitting..." : "제출하기 / Submit"}
+            </button>
+          </form>
+
+          {/* 닫기 버튼 */}
+          <button
+            type="button"
+            onClick={() => setIsFormOpen(false)}
+            style={{
+              marginTop: "1rem", width: "100%", padding: "0.85rem", borderRadius: "0.65rem",
+              background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+              color: "#94a3b8", fontSize: "0.9rem", fontWeight: 500,
+              cursor: "pointer", letterSpacing: "0.03em",
+            }}
+          >
+            닫기 / Close
+          </button>
+        </div>
+        </div>
+      )}
     </section>
   );
 }
