@@ -1663,11 +1663,11 @@ function TestRequestSection() {
       form.append("email", emailValue);
       form.append("fileType", fileType);
       const res = await fetch("/api/analysis", { method: "POST", body: form });
-      const data = (await res.json().catch(() => null)) as { count?: unknown; error?: string } | null;
-      if (!res.ok) throw new Error(data?.error ?? "분석 의뢰 전송에 실패했습니다.");
+      const payload = (await res.json().catch(() => null)) as { count?: unknown; error?: string } | null;
+      if (!res.ok) throw new Error(payload?.error ?? "분석 의뢰 전송에 실패했습니다.");
       setSubmitState("success");
-      if (typeof data.count === "number" && Number.isFinite(data.count)) {
-        setRequestCount(Math.floor(data.count));
+      if (payload && typeof payload.count === "number" && Number.isFinite(payload.count)) {
+        setRequestCount(Math.floor(payload.count));
       } else {
         setRequestCount(prev => prev + 1);
       }
