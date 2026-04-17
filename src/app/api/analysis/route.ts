@@ -4,6 +4,7 @@ import { createMailTransporter } from "@/lib/mailer";
 import { createSignedDownloadUrl } from "@/lib/cloudStorage";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 const ANALYSIS_RECIPIENT_EMAIL = "kkimsion@hanmail.net";
 const DEFAULT_BUCKET = "clarus-n.firebasestorage.app";
@@ -70,8 +71,10 @@ export async function POST(req: NextRequest) {
 
   const transporter = createMailTransporter();
 
+  const MAIL_TIMEOUT_MS = 25_000;
   try {
-    await transporter.sendMail({
+    await Promise.race([
+      transporter.sendMail({
       from: `"CLARUS-N 분석 의뢰" <${process.env.MAIL_USER}>`,
       to: ANALYSIS_RECIPIENT_EMAIL,
       subject: `[CLARUS-N 분석 의뢰] ${fileType} - ${storageFiles[0].fileName}`,
@@ -98,7 +101,11 @@ export async function POST(req: NextRequest) {
         </div>
       `,
       replyTo: email,
-    });
+    }),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("메일 발송 시간 초과 (25s)")), MAIL_TIMEOUT_MS)
+      ),
+    ]);
   } catch (err) {
     console.error("[analysis API error]", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
