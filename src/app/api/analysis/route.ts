@@ -1,56 +1,96 @@
 import { NextRequest, NextResponse } from "next/server";
 import { incrementAnalysisRequestCount } from "@/lib/analysisRequestCount";
 import { createMailTransporter } from "@/lib/mailer";
+import { createDrivePermission } from "@/lib/googleDrive";
 
 export const runtime = "nodejs";
 
-const MAX_ANALYSIS_FILE_SIZE = 500 * 1024 * 1024;
 const ANALYSIS_RECIPIENT_EMAIL = "kkimsion@hanmail.net";
 
+type DriveFileInfo = {
+  fileId: string;
+  fileName: string;
+  webViewLink: string;
+  size?: number;
+};
+
 export async function POST(req: NextRequest) {
-  const formData = await req.formData();
-  const files = formData.getAll("file").filter((item): item is File => item instanceof File);
-  const email = formData.get("email") as string;
-  const fileType = formData.get("fileType") as string;
+  const body = (await req.json()) as {
+    email?: string;
+    fileType?: string;
+    driveFiles?: DriveFileInfo[];
+  };
 
-  if (files.length === 0 || !email || !fileType) {
-    return NextResponse.json({ error: "필수 항목이 누락되었습니다." }, { status: 400 });
+  const { email, fileType, driveFiles } = body;
+
+  if (!email || !fileType || !driveFiles?.length) {
+    return NextResponse.json(
+      { error: "필수 항목이 누락되었습니다." },
+      { status: 400 }
+    );
   }
 
-  const oversized = files.filter(file => file.size > MAX_ANALYSIS_FILE_SIZE);
-  if (oversized.length > 0) {
-    return NextResponse.json({ error: "파일 크기는 500MB 이하여야 합니다." }, { status: 400 });
+  // Grant Drive read permission to recipient
+  for (const f of driveFiles) {
+    try {
+      await createDrivePermission({
+        fileId: f.fileId,
+        emailAddress: ANALYSIS_RECIPIENT_EMAIL,
+      });
+    } catch (err) {
+      console.error("[analysis permission error]", err);
+      // Continue even if permission fails
+    }
   }
+
+  const fileRowsHtml = driveFiles
+    .map((f) => {
+      const sizeStr = f.size
+        ? `${(f.size / 1024 / 1024).toFixed(2)} MB`
+        : "";
+      return `
+        <tr>
+          <td style="padding: 8px 0; color: #64748b; vertical-align: top; width: 140px;">첨부 파일</td>
+          <td style="padding: 8px 0; color: #0f172a;">
+            <strong>${f.fileName}</strong>${sizeStr ? ` <span style="color:#64748b;font-size:13px;">(${sizeStr})</span>` : ""}<br/>
+            <a href="${f.webViewLink}" target="_blank" rel="noreferrer"
+               style="color: #2563eb; text-decoration: underline; font-size: 14px;">
+              Google Drive에서 열기
+            </a>
+          </td>
+        </tr>`;
+    })
+    .join("");
 
   const transporter = createMailTransporter();
 
   try {
-    const attachments = await Promise.all(
-      files.map(async file => ({
-        filename: file.name,
-        content: Buffer.from(await file.arrayBuffer()),
-      }))
-    );
-
     await transporter.sendMail({
       from: `"CLARUS-N 분석 의뢰" <${process.env.MAIL_USER}>`,
       to: ANALYSIS_RECIPIENT_EMAIL,
-      subject: `[CLARUS-N 분석 의뢰] ${fileType} - ${files[0].name}`,
+      subject: `[CLARUS-N 분석 의뢰] ${fileType} - ${driveFiles[0].fileName}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f8fafc; border-radius: 12px;">
           <h2 style="color: #1e40af; margin-bottom: 8px;">CLARUS-N 연구용 데이터 AI 분석 의뢰</h2>
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin-bottom: 24px;" />
           <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px 0; color: #64748b; width: 140px;">결과 수신 이메일</td><td style="padding: 8px 0; color: #0f172a; font-weight: 600;">${email}</td></tr>
-            <tr><td style="padding: 8px 0; color: #64748b;">파일 내용</td><td style="padding: 8px 0; color: #0f172a;">${fileType}</td></tr>
-            <tr><td style="padding: 8px 0; color: #64748b;">파일명</td><td style="padding: 8px 0; color: #0f172a;">${files.map(file => file.name).join(", ")}</td></tr>
-            <tr><td style="padding: 8px 0; color: #64748b;">파일 크기</td><td style="padding: 8px 0; color: #0f172a;">${files.map(file => `${(file.size / 1024 / 1024).toFixed(2)} MB`).join(", ")}</td></tr>
+            <tr>
+              <td style="padding: 8px 0; color: #64748b; width: 140px;">결과 수신 이메일</td>
+              <td style="padding: 8px 0; color: #0f172a; font-weight: 600;">${email}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #64748b;">파일 내용</td>
+              <td style="padding: 8px 0; color: #0f172a;">${fileType}</td>
+            </tr>
+            ${fileRowsHtml}
           </table>
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
-          <p style="color: #64748b; font-size: 14px;">첨부 파일을 확인해주세요. 분석 완료 후 위 이메일로 결과를 발송해 드립니다.</p>
+          <p style="color: #64748b; font-size: 14px;">
+            위 링크에서 파일을 확인해주세요.<br/>
+            분석 완료 후 결과를 위 이메일로 발송해 드립니다.
+          </p>
         </div>
       `,
-      attachments,
       replyTo: email,
     });
   } catch (err) {
@@ -63,7 +103,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, count });
   } catch (err) {
     console.error("[analysis count increment error]", err);
-    // Email send succeeded; return ok without blocking the client flow.
     return NextResponse.json({ ok: true });
   }
 }
