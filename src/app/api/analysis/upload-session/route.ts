@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createStorageUploadSession } from "@/lib/cloudStorage";
+import { createSignedUploadUrl } from "@/lib/cloudStorage";
 
 export const runtime = "nodejs";
 
@@ -25,15 +25,9 @@ export async function POST(req: NextRequest) {
     }
 
     const bucket = process.env.STORAGE_BUCKET?.trim() || DEFAULT_BUCKET;
-    // 파일명에 타임스탬프 추가 (중복 방지)
     const objectPath = `analysis/${Date.now()}_${fileName}`;
 
-    const uploadUrl = await createStorageUploadSession({
-      bucket,
-      objectPath,
-      mimeType,
-      fileSize,
-    });
+    const uploadUrl = createSignedUploadUrl({ bucket, objectPath, mimeType });
 
     return NextResponse.json({ uploadUrl, objectPath, bucket });
   } catch (error) {

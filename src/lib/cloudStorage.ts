@@ -1,4 +1,4 @@
-import { createSign } from "crypto";
+import { createSign, createHash } from "crypto";
 
 type ServiceAccount = {
   client_email: string;
@@ -85,6 +85,65 @@ export async function createStorageUploadSession({
   const uploadUrl = res.headers.get("location") ?? res.headers.get("Location");
   if (!uploadUrl) throw new Error("Storage 업로드 URL을 받지 못했습니다.");
   return uploadUrl;
+}
+
+/**
+ * V4 서명 방식으로 브라우저 직접 PUT 업로드용 Signed URL을 생성합니다 (1시간 유효).
+ * 인증 정보가 URL에 포함되므로 브라우저에서 직접 업로드 가능.
+ */
+export function createSignedUploadUrl({
+  bucket,
+  objectPath,
+  mimeType,
+  expiresInSeconds = 3600,
+}: {
+  bucket: string;
+  objectPath: string;
+  mimeType: string;
+  expiresInSeconds?: number;
+}): string {
+  const sa = readServiceAccount();
+
+  const now = new Date();
+  const dateTime = now.toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  const date = dateTime.slice(0, 8);
+
+  const credentialScope = `${date}/auto/storage/goog4_request`;
+  const credential = `${sa.client_email}/${credentialScope}`;
+  const host = "storage.googleapis.com";
+  const resourcePath = `/${bucket}/${objectPath}`;
+  const signedHeaders = "content-type;host";
+
+  const queryParams = new URLSearchParams([
+    ["X-Goog-Algorithm", "GOOG4-RSA-SHA256"],
+    ["X-Goog-Credential", credential],
+    ["X-Goog-Date", dateTime],
+    ["X-Goog-Expires", String(expiresInSeconds)],
+    ["X-Goog-SignedHeaders", signedHeaders],
+  ]);
+
+  const canonicalRequest = [
+    "PUT",
+    resourcePath,
+    queryParams.toString(),
+    `content-type:${mimeType}`,
+    `host:${host}`,
+    "",
+    signedHeaders,
+    "UNSIGNED-PAYLOAD",
+  ].join("\n");
+
+  const requestHash = createHash("sha256").update(canonicalRequest).digest("hex");
+
+  const stringToSign = ["GOOG4-RSA-SHA256", dateTime, credentialScope, requestHash].join("\n");
+
+  const signer = createSign("RSA-SHA256");
+  signer.update(stringToSign);
+  const signature = signer.sign(sa.private_key, "hex");
+
+  queryParams.append("X-Goog-Signature", signature);
+
+  return `https://${host}${resourcePath}?${queryParams.toString()}`;
 }
 
 /**
