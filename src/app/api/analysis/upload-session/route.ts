@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createDriveUploadSession } from "@/lib/googleDrive";
+import { createStorageUploadSession } from "@/lib/cloudStorage";
 
 export const runtime = "nodejs";
 
-const DEFAULT_DRIVE_FOLDER_ID = "16j-r6G57AJYSok6vaMdGOTnvFzVTvwUs";
+const DEFAULT_BUCKET = "clarus-n.appspot.com";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,8 +16,6 @@ export async function POST(req: NextRequest) {
     const fileName = body.fileName?.trim();
     const mimeType = body.mimeType?.trim() || "application/octet-stream";
     const fileSize = Number(body.fileSize);
-    const folderId =
-      process.env.GOOGLE_DRIVE_FOLDER_ID?.trim() || DEFAULT_DRIVE_FOLDER_ID;
 
     if (!fileName || !Number.isFinite(fileSize) || fileSize <= 0) {
       return NextResponse.json(
@@ -26,14 +24,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const uploadUrl = await createDriveUploadSession({
-      fileName,
+    const bucket = process.env.STORAGE_BUCKET?.trim() || DEFAULT_BUCKET;
+    // 파일명에 타임스탬프 추가 (중복 방지)
+    const objectPath = `analysis/${Date.now()}_${fileName}`;
+
+    const uploadUrl = await createStorageUploadSession({
+      bucket,
+      objectPath,
       mimeType,
       fileSize,
-      folderId,
     });
 
-    return NextResponse.json({ uploadUrl });
+    return NextResponse.json({ uploadUrl, objectPath, bucket });
   } catch (error) {
     console.error("[analysis upload-session error]", error);
     return NextResponse.json({ error: String(error) }, { status: 500 });
