@@ -51,7 +51,7 @@ export default function NeuralSynapseVisual({
       y: Math.random() * H,
       vx: (Math.random() - 0.5) * config.speed * 2,
       vy: (Math.random() - 0.5) * config.speed * 2,
-      radius: 1.45 + Math.random() * 0.35,
+      radius: Math.random() * 2 + 1,
       pulse: Math.random() * Math.PI,
     }));
 
@@ -72,41 +72,72 @@ export default function NeuralSynapseVisual({
       ctx.clearRect(0, 0, W, H);
       ctx.globalCompositeOperation = "screen";
 
-      // 노드 이동 + 그리기
+      // 노드 이동
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
         n.x += n.vx;
         n.y += n.vy;
         n.pulse += 0.02;
-
         if (n.x < 0 || n.x > W) n.vx *= -1;
         if (n.y < 0 || n.y > H) n.vy *= -1;
+      }
 
-        const pulseVal = (Math.sin(n.pulse) + 1) * 0.5;
-        const r = n.radius * (1 + pulseVal * 0.18);
-
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${color}, ${opacity * (0.3 + pulseVal * 0.4)})`;
-        ctx.fill();
-
-        // 가까운 노드와 동적 연결선
+      // 거리 캐시
+      const D = config.dist;
+      const dists: number[][] = Array.from({ length: nodes.length }, () => new Array(nodes.length).fill(Infinity));
+      for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
-          const m = nodes[j];
-          const dx = m.x - n.x;
-          const dy = m.y - n.y;
+          const dx = nodes[j].x - nodes[i].x;
+          const dy = nodes[j].y - nodes[i].y;
           const d = Math.sqrt(dx * dx + dy * dy);
-          if (d > config.dist) continue;
-          const lineAlpha = Math.pow(1 - d / config.dist, 1.5) * opacity * 0.55;
+          dists[i][j] = dists[j][i] = d;
+        }
+      }
+
+      // 삼각형 채우기 (세 노드 모두 임계거리 이내)
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          if (dists[i][j] > D) continue;
+          for (let k = j + 1; k < nodes.length; k++) {
+            if (dists[i][k] > D || dists[j][k] > D) continue;
+            const avgD = (dists[i][j] + dists[i][k] + dists[j][k]) / 3;
+            const triAlpha = Math.pow(1 - avgD / D, 2) * opacity * 0.07;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.lineTo(nodes[k].x, nodes[k].y);
+            ctx.closePath();
+            ctx.fillStyle = `rgba(${color}, ${triAlpha})`;
+            ctx.fill();
+          }
+        }
+      }
+
+      // 연결선
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const d = dists[i][j];
+          if (d > D) continue;
+          const lineAlpha = Math.pow(1 - d / D, 1.5) * opacity * 0.5;
           ctx.beginPath();
-          ctx.moveTo(n.x, n.y);
-          ctx.lineTo(m.x, m.y);
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
           ctx.strokeStyle = `rgba(${color}, ${lineAlpha})`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
       }
 
+      // 노드 점
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const pulseVal = (Math.sin(n.pulse) + 1) * 0.5;
+        const r = n.radius * (1 + pulseVal * 0.5);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${color}, ${opacity * (0.3 + pulseVal * 0.4)})`;
+        ctx.fill();
+      }
     }
 
     raf = requestAnimationFrame(draw);
