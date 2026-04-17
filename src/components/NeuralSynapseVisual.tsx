@@ -55,7 +55,7 @@ export default function NeuralSynapseVisual({
       y: Math.random() * H,
       vx: (Math.random() - 0.5) * config.speed * 2,
       vy: (Math.random() - 0.5) * config.speed * 2,
-      radius: Math.random() * 2 + 1,
+      radius: 1.45 + Math.random() * 0.35,
       pulse: Math.random() * Math.PI,
       links: [],
     }));
@@ -99,7 +99,7 @@ export default function NeuralSynapseVisual({
         if (n.y < 0 || n.y > H) n.vy *= -1;
 
         const pulseVal = (Math.sin(n.pulse) + 1) * 0.5;
-        const r = n.radius * (1 + pulseVal * 0.5);
+        const r = n.radius * (1 + pulseVal * 0.18);
 
         ctx.beginPath();
         ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
@@ -118,7 +118,7 @@ export default function NeuralSynapseVisual({
           ctx.moveTo(n.x, n.y);
           ctx.lineTo(m.x, m.y);
           ctx.strokeStyle = `rgba(${color}, ${lineAlpha})`;
-          ctx.lineWidth = 0.9;
+          ctx.lineWidth = 0.8;
           ctx.stroke();
         }
       }
