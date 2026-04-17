@@ -14,6 +14,8 @@ export function TestRequestSection() {
   const [emailValue, setEmailValue] = useState("");
   const [fileType, setFileType] = useState("");
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
+  const [uploadPhase, setUploadPhase] = useState<"uploading" | "sending" | null>(null);
   const [requestCount, setRequestCount] = useState(231);
   const [selectedPdf, setSelectedPdf] = useState<"analysis" | "dicom" | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,16 +56,85 @@ export function TestRequestSection() {
     if (selectedFiles.length === 0) { alert("파일을 선택해주세요."); return; }
     if (!emailValue) { alert("이메일을 입력해주세요."); return; }
     if (!fileType) { alert("파일 내용을 선택해주세요."); return; }
+
     setSubmitState("loading");
+    setUploadProgress({});
+    setUploadPhase("uploading");
+
     try {
-      const form = new FormData();
-      selectedFiles.forEach(f => form.append("file", f));
-      form.append("email", emailValue);
-      form.append("fileType", fileType);
-      const res = await fetch("/api/analysis", { method: "POST", body: form });
+      const driveFiles: { fileId: string; fileName: string; webViewLink: string; size: number }[] = [];
+
+      for (const file of selectedFiles) {
+        // 1. 업로드 세션 URL 생성
+        const sessionRes = await fetch("/api/analysis/upload-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fileName: file.name,
+            mimeType: file.type || "application/octet-stream",
+            fileSize: file.size,
+          }),
+        });
+        if (!sessionRes.ok) throw new Error("업로드 세션 생성 실패");
+        const { uploadUrl } = (await sessionRes.json()) as { uploadUrl: string };
+
+        // 2. Google Drive에 직접 업로드 (진행률 추적)
+        const driveFile = await new Promise<{ fileId: string; fileName: string; webViewLink: string; size: number }>(
+          (resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("PUT", uploadUrl);
+            xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
+            xhr.setRequestHeader("Content-Range", `bytes 0-${file.size - 1}/${file.size}`);
+
+            xhr.upload.onprogress = (e) => {
+              if (e.lengthComputable) {
+                const pct = Math.round((e.loaded / e.total) * 100);
+                setUploadProgress(prev => ({ ...prev, [file.name]: pct }));
+              }
+            };
+
+            xhr.onload = () => {
+              if (xhr.status === 200 || xhr.status === 201) {
+                try {
+                  const data = JSON.parse(xhr.responseText) as {
+                    id?: string; name?: string; webViewLink?: string;
+                  };
+                  if (!data.id) { reject(new Error("파일 ID를 받지 못했습니다.")); return; }
+                  resolve({
+                    fileId: data.id,
+                    fileName: data.name ?? file.name,
+                    webViewLink: data.webViewLink ?? `https://drive.google.com/file/d/${data.id}/view`,
+                    size: file.size,
+                  });
+                } catch {
+                  reject(new Error("응답 파싱 실패"));
+                }
+              } else {
+                reject(new Error(`업로드 실패 (${xhr.status})`));
+              }
+            };
+
+            xhr.onerror = () => reject(new Error("네트워크 오류가 발생했습니다."));
+            xhr.send(file);
+          }
+        );
+
+        driveFiles.push(driveFile);
+        setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
+      }
+
+      // 3. 분석 의뢰 접수 (이메일 발송)
+      setUploadPhase("sending");
+      const res = await fetch("/api/analysis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailValue, fileType, driveFiles }),
+      });
       const data = (await res.json()) as { count?: unknown };
       if (!res.ok) throw new Error();
+
       setSubmitState("success");
+      setUploadPhase(null);
       if (typeof data.count === "number" && Number.isFinite(data.count)) {
         setRequestCount(Math.floor(data.count));
       } else {
@@ -72,8 +143,11 @@ export function TestRequestSection() {
       setSelectedFiles([]);
       setEmailValue("");
       setFileType("");
-    } catch {
+      setUploadProgress({});
+    } catch (err) {
+      console.error("[analysis submit error]", err);
       setSubmitState("error");
+      setUploadPhase(null);
     }
   };
 
@@ -302,31 +376,73 @@ export function TestRequestSection() {
                 </div>
               </div>
 
+              {/* 업로드 진행률 바 */}
+              {submitState === "loading" && Object.keys(uploadProgress).length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {Object.entries(uploadProgress).map(([name, pct]) => (
+                    <div key={name}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem" }}>
+                        <span style={{ color: "rgba(148,163,184,0.8)", fontSize: "0.78rem", fontFamily: "'Inter', sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "80%" }}>
+                          {name}
+                        </span>
+                        <span style={{ color: "#60a5fa", fontSize: "0.78rem", fontWeight: 700, fontFamily: "'Inter', sans-serif", flexShrink: 0 }}>
+                          {pct}%
+                        </span>
+                      </div>
+                      <div style={{ height: "4px", borderRadius: "2px", background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
+                        <div style={{
+                          height: "100%",
+                          width: `${pct}%`,
+                          background: pct === 100
+                            ? "linear-gradient(90deg, #34d399, #10b981)"
+                            : "linear-gradient(90deg, #3b82f6, #8b5cf6)",
+                          borderRadius: "2px",
+                          transition: "width 0.3s ease",
+                        }} />
+                      </div>
+                    </div>
+                  ))}
+                  {uploadPhase === "sending" && (
+                    <p style={{ color: "rgba(148,163,184,0.7)", fontSize: "0.8rem", textAlign: "center", fontFamily: "'Inter', sans-serif" }}>
+                      의뢰 접수 처리 중...
+                    </p>
+                  )}
+                </div>
+              )}
+
               {/* 분석 요청하기 버튼 */}
               <button style={{
                 padding: "0.9rem",
                 borderRadius: "1rem",
-                background: "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
+                background: submitState === "loading"
+                  ? "rgba(59,130,246,0.3)"
+                  : "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)",
                 color: "#ffffff",
                 fontWeight: 700,
                 fontSize: "1.05rem",
                 border: "none",
-                cursor: "pointer",
+                cursor: submitState === "loading" ? "default" : "pointer",
                 boxShadow: "0 10px 25px -5px rgba(59,130,246,0.5), 0 8px 10px -6px rgba(139,92,246,0.3)",
                 transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                letterSpacing: "0.05em"
+                letterSpacing: "0.05em",
+                opacity: submitState === "loading" ? 0.7 : 1,
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 20px 30px -5px rgba(59,130,246,0.6), 0 15px 15px -6px rgba(139,92,246,0.4)";
+                if (submitState !== "loading") {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 20px 30px -5px rgba(59,130,246,0.6), 0 15px 15px -6px rgba(139,92,246,0.4)";
+                }
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow = "0 10px 25px -5px rgba(59,130,246,0.5), 0 8px 10px -6px rgba(139,92,246,0.3)";
               }}
-              onClick={handleAnalysisSubmit}
+              onClick={submitState === "loading" ? undefined : handleAnalysisSubmit}
+              disabled={submitState === "loading"}
               >
-                {submitState === "loading" ? "전송 중..." : "분석 요청하기"}
+                {submitState === "loading"
+                  ? (uploadPhase === "sending" ? "이메일 발송 중..." : "업로드 중...")
+                  : "분석 요청하기"}
               </button>
 
               {submitState === "success" && (
