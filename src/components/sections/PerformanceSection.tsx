@@ -700,13 +700,13 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               bottom: "1.5rem",
               left: 0, right: 0,
               textAlign: "center",
-              color: "rgba(226,232,240,0.84)",
+              color: "rgba(226,232,240,0.72)",
               fontSize: "0.94rem",
               letterSpacing: "0.03em",
               fontFamily: "'HYGraphic', sans-serif",
               fontWeight: 700,
               lineHeight: 1.25,
-              textShadow: "0 0 12px rgba(255,255,255,0.08)",
+              textShadow: "0 0 10px rgba(255,255,255,0.06)",
               pointerEvents: "none",
             }}>
               Click a pipeline to view the AI analysis results
