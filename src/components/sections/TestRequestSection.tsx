@@ -20,9 +20,9 @@ export function TestRequestSection() {
 
   const handleFileSelect = (files: FileList | File[]) => {
     const arr = Array.from(files);
-    const oversized = arr.filter(f => f.size > 25 * 1024 * 1024);
+    const oversized = arr.filter(f => f.size > 500 * 1024 * 1024);
     if (oversized.length > 0) {
-      alert(`파일 크기는 25MB 이하여야 합니다.\n초과 파일: ${oversized.map(f => f.name).join(", ")}`);
+      alert(`파일 크기는 500MB 이하여야 합니다.\n초과 파일: ${oversized.map(f => f.name).join(", ")}`);
       return;
     }
     setSelectedFiles(prev => [...prev, ...arr]);
@@ -78,7 +78,7 @@ export function TestRequestSection() {
   };
 
   const infoPoints = [
-    "DICOM 파일 형식 지원 (최대 25MB)",
+    "DICOM 파일 형식 지원 (최대 500MB)",
     "전송된 파일은 NIfTI 파일형식으로 모두 전환됩니다",
     "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다",
     "전송된 파일도 NIfTI 전환 후 모두 삭제됩니다",
@@ -193,7 +193,7 @@ export function TestRequestSection() {
                       {isDragging ? "파일을 여기에 놓으세요" : "MRI 또는 CT 데이터를 첨부하세요"}
                     </p>
                     <p style={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>
-                      클릭하거나 파일을 여기로 끌어다 놓으세요 (최대 25MB)
+                      클릭하거나 파일을 여기로 끌어다 놓으세요 (최대 500MB)
                     </p>
                   </>
                 )}
