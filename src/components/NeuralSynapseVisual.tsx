@@ -43,12 +43,8 @@ export default function NeuralSynapseVisual({
       vx: number; vy: number;
       radius: number;
       pulse: number;
-      links: number[];
     }
 
-
-    const MAX_LINKS = 5;
-    const MIN_LINKS = 3;
 
     const nodes: Node[] = Array.from({ length: config.count }, () => ({
       x: Math.random() * W,
@@ -57,19 +53,7 @@ export default function NeuralSynapseVisual({
       vy: (Math.random() - 0.5) * config.speed * 2,
       radius: 1.45 + Math.random() * 0.35,
       pulse: Math.random() * Math.PI,
-      links: [],
     }));
-
-    // 각 노드에 가까운 순으로 3~5개만 연결
-    for (let i = 0; i < nodes.length; i++) {
-      const linkCount = MIN_LINKS + Math.floor(Math.random() * (MAX_LINKS - MIN_LINKS + 1));
-      const dists = nodes.map((m, j) => {
-        if (j === i) return { j, d: Infinity };
-        const dx = m.x - nodes[i].x, dy = m.y - nodes[i].y;
-        return { j, d: Math.sqrt(dx * dx + dy * dy) };
-      }).sort((a, b) => a.d - b.d);
-      nodes[i].links = dists.slice(0, linkCount).map(v => v.j);
-    }
 
 
     let raf: number;
@@ -106,14 +90,14 @@ export default function NeuralSynapseVisual({
         ctx.fillStyle = `rgba(${color}, ${opacity * (0.3 + pulseVal * 0.4)})`;
         ctx.fill();
 
-        // 시냅스 연결선
-        for (const j of n.links) {
-          if (j <= i) continue;
+        // 가까운 노드와 동적 연결선
+        for (let j = i + 1; j < nodes.length; j++) {
           const m = nodes[j];
           const dx = m.x - n.x;
           const dy = m.y - n.y;
           const d = Math.sqrt(dx * dx + dy * dy);
-          const lineAlpha = Math.max(0, (1 - d / (config.dist * 1.5))) * opacity * 0.6;
+          if (d > config.dist) continue;
+          const lineAlpha = Math.pow(1 - d / config.dist, 1.5) * opacity * 0.55;
           ctx.beginPath();
           ctx.moveTo(n.x, n.y);
           ctx.lineTo(m.x, m.y);
