@@ -226,7 +226,29 @@ export function BackgroundSection() {
                 <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
                   <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
                 </div>
-                {pinnedCard !== null && items[pinnedCard].image && (
+                {pinnedCard === null ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: "50%",
+                      bottom: "2.5rem",
+                      transform: "translateX(-50%)",
+                      width: "min(100%, 380px)",
+                      color: "#67e8f9",
+                      fontSize: "0.94rem",
+                      lineHeight: 1.25,
+                      fontFamily: "'HYGraphic', sans-serif",
+                      fontWeight: 700,
+                      textAlign: "center",
+                      letterSpacing: "0.03em",
+                      textShadow: "0 0 14px rgba(34, 211, 238, 0.32)",
+                      zIndex: 2,
+                      pointerEvents: "none",
+                    }}
+                  >
+                    Click an item to view the graph
+                  </div>
+                ) : items[pinnedCard].image && (
                   <img
                     src={items[pinnedCard].image}
                     alt="Background Detail"
