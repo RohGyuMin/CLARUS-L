@@ -3,7 +3,7 @@ import { createStorageUploadSession } from "@/lib/cloudStorage";
 
 export const runtime = "nodejs";
 
-const DEFAULT_BUCKET = "clarus-n.appspot.com";
+const DEFAULT_BUCKET = "clarus-n.firebasestorage.app";
 
 export async function POST(req: NextRequest) {
   try {
