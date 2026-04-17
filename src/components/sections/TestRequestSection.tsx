@@ -65,48 +65,39 @@ export function TestRequestSection() {
       const storageFiles: { objectPath: string; fileName: string; bucket: string; size: number }[] = [];
 
       for (const file of selectedFiles) {
-        // 1. 업로드 세션 URL 생성 (Firebase Storage)
-        const sessionRes = await fetch("/api/analysis/upload-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fileName: file.name,
-            mimeType: file.type || "application/octet-stream",
-            fileSize: file.size,
-          }),
+        const mimeType = file.type || "application/octet-stream";
+        const params = new URLSearchParams({
+          fileName: file.name,
+          mimeType,
+          fileSize: String(file.size),
         });
-        if (!sessionRes.ok) {
-          const err = (await sessionRes.json()) as { error?: string };
-          throw new Error(err.error || "업로드 세션 생성 실패");
-        }
-        const { uploadUrl, objectPath, bucket } = (await sessionRes.json()) as {
-          uploadUrl: string; objectPath: string; bucket: string;
-        };
 
-        // 2. Firebase Storage에 직접 업로드 (진행률 추적)
-        await new Promise<void>((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open("PUT", uploadUrl);
-          xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
+        const { objectPath, bucket } = await new Promise<{ objectPath: string; bucket: string }>(
+          (resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `/api/analysis/upload?${params}`);
+            xhr.setRequestHeader("Content-Type", mimeType);
 
-          xhr.upload.onprogress = (e) => {
-            if (e.lengthComputable) {
-              const pct = Math.round((e.loaded / e.total) * 100);
-              setUploadProgress(prev => ({ ...prev, [file.name]: pct }));
-            }
-          };
+            xhr.upload.onprogress = (e) => {
+              if (e.lengthComputable) {
+                const pct = Math.round((e.loaded / e.total) * 100);
+                setUploadProgress(prev => ({ ...prev, [file.name]: pct }));
+              }
+            };
 
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              resolve();
-            } else {
-              reject(new Error(`업로드 실패 (${xhr.status}): ${xhr.responseText.slice(0, 200)}`));
-            }
-          };
+            xhr.onload = () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                const data = JSON.parse(xhr.responseText) as { objectPath: string; bucket: string };
+                resolve(data);
+              } else {
+                reject(new Error(`업로드 실패 (${xhr.status}): ${xhr.responseText.slice(0, 200)}`));
+              }
+            };
 
-          xhr.onerror = () => reject(new Error("네트워크 오류가 발생했습니다."));
-          xhr.send(file);
-        });
+            xhr.onerror = () => reject(new Error("네트워크 오류가 발생했습니다."));
+            xhr.send(file);
+          }
+        );
 
         storageFiles.push({ objectPath, fileName: file.name, bucket, size: file.size });
         setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
