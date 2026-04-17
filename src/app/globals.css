@@ -326,7 +326,7 @@ body::before {
   .cn-section-flex > div:last-child {
     display: none !important;
   }
-  .cn-section-flex > .cn-about-photo-panel {
+  .cn-section-flex > div.cn-about-photo-panel {
     display: flex !important;
   }
 }
