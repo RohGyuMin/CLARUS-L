@@ -171,6 +171,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -455,7 +456,25 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
             </button>
 
             {/* 가로 슬라이딩 트랙 */}
-            <div style={{ overflow: "hidden", width: "100%" }}>
+            <div
+              style={{ overflow: "hidden", width: "100%" }}
+              onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+              onTouchEnd={e => {
+                if (touchStartX.current === null) return;
+                const dx = e.changedTouches[0].clientX - touchStartX.current;
+                touchStartX.current = null;
+                if (Math.abs(dx) < 40) return; // 너무 짧은 스와이프 무시
+                if (dx < 0) {
+                  // 왼쪽으로 스와이프 → 다음
+                  setPageIndex(p => Math.min(cardSets.length - 1, p + 1));
+                  setActiveVideo(null);
+                } else {
+                  // 오른쪽으로 스와이프 → 이전
+                  setPageIndex(p => Math.max(0, p - 1));
+                  setActiveVideo(null);
+                }
+              }}
+            >
               <div style={{
                 display: "flex",
                 width: `${cardSets.length * 100}%`,
