@@ -20,16 +20,13 @@ export async function POST(request: Request) {
   try {
     const uploadUrl = await createStorageUploadSession({ bucket, objectPath, mimeType, fileSize });
 
-    const gcsRes = await fetch(uploadUrl, {
+    const fetchInit: RequestInit = {
       method: "PUT",
-      headers: {
-        "Content-Type": mimeType,
-        "Content-Length": String(fileSize),
-      },
-      // @ts-ignore - Node.js fetch 스트리밍 업로드
+      headers: { "Content-Type": mimeType, "Content-Length": String(fileSize) },
       body: request.body,
-      duplex: "half",
-    });
+    };
+    (fetchInit as Record<string, unknown>).duplex = "half";
+    const gcsRes = await fetch(uploadUrl, fetchInit);
 
     if (!gcsRes.ok) {
       const errText = await gcsRes.text();
