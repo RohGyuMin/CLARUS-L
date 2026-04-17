@@ -6,7 +6,7 @@ import { createSignedDownloadUrl } from "@/lib/cloudStorage";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const ANALYSIS_RECIPIENT_EMAIL = "kkimsion@hanmail.net";
+const ANALYSIS_RECIPIENT_EMAIL = "right-heart@daum.net";
 const DEFAULT_BUCKET = "clarus-n.firebasestorage.app";
 
 type StorageFileInfo = {
