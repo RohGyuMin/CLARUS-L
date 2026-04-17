@@ -62,10 +62,10 @@ export function TestRequestSection() {
     setUploadPhase("uploading");
 
     try {
-      const driveFiles: { fileId: string; fileName: string; webViewLink: string; size: number }[] = [];
+      const storageFiles: { objectPath: string; fileName: string; bucket: string; size: number }[] = [];
 
       for (const file of selectedFiles) {
-        // 1. 업로드 세션 URL 생성
+        // 1. 업로드 세션 URL 생성 (Firebase Storage)
         const sessionRes = await fetch("/api/analysis/upload-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -75,51 +75,40 @@ export function TestRequestSection() {
             fileSize: file.size,
           }),
         });
-        if (!sessionRes.ok) throw new Error("업로드 세션 생성 실패");
-        const { uploadUrl } = (await sessionRes.json()) as { uploadUrl: string };
+        if (!sessionRes.ok) {
+          const err = (await sessionRes.json()) as { error?: string };
+          throw new Error(err.error || "업로드 세션 생성 실패");
+        }
+        const { uploadUrl, objectPath, bucket } = (await sessionRes.json()) as {
+          uploadUrl: string; objectPath: string; bucket: string;
+        };
 
-        // 2. Google Drive에 직접 업로드 (진행률 추적)
-        const driveFile = await new Promise<{ fileId: string; fileName: string; webViewLink: string; size: number }>(
-          (resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open("PUT", uploadUrl);
-            xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
-            xhr.setRequestHeader("Content-Range", `bytes 0-${file.size - 1}/${file.size}`);
+        // 2. Firebase Storage에 직접 업로드 (진행률 추적)
+        await new Promise<void>((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("PUT", uploadUrl);
+          xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
 
-            xhr.upload.onprogress = (e) => {
-              if (e.lengthComputable) {
-                const pct = Math.round((e.loaded / e.total) * 100);
-                setUploadProgress(prev => ({ ...prev, [file.name]: pct }));
-              }
-            };
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+              const pct = Math.round((e.loaded / e.total) * 100);
+              setUploadProgress(prev => ({ ...prev, [file.name]: pct }));
+            }
+          };
 
-            xhr.onload = () => {
-              if (xhr.status === 200 || xhr.status === 201) {
-                try {
-                  const data = JSON.parse(xhr.responseText) as {
-                    id?: string; name?: string; webViewLink?: string;
-                  };
-                  if (!data.id) { reject(new Error("파일 ID를 받지 못했습니다.")); return; }
-                  resolve({
-                    fileId: data.id,
-                    fileName: data.name ?? file.name,
-                    webViewLink: data.webViewLink ?? `https://drive.google.com/file/d/${data.id}/view`,
-                    size: file.size,
-                  });
-                } catch {
-                  reject(new Error("응답 파싱 실패"));
-                }
-              } else {
-                reject(new Error(`업로드 실패 (${xhr.status})`));
-              }
-            };
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve();
+            } else {
+              reject(new Error(`업로드 실패 (${xhr.status}): ${xhr.responseText.slice(0, 200)}`));
+            }
+          };
 
-            xhr.onerror = () => reject(new Error("네트워크 오류가 발생했습니다."));
-            xhr.send(file);
-          }
-        );
+          xhr.onerror = () => reject(new Error("네트워크 오류가 발생했습니다."));
+          xhr.send(file);
+        });
 
-        driveFiles.push(driveFile);
+        storageFiles.push({ objectPath, fileName: file.name, bucket, size: file.size });
         setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
       }
 
@@ -128,7 +117,7 @@ export function TestRequestSection() {
       const res = await fetch("/api/analysis", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailValue, fileType, driveFiles }),
+        body: JSON.stringify({ email: emailValue, fileType, storageFiles }),
       });
       const data = (await res.json()) as { count?: unknown };
       if (!res.ok) throw new Error();
