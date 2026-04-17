@@ -327,7 +327,7 @@ export default function ClarusNPage() {
             <AboutSection isCompactLayout={isCompactLayout} />
             <AboutStrengthsSection />
             <BackgroundSection />
-            <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} />
+            <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} isCompactLayout={isCompactLayout} />
             <TestRequestSection />
             <ContactSection
               onOpenPrivacy={() => setActiveLegalModal("privacy")}

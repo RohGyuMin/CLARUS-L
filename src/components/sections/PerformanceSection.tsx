@@ -158,16 +158,19 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
   );
 }
 
-export function PerformanceSection({ pageIndex, setPageIndex }: {
+export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }: {
   pageIndex: number;
   setPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  isCompactLayout?: boolean;
 }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [hasNudged, setHasNudged] = useState(false);
+  const [mobileModalVideo, setMobileModalVideo] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -345,6 +348,10 @@ export function PerformanceSection({ pageIndex, setPageIndex }: {
   const activeLegendItems = cardSets.flat().find(c => c.videoSrc === activeVideo)?.legendItems;
 
   const handleCardClick = (videoSrc: string) => {
+    if (isCompactLayout) {
+      setMobileModalVideo(videoSrc);
+      return;
+    }
     if (activeVideo === videoSrc) {
       setActiveVideo(null);
       setIsPlaying(false);
@@ -354,6 +361,10 @@ export function PerformanceSection({ pageIndex, setPageIndex }: {
       setIsPlaying(false);
       setIsLegendCollapsed(false);
     }
+  };
+
+  const closeMobileModal = () => {
+    setMobileModalVideo(null);
   };
 
   const togglePlay = () => {
@@ -400,19 +411,19 @@ export function PerformanceSection({ pageIndex, setPageIndex }: {
               disabled={pageIndex === 0}
               style={{
                 position: "absolute",
-                left: "-5rem",
+                left: isCompactLayout ? "-2.2rem" : "-5rem",
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
                 background: "none", border: "none", color: "#60a5fa",
                 cursor: pageIndex === 0 ? "default" : "pointer",
-                opacity: pageIndex === 0 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: "1rem",
+                opacity: pageIndex === 0 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: isCompactLayout ? "0.5rem" : "1rem",
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}
               onMouseEnter={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "1")}
               onMouseLeave={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "0.6")}
             >
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width={isCompactLayout ? 32 : 64} height={isCompactLayout ? 32 : 64} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </button>
@@ -426,19 +437,19 @@ export function PerformanceSection({ pageIndex, setPageIndex }: {
               disabled={pageIndex === cardSets.length - 1}
               style={{
                 position: "absolute",
-                right: "-5rem",
+                right: isCompactLayout ? "-2.2rem" : "-5rem",
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
                 background: "none", border: "none", color: "#60a5fa",
                 cursor: pageIndex === cardSets.length - 1 ? "default" : "pointer",
-                opacity: pageIndex === cardSets.length - 1 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: "1rem",
+                opacity: pageIndex === cardSets.length - 1 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: isCompactLayout ? "0.5rem" : "1rem",
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}
               onMouseEnter={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "1")}
               onMouseLeave={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "0.6")}
             >
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width={isCompactLayout ? 32 : 64} height={isCompactLayout ? 32 : 64} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
@@ -481,13 +492,27 @@ export function PerformanceSection({ pageIndex, setPageIndex }: {
             </div>
           </div>
 
+          {/* 모바일 힌트 텍스트 */}
+          {isCompactLayout && (
+            <p style={{
+              color: "rgba(148,163,184,0.45)",
+              fontSize: "0.75rem",
+              textAlign: "center",
+              marginTop: "1.25rem",
+              letterSpacing: "0.04em",
+              fontFamily: "'Inter', sans-serif",
+            }}>
+              Tap a card to view the AI analysis video
+            </p>
+          )}
+
           {/* 인디케이터 */}
           <div style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-start",
             gap: "1.75rem",
-            marginTop: "2.5rem",
+            marginTop: isCompactLayout ? "1rem" : "2.5rem",
             paddingLeft: "1.5rem"
           }}>
             <div style={{ display: "flex", gap: "0.85rem", alignItems: "center" }}>
@@ -515,6 +540,113 @@ export function PerformanceSection({ pageIndex, setPageIndex }: {
             </div>
           </div>
         </div>
+
+        {/* 모바일 비디오 모달 */}
+        {isCompactLayout && mobileModalVideo && (() => {
+          const modalLegendItems = cardSets.flat().find(c => c.videoSrc === mobileModalVideo)?.legendItems;
+          return (
+            <div
+              onClick={closeMobileModal}
+              style={{
+                position: "fixed",
+                inset: 0,
+                zIndex: 9000,
+                background: "rgba(0,0,0,0.85)",
+                backdropFilter: "blur(8px)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "1rem",
+              }}
+            >
+              <div
+                onClick={e => e.stopPropagation()}
+                style={{
+                  width: "100%",
+                  maxWidth: "480px",
+                  background: "rgba(6,11,26,0.95)",
+                  border: "1px solid rgba(96,165,250,0.3)",
+                  borderRadius: "1.25rem",
+                  overflow: "hidden",
+                  boxShadow: "0 0 50px rgba(0,0,0,0.8), 0 0 30px rgba(59,130,246,0.15)",
+                  position: "relative",
+                }}
+              >
+                {/* 닫기 버튼 */}
+                <button
+                  onClick={closeMobileModal}
+                  style={{
+                    position: "absolute",
+                    top: "0.75rem",
+                    right: "0.75rem",
+                    zIndex: 10,
+                    background: "rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: "50%",
+                    width: "2rem",
+                    height: "2rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "rgba(226,232,240,0.8)",
+                    cursor: "pointer",
+                  }}
+                  aria-label="Close"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+
+                {/* 비디오 */}
+                <div style={{ position: "relative", background: "#000", aspectRatio: "16/9" }}>
+                  <video
+                    ref={mobileVideoRef}
+                    key={mobileModalVideo}
+                    src={mobileModalVideo}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                  />
+                </div>
+
+                {/* 범례 */}
+                {modalLegendItems && modalLegendItems.length > 0 && (
+                  <div style={{
+                    padding: "0.75rem 1rem",
+                    borderTop: "1px solid rgba(255,255,255,0.06)",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "0.5rem 1rem",
+                  }}>
+                    {modalLegendItems.map(item => (
+                      <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                        <div style={{
+                          width: "9px", height: "9px",
+                          borderRadius: "2px",
+                          background: item.color,
+                          flexShrink: 0,
+                          boxShadow: `0 0 6px ${item.color}88`,
+                        }} />
+                        <span style={{
+                          color: "rgba(226,232,240,0.88)",
+                          fontSize: "0.72rem",
+                          fontFamily: "'Inter', sans-serif",
+                          whiteSpace: "nowrap",
+                        }}>
+                          {item.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
 
         {/* 우측 영역: 비디오 플레이어 */}
         <div style={{
