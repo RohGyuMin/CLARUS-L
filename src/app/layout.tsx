@@ -4,19 +4,24 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clarusn.com"),
   title: {
-    default: "CLARUS-N | Neuroimaging AI for Brain MRI, MRA, DWI, and CT",
+    default: "CLARUS-N (클라루스앤) | 뇌혈관 신경영상 AI — Brain MRI, MRA, DWI, CT",
     template: "%s | CLARUS-N",
   },
   description:
-    "CLARUS-N develops neurosurgeon-annotated AI for neuroimaging. Explore brain MRI, MRA, DWI, and CT reconstruction, aneurysm detection, stenosis analysis, and clinical decision support.",
-  keywords: ["CLARUS-N", "neuroimaging", "AI", "brain MRI", "cerebrovascular", "aneurysm detection", "뇌혈관", "AI 진단"],
+    "클라루스앤(CLARUS-N)은 신경외과 전문의 어노테이션 기반 뇌혈관 AI 솔루션입니다. 뇌 MRI·MRA·DWI·CT 영상 분석, 뇌동맥류 탐지, 협착 분석, 임상 의사결정 지원. Neurosurgeon-annotated AI for neuroimaging, aneurysm detection, and cerebrovascular analysis.",
+  keywords: [
+    "CLARUS-N", "클라루스앤", "클라루스엔", "클라루스-엔",
+    "neuroimaging", "AI", "brain MRI", "cerebrovascular", "aneurysm detection",
+    "뇌혈관 AI", "뇌 MRI AI", "뇌혈관 분석", "AI 진단", "뇌동맥류", "뇌졸중 AI",
+    "신경영상 AI", "뇌 CT AI", "뇌 MRA", "의료 AI", "뇌혈관 질환"
+  ],
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "CLARUS-N | Neuroimaging AI for Brain MRI, MRA, DWI, and CT",
+    title: "CLARUS-N (클라루스앤) | 뇌혈관 신경영상 AI — Brain MRI, MRA, DWI, CT",
     description:
-      "CLARUS-N develops neurosurgeon-annotated AI for neuroimaging, including brain MRI, MRA, DWI, and CT workflows.",
+      "클라루스앤(CLARUS-N) — 신경외과 전문의 어노테이션 기반 뇌혈관 AI. 뇌 MRI·MRA·DWI·CT 분석, 뇌동맥류 탐지, 협착 분석.",
     url: "https://www.clarusn.com",
     siteName: "CLARUS-N",
     locale: "ko_KR",
@@ -25,9 +30,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CLARUS-N | Neuroimaging AI for Brain MRI, MRA, DWI, and CT",
+    title: "CLARUS-N (클라루스앤) | 뇌혈관 신경영상 AI",
     description:
-      "CLARUS-N develops neurosurgeon-annotated AI for neuroimaging workflows.",
+      "클라루스앤(CLARUS-N) — 뇌혈관 AI 솔루션. 뇌 MRI·MRA·DWI·CT 분석, 뇌동맥류 탐지.",
     images: ["/og-image.png"],
   },
   robots: {
