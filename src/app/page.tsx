@@ -26,7 +26,9 @@ export default function ClarusNPage() {
   const [showIntro, setShowIntro] = useState(true);
   const [isIntroEnding, setIsIntroEnding] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isCompactLayout, setIsCompactLayout] = useState(false);
+  const [isCompactLayout, setIsCompactLayout] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth <= 1024 : false
+  );
   const [activeSection, setActiveSection] = useState<string>("");
   const [performancePageIndex, setPerformancePageIndex] = useState(0);
   const [privacyAgreed, setPrivacyAgreed] = useState(false);
