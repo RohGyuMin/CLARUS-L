@@ -403,7 +403,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
     <section
       id="performance"
       ref={sectionRef}
-      style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative" }}
+      style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", paddingBottom: isCompactLayout ? "4rem" : "0" }}
     >
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
         <div style={{ flex: 1, maxWidth: "42rem", width: "100%", position: "relative" }}>
