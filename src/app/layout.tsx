@@ -35,13 +35,6 @@ export const metadata: Metadata = {
       "클라루스앤(CLARUS-N) — 뇌혈관 AI 솔루션. 뇌 MRI·MRA·DWI·CT 분석, 뇌동맥류 탐지.",
     images: ["/og-image.png"],
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/logo.png", type: "image/png", sizes: "512x512" },
-    ],
-    apple: "/logo.png",
-  },
   robots: {
     index: true,
     follow: true,
@@ -63,10 +56,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta
           name="google-site-verification"
           content="J2_9YWUjcxx47wH-m04ULpCNZ-Vf9-S6dxgyXKhJ9u4"
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: `{"@context":"https://schema.org","@type":"Organization","name":"CLARUS-N","alternateName":["클라루스앤","클라루스엔","클라루스-엔"],"url":"https://www.clarusn.com","logo":"https://www.clarusn.com/logo.png"}` }}
         />
       </head>
       <body>{children}</body>
