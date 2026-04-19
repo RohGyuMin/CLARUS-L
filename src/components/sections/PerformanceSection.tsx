@@ -532,45 +532,29 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
             </div>
           </div>
 
-          {/* 모바일 힌트 텍스트 */}
+          {/* 모바일 힌트 (위) */}
           {isCompactLayout && (
-            <div style={{
+            <p style={{
               width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "0.25rem",
+              color: "rgba(148,163,184,0.45)",
+              fontSize: "0.73rem",
+              textAlign: "center",
               marginTop: "1.25rem",
+              letterSpacing: "0.04em",
+              fontFamily: "'Inter', sans-serif",
             }}>
-              <p style={{
-                color: "rgba(148,163,184,0.45)",
-                fontSize: "0.73rem",
-                textAlign: "center",
-                letterSpacing: "0.04em",
-                fontFamily: "'Inter', sans-serif",
-              }}>
-                Tap a card to view the AI analysis video
-              </p>
-              <p style={{
-                color: "rgba(148,163,184,0.3)",
-                fontSize: "0.7rem",
-                textAlign: "center",
-                letterSpacing: "0.04em",
-                fontFamily: "'Inter', sans-serif",
-              }}>
-                Long press a card for details
-              </p>
-            </div>
+              Tap a card to view the AI analysis video
+            </p>
           )}
 
           {/* 인디케이터 */}
           <div style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-start",
+            justifyContent: isCompactLayout ? "center" : "flex-start",
             gap: "1.75rem",
-            marginTop: isCompactLayout ? "1rem" : "2.5rem",
-            paddingLeft: "1.5rem"
+            marginTop: isCompactLayout ? "0.75rem" : "2.5rem",
+            paddingLeft: isCompactLayout ? "0" : "1.5rem",
           }}>
             <div style={{ display: "flex", gap: "0.85rem", alignItems: "center" }}>
               {cardSets.map((_, idx) => (
@@ -596,6 +580,21 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               ))}
             </div>
           </div>
+
+          {/* 모바일 힌트 (아래) */}
+          {isCompactLayout && (
+            <p style={{
+              width: "100%",
+              color: "rgba(148,163,184,0.3)",
+              fontSize: "0.7rem",
+              textAlign: "center",
+              marginTop: "0.6rem",
+              letterSpacing: "0.04em",
+              fontFamily: "'Inter', sans-serif",
+            }}>
+              Long press a card for details
+            </p>
+          )}
         </div>
 
         {/* 모바일 비디오 모달 */}
