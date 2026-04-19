@@ -1,16 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "CLARUS-N",
-  alternateName: ["클라루스앤", "클라루스엔", "클라루스-엔"],
-  url: "https://www.clarusn.com",
-  logo: "https://www.clarusn.com/logo.png",
-  sameAs: [],
-};
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.clarusn.com"),
   title: {
@@ -72,7 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: `{"@context":"https://schema.org","@type":"Organization","name":"CLARUS-N","alternateName":["클라루스앤","클라루스엔","클라루스-엔"],"url":"https://www.clarusn.com","logo":"https://www.clarusn.com/logo.png"}` }}
         />
       </head>
       <body>{children}</body>
