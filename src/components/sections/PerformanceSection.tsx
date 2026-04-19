@@ -16,9 +16,25 @@ interface CardData {
   legendItems?: { label: string; color: string }[];
 }
 
-function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isActive: boolean; onClick: () => void }) {
+function CharacteristicCard({ card, isActive, onClick, onLongPress }: { card: CardData; isActive: boolean; onClick: () => void; onLongPress?: () => void }) {
   const [hovered, setHovered] = useState(false);
   const highlighted = hovered || isActive;
+  const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleTouchStart = () => {
+    if (!onLongPress) return;
+    pressTimer.current = setTimeout(() => {
+      onLongPress();
+      pressTimer.current = null;
+    }, 500);
+  };
+
+  const handleTouchEnd = () => {
+    if (pressTimer.current) {
+      clearTimeout(pressTimer.current);
+      pressTimer.current = null;
+    }
+  };
 
   let themeColor = "rgba(96,165,250,0.8)";
   let themeBg = highlighted ? "rgba(30,58,138,0.32)" : "rgba(30,58,138,0.18)";
@@ -48,6 +64,9 @@ function CharacteristicCard({ card, isActive, onClick }: { card: CardData; isAct
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchEnd}
       style={{
         padding: "1.75rem 2rem",
         borderRadius: "1.5rem",
@@ -168,6 +187,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [hasNudged, setHasNudged] = useState(false);
   const [mobileModalVideo, setMobileModalVideo] = useState<string | null>(null);
+  const [mobileDetailsCard, setMobileDetailsCard] = useState<CardData | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mobileVideoRef = useRef<HTMLVideoElement>(null);
@@ -502,6 +522,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
                           card={card}
                           isActive={activeVideo === card.videoSrc}
                           onClick={() => handleCardClick(card.videoSrc)}
+                          onLongPress={isCompactLayout ? () => setMobileDetailsCard(card) : undefined}
                         />
                       </RevealSection>
                     ))}
@@ -513,16 +534,33 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
 
           {/* 모바일 힌트 텍스트 */}
           {isCompactLayout && (
-            <p style={{
-              color: "rgba(148,163,184,0.45)",
-              fontSize: "0.75rem",
-              textAlign: "center",
+            <div style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "0.25rem",
               marginTop: "1.25rem",
-              letterSpacing: "0.04em",
-              fontFamily: "'Inter', sans-serif",
             }}>
-              Tap a card to view the AI analysis video
-            </p>
+              <p style={{
+                color: "rgba(148,163,184,0.45)",
+                fontSize: "0.73rem",
+                textAlign: "center",
+                letterSpacing: "0.04em",
+                fontFamily: "'Inter', sans-serif",
+              }}>
+                Tap a card to view the AI analysis video
+              </p>
+              <p style={{
+                color: "rgba(148,163,184,0.3)",
+                fontSize: "0.7rem",
+                textAlign: "center",
+                letterSpacing: "0.04em",
+                fontFamily: "'Inter', sans-serif",
+              }}>
+                Long press a card for details
+              </p>
+            </div>
           )}
 
           {/* 인디케이터 */}
@@ -666,6 +704,74 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
             </div>
           );
         })()}
+
+        {/* 모바일 상세정보 모달 */}
+        {isCompactLayout && mobileDetailsCard && (
+          <div
+            onClick={() => setMobileDetailsCard(null)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 9001,
+              background: "rgba(0,0,0,0.85)",
+              backdropFilter: "blur(8px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "1.5rem",
+            }}
+          >
+            <div
+              onClick={e => e.stopPropagation()}
+              style={{
+                width: "100%",
+                maxWidth: "400px",
+                background: "rgba(6,11,26,0.97)",
+                border: "1px solid rgba(96,165,250,0.25)",
+                borderRadius: "1.25rem",
+                padding: "1.5rem",
+                boxShadow: "0 0 50px rgba(0,0,0,0.8)",
+                position: "relative",
+              }}
+            >
+              <button
+                onClick={() => setMobileDetailsCard(null)}
+                style={{
+                  position: "absolute", top: "0.75rem", right: "0.75rem",
+                  background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: "50%", width: "2rem", height: "2rem",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "rgba(226,232,240,0.7)", cursor: "pointer",
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+              <h3
+                dangerouslySetInnerHTML={{ __html: mobileDetailsCard.title }}
+                style={{ color: "#e2e8f0", fontSize: "1.05rem", fontWeight: 600, marginBottom: "0.5rem", paddingRight: "2rem", fontFamily: "'Inter', sans-serif" }}
+              />
+              <p style={{ color: "rgba(148,163,184,0.75)", fontSize: "0.9rem", fontStyle: "italic", fontFamily: "'Cormorant', Georgia, serif", marginBottom: "1rem" }}>
+                {mobileDetailsCard.description}
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "1rem" }}>
+                {mobileDetailsCard.details.map((detailStr, idx) => {
+                  const clean = detailStr.replace(/^#/, '').trim();
+                  const colonIdx = clean.indexOf(':');
+                  const label = colonIdx !== -1 ? clean.slice(0, colonIdx).trim() : clean;
+                  const value = colonIdx !== -1 ? clean.slice(colonIdx + 1).trim() : '';
+                  return (
+                    <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem" }}>
+                      <span style={{ color: "rgba(148,163,184,0.5)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontFamily: "'Inter', sans-serif", flexShrink: 0 }}>{label}</span>
+                      {value && <span style={{ color: "rgba(226,232,240,0.9)", fontSize: "0.88rem", fontFamily: "'Inter', sans-serif", textAlign: "right" }}>{value}</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* 우측 영역: 비디오 플레이어 */}
         <div style={{
