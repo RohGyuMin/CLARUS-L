@@ -87,14 +87,13 @@ export default function PdfModal({ src, title, onClose }: PdfModalProps) {
         WebkitBackdropFilter: "blur(10px)",
       }}
     >
-      /* ── 모달 패널 ── */
       <div
         onClick={e => e.stopPropagation()}
         style={{
           position: "relative",
           display: "flex",
           flexDirection: "column",
-          width: "min(860px, 100%)",
+          width: "min(1020px, 100%)",
           maxHeight: "90vh",
           borderRadius: "1.5rem",
           overflow: "hidden",
