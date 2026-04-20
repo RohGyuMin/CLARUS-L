@@ -227,6 +227,26 @@ export default function ClarusNPage() {
             overflow: "hidden"
           }}
         >
+          {/* 모바일 블러 배경 */}
+          {isCompactLayout && (
+            <video
+              src="/intro_new.mp4"
+              autoPlay
+              muted
+              playsInline
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                filter: "blur(18px) brightness(0.35)",
+                transform: "scale(1.08)",
+                zIndex: 0,
+              }}
+            />
+          )}
+          {/* 메인 영상 */}
           <video
             ref={introVideoRef}
             src="/intro_new.mp4"
@@ -239,9 +259,11 @@ export default function ClarusNPage() {
               introVideoRef.current?.play().catch(handleSkipIntro);
             }}
             style={{
+              position: "relative",
+              zIndex: 1,
               width: "100%",
               height: "100%",
-              objectFit: isCompactLayout ? "contain" : "cover"
+              objectFit: isCompactLayout ? "contain" : "cover",
             }}
           />
           {/* Skip 버튼 */}
