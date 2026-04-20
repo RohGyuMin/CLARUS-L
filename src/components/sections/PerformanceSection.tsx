@@ -432,13 +432,16 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               disabled={pageIndex === 0}
               style={{
                 position: "absolute",
-                left: isCompactLayout ? "-2.2rem" : "-5rem",
+                left: isCompactLayout ? "0.3rem" : "-5rem",
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
-                background: "none", border: "none", color: "#60a5fa",
+                background: isCompactLayout ? "rgba(0,0,0,0.35)" : "none",
+                backdropFilter: isCompactLayout ? "blur(6px)" : "none",
+                borderRadius: isCompactLayout ? "50%" : "0",
+                border: "none", color: "#60a5fa",
                 cursor: pageIndex === 0 ? "default" : "pointer",
-                opacity: pageIndex === 0 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: isCompactLayout ? "0.5rem" : "1rem",
+                opacity: pageIndex === 0 ? 0.08 : 0.75, transition: "all 0.3s ease", padding: isCompactLayout ? "0.4rem" : "1rem",
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}
               onMouseEnter={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "1")}
@@ -458,13 +461,16 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               disabled={pageIndex === cardSets.length - 1}
               style={{
                 position: "absolute",
-                right: isCompactLayout ? "-2.2rem" : "-5rem",
+                right: isCompactLayout ? "0.3rem" : "-5rem",
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
-                background: "none", border: "none", color: "#60a5fa",
+                background: isCompactLayout ? "rgba(0,0,0,0.35)" : "none",
+                backdropFilter: isCompactLayout ? "blur(6px)" : "none",
+                borderRadius: isCompactLayout ? "50%" : "0",
+                border: "none", color: "#60a5fa",
                 cursor: pageIndex === cardSets.length - 1 ? "default" : "pointer",
-                opacity: pageIndex === cardSets.length - 1 ? 0.05 : 0.6, transition: "all 0.3s ease", padding: isCompactLayout ? "0.5rem" : "1rem",
+                opacity: pageIndex === cardSets.length - 1 ? 0.08 : 0.75, transition: "all 0.3s ease", padding: isCompactLayout ? "0.4rem" : "1rem",
                 display: "flex", alignItems: "center", justifyContent: "center"
               }}
               onMouseEnter={e => pageIndex !== cardSets.length - 1 && (e.currentTarget.style.opacity = "1")}
