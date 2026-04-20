@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
@@ -10,11 +11,21 @@ export function BackgroundSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [pinnedCard, setPinnedCard] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [modalIndex, setModalIndex] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     const check = () => setIsMobile(window.innerWidth <= 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setModalIndex(null); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, []);
 
   const items: {
@@ -69,7 +80,117 @@ export function BackgroundSection() {
 
   const activeIndex = isMobile ? pinnedCard : (hoveredCard ?? pinnedCard);
 
+  /* ── 모바일 이미지 모달 ── */
+  const mobileModal = mounted && modalIndex !== null && createPortal(
+    <div
+      onClick={() => setModalIndex(null)}
+      style={{
+        position: "fixed", inset: 0, zIndex: 9000,
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        padding: "1.5rem",
+        background: "rgba(0,0,0,0.85)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        animation: "fadeIn 0.2s ease",
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: "480px",
+          borderRadius: "1.25rem",
+          overflow: "hidden",
+          background: "rgba(8,14,32,0.97)",
+          border: `1px solid ${items[modalIndex].color}40`,
+          boxShadow: `0 0 0 1px ${items[modalIndex].color}20, 0 40px 80px rgba(0,0,0,0.8)`,
+          display: "flex",
+          flexDirection: "column",
+          animation: "slideUp 0.25s cubic-bezier(0.34,1.2,0.64,1)",
+        }}
+      >
+        {/* 상단 컬러 라인 */}
+        <div style={{ height: "3px", background: items[modalIndex].color, flexShrink: 0 }} />
+
+        {/* 이미지 */}
+        {items[modalIndex].image && (
+          <img
+            src={items[modalIndex].image}
+            alt={items[modalIndex].subtitle}
+            style={{
+              width: "100%",
+              maxHeight: "260px",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+        )}
+
+        {/* 텍스트 영역 */}
+        <div style={{ padding: "1.25rem 1.5rem 1.5rem" }}>
+          <div style={{
+            fontSize: "0.72rem",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            color: items[modalIndex].color,
+            marginBottom: "0.5rem",
+            textTransform: "uppercase",
+          }}>
+            {String(modalIndex + 1).padStart(2, "0")}
+          </div>
+          <div style={{
+            fontSize: "1.05rem",
+            fontWeight: 700,
+            color: "#e2e8f0",
+            lineHeight: 1.35,
+            marginBottom: "0.6rem",
+          }}>
+            {items[modalIndex].title}
+          </div>
+          <div style={{
+            fontSize: "0.9rem",
+            color: "#94a3b8",
+            lineHeight: 1.6,
+            marginBottom: "0.4rem",
+          }}>
+            {items[modalIndex].subtitle}
+          </div>
+          <div style={{
+            fontSize: "0.85rem",
+            color: `${items[modalIndex].color}cc`,
+            lineHeight: 1.5,
+            fontStyle: "italic",
+          }}>
+            {items[modalIndex].detail}
+          </div>
+        </div>
+
+        {/* 닫기 버튼 */}
+        <button
+          onClick={() => setModalIndex(null)}
+          style={{
+            margin: "0 1.5rem 1.25rem",
+            padding: "0.65rem",
+            borderRadius: "0.65rem",
+            border: `1px solid rgba(255,255,255,0.1)`,
+            background: "rgba(255,255,255,0.05)",
+            color: "rgba(255,255,255,0.5)",
+            fontSize: "0.85rem",
+            fontWeight: 600,
+            cursor: "pointer",
+            letterSpacing: "0.04em",
+          }}
+        >
+          닫기
+        </button>
+      </div>
+    </div>,
+    document.body
+  );
+
   return (
+    <>
     <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: isMobile ? "2rem 1.25rem" : undefined }}>
       <div style={{ width: "100%" }}>
         <RevealSection>
@@ -99,7 +220,13 @@ export function BackgroundSection() {
                   key={i}
                   onMouseEnter={() => setHoveredCard(i)}
                   onMouseLeave={() => setHoveredCard(null)}
-                  onClick={() => setPinnedCard(isPinned ? null : i)}
+                  onClick={() => {
+                    if (isMobile && item.image) {
+                      setModalIndex(i);
+                    } else {
+                      setPinnedCard(isPinned ? null : i);
+                    }
+                  }}
                   style={{
                     display: "flex",
                     alignItems: "stretch",
@@ -138,7 +265,7 @@ export function BackgroundSection() {
                     {String(i + 1).padStart(2, "0")}
                   </div>
                   {/* 본문 */}
-                  <div style={{ flex: 1, padding: "0.85rem 1.2rem 0.85rem 0", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <div style={{ flex: 1, padding: "0.85rem 1.2rem 0.85rem 0", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative" }}>
                     {/* 영문 제목 */}
                     <div style={{
                       fontSize: isMobile ? "0.95rem" : "1.3rem",
@@ -161,6 +288,31 @@ export function BackgroundSection() {
                         {item.title}
                       </div>
                     </div>
+                    {/* 모바일: 이미지 있는 카드에 아이콘 힌트 */}
+                    {isMobile && item.image && (
+                      <div style={{
+                        position: "absolute",
+                        top: "50%",
+                        right: "0",
+                        transform: "translateY(-50%)",
+                        width: "28px",
+                        height: "28px",
+                        borderRadius: "50%",
+                        background: `${item.color}20`,
+                        border: `1px solid ${item.color}40`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={item.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="7" width="18" height="13" rx="2"/>
+                          <path d="M16 7l-2-3H10L8 7"/>
+                          <circle cx="12" cy="13" r="3"/>
+                        </svg>
+                      </div>
+                    )}
+
                     {/* 한글 부제목 + 상세 설명 - 호버 시에만 표시 */}
                     <div style={{
                       maxHeight: isActive ? "20rem" : "0",
@@ -189,22 +341,7 @@ export function BackgroundSection() {
                       }}>
                         {item.detail}
                       </div>
-                      {/* 모바일: 이미지 카드 안에 인라인으로 표시 */}
-                      {isMobile && item.image && (
-                        <img
-                          src={item.image}
-                          alt={item.subtitle}
-                          style={{
-                            display: "block",
-                            width: "100%",
-                            maxHeight: "160px",
-                            objectFit: "cover",
-                            borderRadius: "0.5rem",
-                            marginTop: "0.75rem",
-                            border: `1px solid ${item.color}30`,
-                          }}
-                        />
-                      )}
+                      {/* 모바일: 이미지는 모달로 열림 (인라인 제거) */}
                     </div>
                   </div>
                 </div>
@@ -252,5 +389,9 @@ export function BackgroundSection() {
         </RevealSection>
       </div>
     </section>
+
+    {/* 모바일 이미지 모달 */}
+    {mobileModal}
+    </>
   );
 }
