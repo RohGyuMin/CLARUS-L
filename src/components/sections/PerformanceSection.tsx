@@ -805,7 +805,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               letterSpacing: "0.05em",
               pointerEvents: "none",
             }}>
-              Click a pipeline to view the AI analysis results
+              Click a card to view the related graph
             </p>
           )}
 
