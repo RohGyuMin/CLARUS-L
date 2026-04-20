@@ -323,6 +323,7 @@ export default function ClarusNPage() {
             paddingLeft: isSidebarOpen && !isCompactLayout ? "340px" : "0px",
             paddingBottom: "0px",
             transition: "padding-left 500ms cubic-bezier(0.4,0,0.2,1)",
+            ...(isCompactLayout ? { scrollSnapType: "y mandatory" } : {}),
           }}
         >
           {/* 전역 배경 레이어 */}

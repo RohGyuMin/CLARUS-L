@@ -392,3 +392,17 @@ body::before {
     cursor: auto !important;
   }
 }
+
+/* 모바일 섹션 스냅 스크롤 */
+@media (max-width: 1024px) {
+  #hero,
+  #about,
+  #about-strengths,
+  #background,
+  #performance,
+  #test-request,
+  #contact {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
