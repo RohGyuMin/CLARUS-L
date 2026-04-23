@@ -252,7 +252,7 @@ export function TestRequestSection() {
                       {isDragging ? "파일을 여기에 놓으세요" : (
                         <>
                           MRI 또는 CT 데이터를<br />
-                          압축(&lt;zip&gt;)하여 첨부하세요
+                          압축(zip)하여 첨부하세요
                         </>
                       )}
                     </p>
