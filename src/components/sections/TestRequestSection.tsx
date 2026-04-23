@@ -7,6 +7,124 @@ import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 import PdfModal from "@/components/PdfModal";
 
+type RequestLanguage = "ko" | "en";
+
+const REQUEST_COPY: Record<RequestLanguage, {
+  sectionLabel: string;
+  title: string;
+  toggleLabel: string;
+  toggleTitle: string;
+  uploadEmptyTitle: string;
+  uploadEmptySubtitle: string;
+  uploadDraggingTitle: string;
+  uploadDraggingSubtitle: string;
+  clearAll: string;
+  infoPoints: string[];
+  emailPlaceholder: string;
+  fileTypePlaceholder: string;
+  fileTypeOptions: Array<{ value: string; label: string }>;
+  submitButton: string;
+  uploading: string;
+  sending: string;
+  success: string;
+  error: string;
+  requestCountLabel: string;
+  helpButtons: { dicom: string; analysis: string };
+  pdfTitles: { dicom: string; analysis: string };
+  alerts: {
+    size: (files: string) => string;
+    selectFiles: string;
+    email: string;
+    fileType: string;
+  };
+}> = {
+  ko: {
+    sectionLabel: "Research Analysis Request",
+    title: "연구용 데이터 AI 분석 의뢰",
+    toggleLabel: "ENG",
+    toggleTitle: "영어 버전으로 전환",
+    uploadEmptyTitle: "MRI 또는 CT 데이터를\n압축(zip)하여 첨부하세요",
+    uploadEmptySubtitle: "클릭하거나 파일을 여기에 끌어다 놓으세요 | 최대 500MB",
+    uploadDraggingTitle: "파일을 여기에 놓으세요",
+    uploadDraggingSubtitle: "파일을 여기에 놓으시면 업로드가 시작됩니다",
+    clearAll: "전체 제거",
+    infoPoints: [
+      "DICOM 파일형식 지원",
+      "추출된 DICOM 파일은 압축하여 첨부하세요",
+      "전송된 영상은 NIfTI 파일형식으로 모두 전환됩니다.",
+      "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다.",
+      "전송된 파일도 NIfTI 전환 후 모두 삭제됩니다.",
+      "분석된 영상은 이메일로 24시간 이내에 보내드립니다.",
+      "빠른 영상 분석이 필요시에 파일 업로드 후 contact의 연락처로 문의 바랍니다.",
+    ],
+    emailPlaceholder: "이메일 주소 (결과 수신용)",
+    fileTypePlaceholder: "파일 내용 선택",
+    fileTypeOptions: [
+      { value: "brain-mra-tof", label: "Brain MRA: TOF" },
+      { value: "mri-dwi-adc", label: "MRI: DWI & ADC" },
+      { value: "carotid-mra-tof", label: "Carotid MRA: TOF" },
+      { value: "brain-ct-axial", label: "Brain CT: axial" },
+      { value: "brain-cta-source", label: "Brain CTA: source" },
+    ],
+    submitButton: "분석 요청하기",
+    uploading: "업로드 중...",
+    sending: "이메일 발송 중...",
+    success: "✓ 분석 의뢰가 성공적으로 접수되었습니다. 결과는 입력하신 이메일로 발송됩니다.",
+    error: "✕ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.",
+    requestCountLabel: "ANALYSIS REQUEST",
+    helpButtons: { dicom: "DICOM 파일 추출 방법", analysis: "분석영상 확인방법" },
+    pdfTitles: { dicom: "DICOM 파일 추출 방법", analysis: "분석영상 확인방법" },
+    alerts: {
+      size: (files) => `파일 크기는 500MB 이하여야 합니다.\n초과 파일: ${files}`,
+      selectFiles: "파일을 선택해주세요.",
+      email: "이메일을 입력해주세요.",
+      fileType: "파일 내용을 선택해주세요.",
+    },
+  },
+  en: {
+    sectionLabel: "Research Analysis Request",
+    title: "Submit Research Data for AI Analysis",
+    toggleLabel: "KR",
+    toggleTitle: "Switch to Korean",
+    uploadEmptyTitle: "Please upload DICOM files\nin a compressed(*.zip) format.",
+    uploadEmptySubtitle: "Drag and drop files here or click to upload (Max 500MB)",
+    uploadDraggingTitle: "Drop files here",
+    uploadDraggingSubtitle: "Release to start uploading",
+    clearAll: "Clear All",
+    infoPoints: [
+      "Only DICOM files are supported for analysis.",
+      "Automatic conversion of all uploaded files to NIfTI.",
+      "Automatic anonymization: Patient personal data is removed during NIfTI conversion.",
+      "Automatic deletion: Transmitted files are deleted after conversion.",
+      "Get Your Results in 24h: Results sent to your E-mail within 24 hours.",
+      "For Faster Results: Please contact us after uploading.",
+    ],
+    emailPlaceholder: "Email Address for Results",
+    fileTypePlaceholder: "Select Analysis",
+    fileTypeOptions: [
+      { value: "brain-mra-tof", label: "Brain MRA: TOF" },
+      { value: "mri-dwi-adc", label: "MRI: DWI & ADC" },
+      { value: "carotid-mra-tof", label: "Carotid MRA: TOF" },
+      { value: "brain-ct-axial", label: "Brain CT: axial" },
+      { value: "brain-cta-source", label: "Brain CTA: source" },
+    ],
+    submitButton: "Submit",
+    uploading: "Uploading...",
+    sending: "Sending email...",
+    success: "✓ Your research request has been submitted successfully. The results will be sent to the email address you entered.",
+    error: "✕ Submission failed. Please try again later.",
+    requestCountLabel: "ANALYSIS REQUEST",
+    helpButtons: { dicom: "How to extract DICOM files", analysis: "How to Review the Results" },
+    pdfTitles: { dicom: "How to extract DICOM files", analysis: "How to Review the Results" },
+    alerts: {
+      size: (files) => `Files must be 500MB or smaller.\nOversized files: ${files}`,
+      selectFiles: "Please select files.",
+      email: "Please enter your email address.",
+      fileType: "Please select the file content.",
+    },
+  },
+};
+
 export function TestRequestSection() {
   const [isUploadHovered, setIsUploadHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -18,13 +136,15 @@ export function TestRequestSection() {
   const [uploadPhase, setUploadPhase] = useState<"uploading" | "sending" | null>(null);
   const [requestCount, setRequestCount] = useState(231);
   const [selectedPdf, setSelectedPdf] = useState<"analysis" | "dicom" | null>(null);
+  const [isEnglish, setIsEnglish] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const copy = isEnglish ? REQUEST_COPY.en : REQUEST_COPY.ko;
 
   const handleFileSelect = (files: FileList | File[]) => {
     const arr = Array.from(files);
     const oversized = arr.filter(f => f.size > 500 * 1024 * 1024);
     if (oversized.length > 0) {
-      alert(`파일 크기는 500MB 이하여야 합니다.\n초과 파일: ${oversized.map(f => f.name).join(", ")}`);
+      alert(copy.alerts.size(oversized.map(f => f.name).join(", ")));
       return;
     }
     setSelectedFiles(prev => [...prev, ...arr]);
@@ -53,9 +173,9 @@ export function TestRequestSection() {
   }, []);
 
   const handleAnalysisSubmit = async () => {
-    if (selectedFiles.length === 0) { alert("파일을 선택해주세요."); return; }
-    if (!emailValue) { alert("이메일을 입력해주세요."); return; }
-    if (!fileType) { alert("파일 내용을 선택해주세요."); return; }
+    if (selectedFiles.length === 0) { alert(copy.alerts.selectFiles); return; }
+    if (!emailValue) { alert(copy.alerts.email); return; }
+    if (!fileType) { alert(copy.alerts.fileType); return; }
 
     setSubmitState("loading");
     setUploadProgress({});
@@ -135,25 +255,50 @@ export function TestRequestSection() {
     }
   };
 
-  const infoPoints = [
-    "DICOM 파일형식 지원",
-    "추출된 DICOM 파일은 압축하여 첨부하세요",
-    "전송된 영상은 NIfTI 파일형식으로 모두 전환됩니다.",
-    "NIfTI 파일형식의 특성상 모든 환자개인정보가 자동 삭제됩니다.",
-    "전송된 파일도 NIfTI 전환 후 모두 삭제됩니다.",
-    "분석된 영상은 이메일로 24시간 이내에 보내드립니다.",
-    "빠른 영상 분석이 필요시에 파일 업로드 후 contact의 연락처로 문의 바랍니다."
-  ];
-
   return (
     <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
         <div style={{ flex: 1, width: "100%", maxWidth: "42rem" }}>
           <RevealSection>
-            <SectionLabel>Research Analysis Request</SectionLabel>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
-              연구용 데이터 AI 분석 의뢰
-            </h2>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem" }}>
+              <div>
+                <SectionLabel>{copy.sectionLabel}</SectionLabel>
+                <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>
+                  {copy.title}
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsEnglish(prev => !prev)}
+                title={copy.toggleTitle}
+                style={{
+                  marginTop: "0.35rem",
+                  minWidth: "3.4rem",
+                  height: "1.9rem",
+                  padding: "0 0.75rem",
+                  borderRadius: "999px",
+                  border: "1px solid rgba(96,165,250,0.45)",
+                  background: isEnglish ? "linear-gradient(135deg, rgba(96,165,250,0.32) 0%, rgba(37,99,235,0.5) 100%)" : "rgba(96,165,250,0.18)",
+                  color: "#f8fafc",
+                  fontSize: "0.72rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.08em",
+                  cursor: "pointer",
+                  boxShadow: "0 6px 18px rgba(59,130,246,0.18)",
+                  transition: "all 0.25s ease",
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.borderColor = "rgba(96,165,250,0.75)";
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = "rgba(96,165,250,0.45)";
+                }}
+              >
+                {copy.toggleLabel}
+              </button>
+            </div>
             <Divider />
           </RevealSection>
 
@@ -231,7 +376,7 @@ export function TestRequestSection() {
                       onClick={e => { e.stopPropagation(); setSelectedFiles([]); }}
                       style={{ marginTop: "0.75rem", fontSize: "0.8rem", color: "#f87171", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
                     >
-                      전체 제거
+                      {copy.clearAll}
                     </button>
                   </>
                 ) : (
@@ -249,15 +394,19 @@ export function TestRequestSection() {
                       </svg>
                     </div>
                     <p style={{ color: "#ffffff", fontSize: "1.15rem", fontWeight: 500, marginBottom: "0.4rem" }}>
-                      {isDragging ? "파일을 여기에 놓으세요" : (
+                      {isDragging ? copy.uploadDraggingTitle : (
                         <>
-                          MRI 또는 CT 데이터를<br />
-                          압축(zip)하여 첨부하세요
+                          {copy.uploadEmptyTitle.split("\n").map((line, idx) => (
+                            <React.Fragment key={`${line}-${idx}`}>
+                              {idx > 0 && <br />}
+                              {line}
+                            </React.Fragment>
+                          ))}
                         </>
                       )}
                     </p>
                     <p style={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>
-                      클릭하거나 파일을 여기에 끌어다 놓으세요 | 최대 500MB
+                      {isDragging ? copy.uploadDraggingSubtitle : copy.uploadEmptySubtitle}
                     </p>
                   </>
                 )}
@@ -272,7 +421,7 @@ export function TestRequestSection() {
 
               {/* 상세 안내 리스트 */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-                {infoPoints.map((point, idx) => (
+                {copy.infoPoints.map((point, idx) => (
                   <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem" }}>
                     <span style={{
                       color: "#60a5fa",
@@ -300,11 +449,13 @@ export function TestRequestSection() {
               <div className="cn-form-row" style={{ display: "flex", gap: "0.85rem" }}>
                 {/* 이메일 입력 */}
                 <div style={{ flex: 1, position: "relative" }}>
-                  <label htmlFor="email-input" className="sr-only">이메일 주소</label>
+                  <label htmlFor="email-input" className="sr-only">
+                    {isEnglish ? "Email address for results" : "이메일 주소"}
+                  </label>
                   <input
                     id="email-input"
                     type="email"
-                    placeholder="이메일 주소 (결과 수신용)"
+                    placeholder={copy.emailPlaceholder}
                     value={emailValue}
                     onChange={e => setEmailValue(e.target.value)}
                     style={{
@@ -331,7 +482,9 @@ export function TestRequestSection() {
                 </div>
                 {/* 파일 내용 선택 */}
                 <div style={{ flex: 1 }}>
-                  <label htmlFor="file-type-select" className="sr-only">파일 내용 선택</label>
+                  <label htmlFor="file-type-select" className="sr-only">
+                    {isEnglish ? "Select analysis" : "파일 내용 선택"}
+                  </label>
                   <select
                     id="file-type-select"
                     value={fileType}
@@ -356,12 +509,10 @@ export function TestRequestSection() {
                     onFocus={e => e.currentTarget.style.borderColor = "rgba(96,165,250,0.4)"}
                     onBlur={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"}
                   >
-                    <option value="" disabled>파일 내용 선택</option>
-                    <option value="brain-mra-tof">Brain MRA: TOF</option>
-                    <option value="mri-dwi-adc">MRI: DWI &amp; ADC</option>
-                    <option value="carotid-mra-tof">Carotid MRA: TOF</option>
-                    <option value="brain-ct-axial">Brain CT: axial</option>
-                    <option value="brain-cta-source">Brain CTA: source</option>
+                    <option value="" disabled>{copy.fileTypePlaceholder}</option>
+                    {copy.fileTypeOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -394,7 +545,7 @@ export function TestRequestSection() {
                   ))}
                   {uploadPhase === "sending" && (
                     <p style={{ color: "rgba(148,163,184,0.7)", fontSize: "0.8rem", textAlign: "center", fontFamily: "'Inter', sans-serif" }}>
-                      의뢰 접수 처리 중...
+                      {isEnglish ? "Processing request..." : "의뢰 접수 처리 중..."}
                     </p>
                   )}
                 </div>
@@ -431,18 +582,18 @@ export function TestRequestSection() {
               disabled={submitState === "loading"}
               >
                 {submitState === "loading"
-                  ? (uploadPhase === "sending" ? "이메일 발송 중..." : "업로드 중...")
-                  : "분석 요청하기"}
+                  ? (uploadPhase === "sending" ? copy.sending : copy.uploading)
+                  : copy.submitButton}
               </button>
 
               {submitState === "success" && (
                 <div style={{ marginTop: "1rem", padding: "0.9rem 1.2rem", borderRadius: "0.75rem", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.4)", color: "#4ade80", fontSize: "0.95rem", fontWeight: 600 }}>
-                  ✓ 분석 의뢰가 성공적으로 접수되었습니다. 결과는 입력하신 이메일로 발송됩니다.
+                  {copy.success}
                 </div>
               )}
               {submitState === "error" && (
                 <div style={{ marginTop: "1rem", padding: "0.9rem 1.2rem", borderRadius: "0.75rem", background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.4)", color: "#f87171", fontSize: "0.95rem", fontWeight: 600 }}>
-                  ✕ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.
+                  {copy.error}
                 </div>
               )}
 
@@ -491,14 +642,14 @@ export function TestRequestSection() {
                       marginRight: "0.75rem",
                       boxShadow: "0 0 8px #60a5fa"
                     }} />
-                    ANALYSIS REQUEST: {String(requestCount).padStart(4, '0')}
+                    {copy.requestCountLabel}: {String(requestCount).padStart(4, '0')}
                   </span>
                 </div>
 
                 <div className="cn-request-meta-actions" style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap", flex: 1, minWidth: 0 }}>
                   {([
-                    { label: "DICOM 파일 추출 방법", key: "dicom" as const },
-                    { label: "분석영상 확인방법", key: "analysis" as const },
+                    { label: copy.helpButtons.dicom, key: "dicom" as const },
+                    { label: copy.helpButtons.analysis, key: "analysis" as const },
                   ] as const).map(({ label, key }) => {
                     const isActive = selectedPdf === key;
                     return (
@@ -571,7 +722,7 @@ export function TestRequestSection() {
       {selectedPdf && (
         <PdfModal
           src={selectedPdf === "analysis" ? "/analysis-guide.pdf" : "/dicom-guide.pdf"}
-          title={selectedPdf === "analysis" ? "분석영상 확인방법" : "DICOM 파일 추출 방법"}
+          title={selectedPdf === "analysis" ? copy.pdfTitles.analysis : copy.pdfTitles.dicom}
           onClose={() => setSelectedPdf(null)}
         />
       )}
