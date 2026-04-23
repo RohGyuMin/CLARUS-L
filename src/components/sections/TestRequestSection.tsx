@@ -248,10 +248,15 @@ export function TestRequestSection() {
                       </svg>
                     </div>
                     <p style={{ color: "#ffffff", fontSize: "1.15rem", fontWeight: 500, marginBottom: "0.4rem" }}>
-                      {isDragging ? "파일을 여기에 놓으세요" : "MRI 또는 CT 데이터를 첨부하세요"}
+                      {isDragging ? "파일을 여기에 놓으세요" : (
+                        <>
+                          MRI 또는 CT 데이터를<br />
+                          압축(&lt;zip&gt;)하여 첨부하세요
+                        </>
+                      )}
                     </p>
                     <p style={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>
-                      클릭하거나 파일을 여기로 끌어다 놓으세요 (최대 500MB)
+                      클릭하거나 파일을 여기에 끌어다 놓으세요 | 최대 500MB
                     </p>
                   </>
                 )}
