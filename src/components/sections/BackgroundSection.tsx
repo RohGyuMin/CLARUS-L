@@ -383,7 +383,7 @@ export function BackgroundSection() {
                       pointerEvents: "none",
                     }}
                   >
-                    Click a card to view the related video
+                    Click a card to view the related graphic
                   </div>
                 ) : items[pinnedCard].image && (
                   <img
