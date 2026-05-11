@@ -9,6 +9,7 @@ import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 interface Publication {
   type: "Oral Presentation" | "Poster" | "Journal";
   titleParts: React.ReactNode;
+  koreanDesc: string;
   venue: string;
   date: string;
   articleUrl?: string;
@@ -26,6 +27,7 @@ const publications: Publication[] = [
         using MR angiography
       </>
     ),
+    koreanDesc: "MRA 기반 3D 경동맥 재건 및 협착 탐지를 위한 통합 딥러닝 프레임워크 개발 및 검증",
     venue: "제6회 인하대학교병원 신경외과 심포지엄",
     date: "2026년 5월 2일",
   },
@@ -38,6 +40,7 @@ const publications: Publication[] = [
         <span style={{ color: "#f97316" }}>Steno-occlusive Disease</span> on MRA
       </>
     ),
+    koreanDesc: "MRA에서 뇌혈관 협착·폐색 질환의 자동 탐지를 위한 딥러닝 모델 임상 검증",
     venue: "대한 뇌혈관외과학회 인천지회",
     date: "2026년 1월 12일",
   },
@@ -52,6 +55,7 @@ const publications: Publication[] = [
         AI Model in MR angiography
       </>
     ),
+    koreanDesc: "MRA 기반 3D 혈관 재건 및 동맥류 탐지 통합 AI 모델의 진단 성능 평가",
     venue: "대한 뇌혈관외과학회 인천지회",
     date: "2025년 5월 24일",
   },
@@ -59,7 +63,6 @@ const publications: Publication[] = [
 
 function PublicationCard({
   pub,
-  index,
   isActive,
   onClick,
 }: {
@@ -69,13 +72,13 @@ function PublicationCard({
   onClick: () => void;
 }) {
   const [hovered, setHovered] = useState(false);
-  const highlighted = hovered || isActive;
+  const expanded = hovered || isActive;
 
-  const bg = highlighted ? "rgba(30,58,138,0.32)" : "rgba(30,58,138,0.14)";
+  const bg = expanded ? "rgba(30,58,138,0.32)" : "rgba(30,58,138,0.14)";
   const borderColor = isActive
-    ? "rgba(96,165,250,0.55)"
+    ? "rgba(96,165,250,0.6)"
     : hovered
-    ? "rgba(96,165,250,0.3)"
+    ? "rgba(96,165,250,0.35)"
     : "rgba(255,255,255,0.07)";
 
   return (
@@ -89,43 +92,46 @@ function PublicationCard({
         border: `1px solid ${borderColor}`,
         backdropFilter: "blur(12px)",
         boxShadow: isActive
-          ? "0 0 20px rgba(59,130,246,0.2), inset 0 0 8px rgba(59,130,246,0.08)"
+          ? "0 0 24px rgba(59,130,246,0.22), inset 0 0 10px rgba(59,130,246,0.08)"
+          : hovered
+          ? "0 0 14px rgba(59,130,246,0.1)"
           : "none",
         transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
         cursor: "pointer",
         overflow: "hidden",
-        transform: highlighted ? "translateX(4px)" : "translateX(0)",
+        transform: expanded ? "translateX(5px)" : "translateX(0)",
       }}
     >
-      {/* 상단 - 항상 표시 */}
-      <div style={{ padding: "1.2rem 1.5rem 0" }}>
+      {/* 상단 영역 - 배지 + 영문 제목 */}
+      <div style={{ padding: "1.25rem 1.5rem 0" }}>
         {/* 배지 */}
-        <div style={{ marginBottom: "0.75rem" }}>
+        <div style={{ marginBottom: "0.7rem" }}>
           <span
             style={{
               display: "inline-block",
-              padding: "0.25rem 0.85rem",
+              padding: "0.22rem 0.8rem",
               borderRadius: "0.4rem",
-              background: "rgba(30,58,138,0.6)",
-              border: "1px solid rgba(96,165,250,0.35)",
-              color: "rgba(147,197,253,0.9)",
-              fontSize: "0.78rem",
-              fontWeight: 600,
-              letterSpacing: "0.04em",
+              background: "rgba(30,58,138,0.65)",
+              border: "1px solid rgba(96,165,250,0.4)",
+              color: "rgba(147,197,253,0.95)",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.06em",
               fontFamily: "'Arial Unicode MS', sans-serif",
+              textTransform: "uppercase",
             }}
           >
             {pub.type}
           </span>
         </div>
 
-        {/* 제목 */}
+        {/* 영문 제목 */}
         <p
           style={{
             fontSize: "1.05rem",
             fontWeight: 600,
             color: "#e2e8f0",
-            lineHeight: 1.6,
+            lineHeight: 1.65,
             margin: 0,
             letterSpacing: "-0.01em",
           }}
@@ -134,48 +140,77 @@ function PublicationCard({
         </p>
       </div>
 
-      {/* 하단 - 항상 표시 (장소 + 날짜) */}
+      {/* 호버 시 펼쳐지는 한글 설명 영역 */}
       <div
         style={{
-          padding: "0.75rem 1.5rem 1.2rem",
-          borderTop: isActive
-            ? "1px solid rgba(96,165,250,0.15)"
-            : "1px solid transparent",
-          marginTop: "0.75rem",
-          transition: "border-color 0.3s ease",
+          maxHeight: expanded ? "12rem" : "0",
+          opacity: expanded ? 1 : 0,
+          overflow: "hidden",
+          transition: "max-height 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease",
         }}
       >
         <div
           style={{
-            fontSize: "0.9rem",
-            color: "rgba(148,163,184,0.85)",
-            fontFamily: "'HYGraphic', sans-serif",
-            lineHeight: 1.5,
+            margin: "0.9rem 1.5rem 0",
+            padding: "0.9rem 1.1rem",
+            borderRadius: "0.6rem",
+            background: "rgba(15,23,42,0.5)",
+            borderLeft: "3px solid rgba(96,165,250,0.6)",
           }}
         >
-          {pub.venue}
-        </div>
-        <div
-          style={{
-            fontSize: "0.85rem",
-            color: "rgba(100,116,139,0.9)",
-            fontFamily: "'HYGraphic', sans-serif",
-            marginTop: "0.2rem",
-          }}
-        >
-          {pub.date}
-        </div>
+          {/* 한글 설명 - 크고 눈에 띄게 */}
+          <p
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: 700,
+              color: "#e2e8f0",
+              fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
+              lineHeight: 1.6,
+              margin: "0 0 0.6rem",
+              letterSpacing: "0.01em",
+              wordBreak: "keep-all",
+            }}
+          >
+            {pub.koreanDesc}
+          </p>
 
-        {/* 접히는 부분 - 카드 클릭 시 펼쳐짐 */}
-        <div
-          style={{
-            maxHeight: isActive ? "6rem" : "0",
-            opacity: isActive ? 1 : 0,
-            overflow: "hidden",
-            transition: "max-height 0.35s ease, opacity 0.25s ease",
-            marginTop: isActive ? "0.85rem" : "0",
-          }}
-        >
+          {/* 장소 + 날짜 */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+            <span
+              style={{
+                fontSize: "0.92rem",
+                fontWeight: 600,
+                color: "rgba(147,197,253,0.9)",
+                fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
+              }}
+            >
+              {pub.venue}
+            </span>
+            <span style={{ color: "rgba(100,116,139,0.6)", fontSize: "0.8rem" }}>·</span>
+            <span
+              style={{
+                fontSize: "0.88rem",
+                color: "rgba(148,163,184,0.8)",
+                fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
+                fontWeight: 500,
+              }}
+            >
+              {pub.date}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 클릭 시 추가 펼쳐짐 - 아티클 링크 */}
+      <div
+        style={{
+          maxHeight: isActive ? "5rem" : "0",
+          opacity: isActive ? 1 : 0,
+          overflow: "hidden",
+          transition: "max-height 0.3s ease, opacity 0.22s ease",
+        }}
+      >
+        <div style={{ padding: "0.75rem 1.5rem 1.2rem" }}>
           {pub.articleUrl ? (
             <a
               href={pub.articleUrl}
@@ -194,7 +229,6 @@ function PublicationCard({
                 fontSize: "0.82rem",
                 fontWeight: 600,
                 textDecoration: "none",
-                transition: "all 0.2s ease",
               }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -222,6 +256,9 @@ function PublicationCard({
           )}
         </div>
       </div>
+
+      {/* 하단 패딩 */}
+      <div style={{ height: expanded ? "1rem" : "1.2rem", transition: "height 0.3s ease" }} />
     </div>
   );
 }
@@ -317,12 +354,10 @@ export function PublicationsSection() {
                 pointerEvents: "none",
               }}
             >
-              {/* Neural 배경 */}
               <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
                 <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
               </div>
 
-              {/* 화살표 힌트 */}
               <div
                 style={{
                   position: "absolute",
@@ -338,7 +373,6 @@ export function PublicationsSection() {
                 ›
               </div>
 
-              {/* 하단 안내 문구 */}
               {activeCard === null && (
                 <div
                   style={{
@@ -363,7 +397,6 @@ export function PublicationsSection() {
                 </div>
               )}
 
-              {/* 카드 선택 시: 제목 하이라이트 표시 */}
               {activeCard !== null && (
                 <div
                   style={{
@@ -379,8 +412,8 @@ export function PublicationsSection() {
                 >
                   <div
                     style={{
-                      background: "rgba(15,23,42,0.75)",
-                      backdropFilter: "blur(12px)",
+                      background: "rgba(15,23,42,0.78)",
+                      backdropFilter: "blur(14px)",
                       border: "1px solid rgba(96,165,250,0.25)",
                       borderRadius: "1rem",
                       padding: "2rem 2.5rem",
@@ -392,29 +425,50 @@ export function PublicationsSection() {
                         display: "inline-block",
                         padding: "0.25rem 0.85rem",
                         borderRadius: "0.4rem",
-                        background: "rgba(30,58,138,0.6)",
-                        border: "1px solid rgba(96,165,250,0.35)",
-                        color: "rgba(147,197,253,0.9)",
+                        background: "rgba(30,58,138,0.65)",
+                        border: "1px solid rgba(96,165,250,0.4)",
+                        color: "rgba(147,197,253,0.95)",
                         fontSize: "0.75rem",
-                        fontWeight: 600,
-                        letterSpacing: "0.04em",
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
                         marginBottom: "1rem",
                       }}
                     >
                       {publications[activeCard].type}
                     </div>
+                    {/* 한글 설명 - 우측 패널에서도 크게 */}
                     <p
                       style={{
-                        fontSize: "0.95rem",
-                        fontWeight: 600,
-                        color: "#e2e8f0",
+                        fontSize: "1.15rem",
+                        fontWeight: 700,
+                        color: "#f1f5f9",
+                        fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
                         lineHeight: 1.7,
-                        margin: "0 0 1rem",
+                        margin: "0 0 0.75rem",
+                        wordBreak: "keep-all",
+                      }}
+                    >
+                      {publications[activeCard].koreanDesc}
+                    </p>
+                    <div style={{
+                      width: "40px",
+                      height: "2px",
+                      background: "rgba(96,165,250,0.5)",
+                      margin: "0 auto 0.75rem",
+                      borderRadius: "1px",
+                    }} />
+                    <p
+                      style={{
+                        fontSize: "0.85rem",
+                        fontWeight: 500,
+                        color: "rgba(203,213,225,0.75)",
+                        lineHeight: 1.6,
+                        margin: "0 0 0.75rem",
                       }}
                     >
                       {publications[activeCard].titleParts}
                     </p>
-                    <div style={{ color: "rgba(148,163,184,0.8)", fontSize: "0.85rem", fontFamily: "'HYGraphic', sans-serif" }}>
+                    <div style={{ color: "rgba(147,197,253,0.85)", fontSize: "0.85rem", fontFamily: "'HYGraphic', sans-serif", fontWeight: 600 }}>
                       {publications[activeCard].venue}
                     </div>
                     <div style={{ color: "rgba(100,116,139,0.8)", fontSize: "0.8rem", fontFamily: "'HYGraphic', sans-serif", marginTop: "0.2rem" }}>
