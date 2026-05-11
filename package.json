@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "next build && npx firebase deploy --only hosting",
+    "deploy": "next build && cp -r public/papers out/papers && npx firebase deploy --only hosting",
     "deploy:apphosting": "npx firebase deploy --only apphosting"
   },
   "dependencies": {
