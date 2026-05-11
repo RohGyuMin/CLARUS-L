@@ -28,7 +28,7 @@ const publications: Publication[] = [
         using MR angiography
       </>
     ),
-    koreanDesc: "MRA 기반 3D 경동맥 재건 및 협착 탐지를 위한 통합 딥러닝 프레임워크 개발 및 검증",
+    koreanDesc: "경동맥 3D 렌더링 및 협착의 탐지를 위한 딥러닝 모델의 개발 및 성능평가",
     venue: "제6회 인하대학교병원 신경외과 심포지엄",
     date: "2026년 5월 2일",
     pdfPath: "/papers/paper-carotid.pdf",
@@ -42,7 +42,7 @@ const publications: Publication[] = [
         <span style={{ color: "#60a5fa" }}>Steno-occlusive Disease</span> on MRA
       </>
     ),
-    koreanDesc: "MRA에서 뇌혈관 협착·폐색 질환의 자동 탐지를 위한 딥러닝 모델 임상 검증",
+    koreanDesc: "뇌혈관 협착 및 폐쇄성 질환의 탐지를 위한 딥러닝 모델의 임상적 유효성 검증",
     venue: "대한 뇌혈관외과학회 인천지회",
     date: "2026년 1월 12일",
     pdfPath: "/papers/paper-steno-occlusive.pdf",
@@ -58,7 +58,7 @@ const publications: Publication[] = [
         AI Model in MR angiography
       </>
     ),
-    koreanDesc: "MRA 기반 3D 혈관 재건 및 동맥류 탐지 통합 AI 모델의 진단 성능 평가",
+    koreanDesc: "뇌혈관 3D-재구성 및 뇌동맥류 탐지를 위한 AI 모델의 진단 성능 분석",
     venue: "대한 뇌혈관외과학회 인천지회",
     date: "2025년 5월 24일",
     pdfPath: "/papers/paper-vascular-aneurysm.pdf",
@@ -72,7 +72,7 @@ const publications: Publication[] = [
         in MR Angiography: Comparative Analysis of MR-aneurysm AI and Radiologists
       </>
     ),
-    koreanDesc: "MR 혈관조영술 기반 뇌동맥류 탐지 AI 모델 검증: AI와 영상의학과 전문의 비교 분석",
+    koreanDesc: "뇌동맥류 탐지를 위한 AI 모델의 유효성 검증: AI와 영상의학과 전문의 간의 비교 분석",
     venue: "제 43회 대한신경외과학회 춘계학술대회",
     date: "2025년 4월 18일",
     pdfPath: "/papers/paper-aneurysm-validation.pdf",
