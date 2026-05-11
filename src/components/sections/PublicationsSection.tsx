@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
-import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 
 interface Publication {
   type: "Oral Presentation" | "Poster" | "Journal";
@@ -375,40 +374,29 @@ export function PublicationsSection() {
                 transition: "border-color 0.3s ease",
               }}
             >
-              {/* 카드 미선택 시: Neural 배경 + 안내 문구 */}
+              {/* 카드 미선택 시: 안내 문구만 */}
               {activeCard === null && (
-                <>
-                  <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-                    <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
-                  </div>
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      gap: "0.75rem",
-                      pointerEvents: "none",
-                      zIndex: 2,
-                    }}
-                  >
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <span style={{
-                      color: "rgba(226,232,240,0.55)",
-                      fontSize: "0.88rem",
-                      fontFamily: "'HYGraphic', sans-serif",
-                      fontWeight: 600,
-                      letterSpacing: "0.03em",
-                    }}>
-                      Click a card to view the paper
-                    </span>
-                  </div>
-                </>
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    gap: "0.75rem",
+                  }}
+                >
+                  <span style={{
+                    color: "rgba(226,232,240,0.55)",
+                    fontSize: "0.88rem",
+                    fontFamily: "'HYGraphic', sans-serif",
+                    fontWeight: 600,
+                    letterSpacing: "0.03em",
+                  }}>
+                    Click a card to view the paper
+                  </span>
+                </div>
               )}
 
               {/* 카드 선택 시: PDF iframe */}
