@@ -20,7 +20,7 @@ const publications: Publication[] = [
     titleParts: (
       <>
         Development and Validation of an Integrated Deep Learning Framework for{" "}
-        <span style={{ color: "#ef4444" }}>
+        <span style={{ color: "#f97316" }}>
           3D Carotid Artery Reconstruction and Stenosis Detection
         </span>{" "}
         using MR angiography
