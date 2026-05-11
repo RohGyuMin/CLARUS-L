@@ -364,14 +364,15 @@ export function PublicationsSection() {
             <div
               style={{
                 width: "520px",
+                height: "600px",
                 flexShrink: 0,
                 position: "relative",
-                minHeight: "520px",
                 borderRadius: "1.1rem",
                 overflow: "hidden",
-                border: "1px solid rgba(96,165,250,0.15)",
+                border: `1px solid ${activeCard !== null ? "rgba(96,165,250,0.35)" : "rgba(96,165,250,0.15)"}`,
                 background: "rgba(15,23,42,0.6)",
                 backdropFilter: "blur(12px)",
+                transition: "border-color 0.3s ease",
               }}
             >
               {/* 카드 미선택 시: Neural 배경 + 안내 문구 */}
@@ -417,8 +418,7 @@ export function PublicationsSection() {
                   src={`${publications[activeCard].pdfPath}#toolbar=0&navpanes=0&scrollbar=1`}
                   style={{
                     width: "100%",
-                    height: "100%",
-                    minHeight: "520px",
+                    height: "600px",
                     border: "none",
                     display: "block",
                   }}
