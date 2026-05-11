@@ -12,6 +12,7 @@ interface Publication {
   koreanDesc: string;
   venue: string;
   date: string;
+  pdfPath?: string;
   articleUrl?: string;
 }
 
@@ -30,6 +31,7 @@ const publications: Publication[] = [
     koreanDesc: "MRA 기반 3D 경동맥 재건 및 협착 탐지를 위한 통합 딥러닝 프레임워크 개발 및 검증",
     venue: "제6회 인하대학교병원 신경외과 심포지엄",
     date: "2026년 5월 2일",
+    pdfPath: "/papers/paper-carotid.pdf",
   },
   {
     type: "Oral Presentation",
@@ -43,6 +45,7 @@ const publications: Publication[] = [
     koreanDesc: "MRA에서 뇌혈관 협착·폐색 질환의 자동 탐지를 위한 딥러닝 모델 임상 검증",
     venue: "대한 뇌혈관외과학회 인천지회",
     date: "2026년 1월 12일",
+    pdfPath: "/papers/paper-steno-occlusive.pdf",
   },
   {
     type: "Oral Presentation",
@@ -58,6 +61,7 @@ const publications: Publication[] = [
     koreanDesc: "MRA 기반 3D 혈관 재건 및 동맥류 탐지 통합 AI 모델의 진단 성능 평가",
     venue: "대한 뇌혈관외과학회 인천지회",
     date: "2025년 5월 24일",
+    pdfPath: "/papers/paper-vascular-aneurysm.pdf",
   },
   {
     type: "Oral Presentation",
@@ -71,6 +75,7 @@ const publications: Publication[] = [
     koreanDesc: "MR 혈관조영술 기반 뇌동맥류 탐지 AI 모델 검증: AI와 영상의학과 전문의 비교 분석",
     venue: "제 43회 대한신경외과학회 춘계학술대회",
     date: "2025년 4월 18일",
+    pdfPath: "/papers/paper-aneurysm-validation.pdf",
   },
 ];
 
@@ -354,147 +359,71 @@ export function PublicationsSection() {
             ))}
           </div>
 
-          {/* 오른쪽: 비주얼 패널 - PC only */}
+          {/* 오른쪽: PDF 패널 - PC only */}
           {!isMobile && (
             <div
               style={{
                 width: "520px",
                 flexShrink: 0,
                 position: "relative",
-                minHeight: "420px",
+                minHeight: "520px",
                 borderRadius: "1.1rem",
                 overflow: "hidden",
-                pointerEvents: "none",
+                border: "1px solid rgba(96,165,250,0.15)",
+                background: "rgba(15,23,42,0.6)",
+                backdropFilter: "blur(12px)",
               }}
             >
-              {/* Neural 배경 */}
-              <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-                <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
-              </div>
-
-              {/* 카드 미선택 시 안내 문구 */}
+              {/* 카드 미선택 시: Neural 배경 + 안내 문구 */}
               {activeCard === null && (
-                <div
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    bottom: "2.5rem",
-                    transform: "translateX(-50%)",
-                    width: "min(100%, 340px)",
-                    color: "rgba(226,232,240,0.65)",
-                    fontSize: "0.9rem",
-                    lineHeight: 1.3,
-                    fontFamily: "'HYGraphic', sans-serif",
-                    fontWeight: 700,
-                    textAlign: "center",
-                    letterSpacing: "0.03em",
-                    zIndex: 2,
-                    pointerEvents: "none",
-                  }}
-                >
-                  Click a card to review the article
-                </div>
-              )}
-
-              {/* 카드 선택 시: 상세 정보 표시 */}
-              {activeCard !== null && (
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: "2rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    zIndex: 2,
-                    pointerEvents: "none",
-                  }}
-                >
+                <>
+                  <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+                    <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
+                  </div>
                   <div
                     style={{
-                      background: "rgba(15,23,42,0.78)",
-                      backdropFilter: "blur(14px)",
-                      border: "1px solid rgba(96,165,250,0.22)",
-                      borderRadius: "1rem",
-                      padding: "2rem 2.2rem",
-                      textAlign: "center",
-                      width: "100%",
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      gap: "0.75rem",
+                      pointerEvents: "none",
+                      zIndex: 2,
                     }}
                   >
-                    {/* 배지 */}
-                    <div
-                      style={{
-                        display: "inline-block",
-                        padding: "0.22rem 0.8rem",
-                        borderRadius: "0.4rem",
-                        background: "rgba(30,58,138,0.65)",
-                        border: "1px solid rgba(96,165,250,0.4)",
-                        color: "rgba(147,197,253,0.95)",
-                        fontSize: "0.72rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.06em",
-                        marginBottom: "1.1rem",
-                      }}
-                    >
-                      {publications[activeCard].type}
-                    </div>
-
-                    {/* 한글 설명 */}
-                    <p
-                      style={{
-                        fontSize: "1.1rem",
-                        fontWeight: 700,
-                        color: "#f1f5f9",
-                        fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
-                        lineHeight: 1.7,
-                        margin: "0 0 0.8rem",
-                        wordBreak: "keep-all",
-                      }}
-                    >
-                      {publications[activeCard].koreanDesc}
-                    </p>
-
-                    {/* 구분선 */}
-                    <div style={{
-                      width: "36px",
-                      height: "2px",
-                      background: "rgba(96,165,250,0.5)",
-                      margin: "0 auto 0.8rem",
-                      borderRadius: "1px",
-                    }} />
-
-                    {/* 영문 제목 */}
-                    <p
-                      style={{
-                        fontSize: "0.82rem",
-                        fontWeight: 500,
-                        color: "rgba(203,213,225,0.7)",
-                        lineHeight: 1.65,
-                        margin: "0 0 0.9rem",
-                      }}
-                    >
-                      {publications[activeCard].titleParts}
-                    </p>
-
-                    {/* 장소 + 날짜 */}
-                    <div style={{
-                      color: "rgba(147,197,253,0.85)",
-                      fontSize: "0.85rem",
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(96,165,250,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    <span style={{
+                      color: "rgba(226,232,240,0.55)",
+                      fontSize: "0.88rem",
                       fontFamily: "'HYGraphic', sans-serif",
                       fontWeight: 600,
+                      letterSpacing: "0.03em",
                     }}>
-                      {publications[activeCard].venue}
-                    </div>
-                    <div style={{
-                      color: "rgba(100,116,139,0.8)",
-                      fontSize: "0.8rem",
-                      fontFamily: "'HYGraphic', sans-serif",
-                      marginTop: "0.2rem",
-                    }}>
-                      {publications[activeCard].date}
-                    </div>
+                      Click a card to view the paper
+                    </span>
                   </div>
-                </div>
+                </>
+              )}
+
+              {/* 카드 선택 시: PDF iframe */}
+              {activeCard !== null && publications[activeCard].pdfPath && (
+                <iframe
+                  key={activeCard}
+                  src={`${publications[activeCard].pdfPath}#toolbar=0&navpanes=0&scrollbar=1`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    minHeight: "520px",
+                    border: "none",
+                    display: "block",
+                  }}
+                  title={`Publication PDF ${activeCard + 1}`}
+                />
               )}
             </div>
           )}
