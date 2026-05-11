@@ -20,7 +20,7 @@ const publications: Publication[] = [
     titleParts: (
       <>
         Development and Validation of an Integrated Deep Learning Framework for{" "}
-        <span style={{ color: "#f97316" }}>
+        <span style={{ color: "#ef4444" }}>
           3D Carotid Artery Reconstruction and Stenosis Detection
         </span>{" "}
         using MR angiography
@@ -36,7 +36,7 @@ const publications: Publication[] = [
       <>
         Clinical Validation of a Deep Learning Model for Automated Detection of
         Cerebrovascular{" "}
-        <span style={{ color: "#f97316" }}>Steno-occlusive Disease</span> on MRA
+        <span style={{ color: "#60a5fa" }}>Steno-occlusive Disease</span> on MRA
       </>
     ),
     koreanDesc: "MRA에서 뇌혈관 협착·폐색 질환의 자동 탐지를 위한 딥러닝 모델 임상 검증",
@@ -48,7 +48,7 @@ const publications: Publication[] = [
     titleParts: (
       <>
         Diagnostic Performance of an Integrated{" "}
-        <span style={{ color: "#f97316" }}>
+        <span style={{ color: "#ef4444" }}>
           3D Vascular Reconstruction and Aneurysm Detection
         </span>{" "}
         AI Model in MR angiography
