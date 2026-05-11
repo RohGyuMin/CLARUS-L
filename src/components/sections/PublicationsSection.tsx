@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
+import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 
 interface Publication {
   type: "Oral Presentation" | "Poster" | "Journal";
@@ -339,6 +340,151 @@ export function PublicationsSection() {
               />
             ))}
           </div>
+
+          {/* 오른쪽: 비주얼 패널 - PC only */}
+          {!isMobile && (
+            <div
+              style={{
+                width: "520px",
+                flexShrink: 0,
+                position: "relative",
+                minHeight: "420px",
+                borderRadius: "1.1rem",
+                overflow: "hidden",
+                pointerEvents: "none",
+              }}
+            >
+              {/* Neural 배경 */}
+              <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+                <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
+              </div>
+
+              {/* 카드 미선택 시 안내 문구 */}
+              {activeCard === null && (
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    bottom: "2.5rem",
+                    transform: "translateX(-50%)",
+                    width: "min(100%, 340px)",
+                    color: "rgba(226,232,240,0.65)",
+                    fontSize: "0.9rem",
+                    lineHeight: 1.3,
+                    fontFamily: "'HYGraphic', sans-serif",
+                    fontWeight: 700,
+                    textAlign: "center",
+                    letterSpacing: "0.03em",
+                    zIndex: 2,
+                    pointerEvents: "none",
+                  }}
+                >
+                  Click a card to review the article
+                </div>
+              )}
+
+              {/* 카드 선택 시: 상세 정보 표시 */}
+              {activeCard !== null && (
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: "2rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    zIndex: 2,
+                    pointerEvents: "none",
+                  }}
+                >
+                  <div
+                    style={{
+                      background: "rgba(15,23,42,0.78)",
+                      backdropFilter: "blur(14px)",
+                      border: "1px solid rgba(96,165,250,0.22)",
+                      borderRadius: "1rem",
+                      padding: "2rem 2.2rem",
+                      textAlign: "center",
+                      width: "100%",
+                    }}
+                  >
+                    {/* 배지 */}
+                    <div
+                      style={{
+                        display: "inline-block",
+                        padding: "0.22rem 0.8rem",
+                        borderRadius: "0.4rem",
+                        background: "rgba(30,58,138,0.65)",
+                        border: "1px solid rgba(96,165,250,0.4)",
+                        color: "rgba(147,197,253,0.95)",
+                        fontSize: "0.72rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
+                        marginBottom: "1.1rem",
+                      }}
+                    >
+                      {publications[activeCard].type}
+                    </div>
+
+                    {/* 한글 설명 */}
+                    <p
+                      style={{
+                        fontSize: "1.1rem",
+                        fontWeight: 700,
+                        color: "#f1f5f9",
+                        fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
+                        lineHeight: 1.7,
+                        margin: "0 0 0.8rem",
+                        wordBreak: "keep-all",
+                      }}
+                    >
+                      {publications[activeCard].koreanDesc}
+                    </p>
+
+                    {/* 구분선 */}
+                    <div style={{
+                      width: "36px",
+                      height: "2px",
+                      background: "rgba(96,165,250,0.5)",
+                      margin: "0 auto 0.8rem",
+                      borderRadius: "1px",
+                    }} />
+
+                    {/* 영문 제목 */}
+                    <p
+                      style={{
+                        fontSize: "0.82rem",
+                        fontWeight: 500,
+                        color: "rgba(203,213,225,0.7)",
+                        lineHeight: 1.65,
+                        margin: "0 0 0.9rem",
+                      }}
+                    >
+                      {publications[activeCard].titleParts}
+                    </p>
+
+                    {/* 장소 + 날짜 */}
+                    <div style={{
+                      color: "rgba(147,197,253,0.85)",
+                      fontSize: "0.85rem",
+                      fontFamily: "'HYGraphic', sans-serif",
+                      fontWeight: 600,
+                    }}>
+                      {publications[activeCard].venue}
+                    </div>
+                    <div style={{
+                      color: "rgba(100,116,139,0.8)",
+                      fontSize: "0.8rem",
+                      fontFamily: "'HYGraphic', sans-serif",
+                      marginTop: "0.2rem",
+                    }}>
+                      {publications[activeCard].date}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
         </div>
       </RevealSection>
