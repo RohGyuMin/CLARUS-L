@@ -59,6 +59,19 @@ const publications: Publication[] = [
     venue: "대한 뇌혈관외과학회 인천지회",
     date: "2025년 5월 24일",
   },
+  {
+    type: "Oral Presentation",
+    titleParts: (
+      <>
+        Validation of an AI Model for Cerebral{" "}
+        <span style={{ color: "#60a5fa" }}>Aneurysm Detection</span>{" "}
+        in MR Angiography: Comparative Analysis of MR-aneurysm AI and Radiologists
+      </>
+    ),
+    koreanDesc: "MR 혈관조영술 기반 뇌동맥류 탐지 AI 모델 검증: AI와 영상의학과 전문의 비교 분석",
+    venue: "제 43회 대한신경외과학회 춘계학술대회",
+    date: "2025년 4월 18일",
+  },
 ];
 
 function PublicationCard({
