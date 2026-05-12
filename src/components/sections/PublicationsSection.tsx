@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
@@ -269,12 +269,25 @@ function PublicationCard({
 export function PublicationsSection() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [cardsHeight, setCardsHeight] = useState<number>(600);
+  const cardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    if (!cardsRef.current) return;
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        setCardsHeight(entry.contentRect.height);
+      }
+    });
+    observer.observe(cardsRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const handleCardClick = (i: number) => {
@@ -319,12 +332,13 @@ export function PublicationsSection() {
             flexDirection: isMobile ? "column" : "row",
             gap: isMobile ? "1.5rem" : "3.5rem",
             maxWidth: "1440px",
-            alignItems: isMobile ? "stretch" : "center",
+            alignItems: isMobile ? "stretch" : "flex-start",
             margin: "0 auto",
           }}
         >
           {/* 왼쪽: 카드 목록 */}
           <div
+            ref={cardsRef}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -349,7 +363,7 @@ export function PublicationsSection() {
             <div
               style={{
                 width: "520px",
-                height: "600px",
+                height: `${cardsHeight}px`,
                 flexShrink: 0,
                 position: "relative",
                 borderRadius: "1.1rem",
@@ -399,7 +413,7 @@ export function PublicationsSection() {
                   src={`${publications[activeCard].pdfPath}#toolbar=0&navpanes=0&scrollbar=1`}
                   style={{
                     width: "100%",
-                    height: "600px",
+                    height: `${cardsHeight}px`,
                     border: "none",
                     display: "block",
                   }}
