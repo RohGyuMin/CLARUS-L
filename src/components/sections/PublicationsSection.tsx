@@ -368,9 +368,6 @@ export function PublicationsSection() {
                 position: "relative",
                 borderRadius: "1.1rem",
                 overflow: "hidden",
-                border: `1px solid ${activeCard !== null ? "rgba(96,165,250,0.35)" : "rgba(96,165,250,0.15)"}`,
-                background: "rgba(15,23,42,0.6)",
-                backdropFilter: "blur(12px)",
                 transition: "border-color 0.3s ease",
               }}
             >
