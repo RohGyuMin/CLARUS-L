@@ -38,7 +38,7 @@ const publications: Publication[] = [
       <>
         Clinical Validation of a Deep Learning Model for Automated Detection of
         Cerebrovascular{" "}
-        <span style={{ color: "#60a5fa" }}>Steno-occlusive Disease</span> on MRA
+        <span style={{ color: "#facc15" }}>Steno-occlusive Disease</span> on MRA
       </>
     ),
     koreanDesc: "뇌혈관 협착 및 폐쇄성 질환의 탐지를 위한 딥러닝 모델의 임상적 유효성 검증",
@@ -255,22 +255,7 @@ function PublicationCard({
               </svg>
               View Article
             </a>
-          ) : (
-            <span
-              style={{
-                display: "inline-block",
-                padding: "0.35rem 0.85rem",
-                borderRadius: "0.5rem",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                color: "rgba(100,116,139,0.8)",
-                fontSize: "0.8rem",
-                fontFamily: "'HYGraphic', sans-serif",
-              }}
-            >
-              Article link coming soon
-            </span>
-          )}
+          ) : null}
         </div>
       </div>
 
@@ -303,7 +288,7 @@ export function PublicationsSection() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        paddingTop: "6rem",
+        paddingTop: "3.5rem",
         paddingBottom: "6rem",
       }}
     >
