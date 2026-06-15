@@ -213,7 +213,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       theme: "blue",
       details: [
         "#Input: TOF images",
-        "#DICE: 0.872",
+        "#DICE: 0.942",
         "#Analysis time: 6.8sec",
         "#View Manipulation: zoom in, zoom out, rotation, pan"
       ]

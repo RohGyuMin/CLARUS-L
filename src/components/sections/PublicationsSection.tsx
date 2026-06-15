@@ -21,6 +21,20 @@ const publications: Publication[] = [
     type: "Oral Presentation",
     titleParts: (
       <>
+        What{" "}
+        <span style={{ color: "#60a5fa" }}>AI Sees</span>{" "}
+        That We Miss
+      </>
+    ),
+    koreanDesc: "AI가 보고 우리가 놓치는 것: 뇌경색 환자의 영상에서 AI를 활용한 동맥류의 감지",
+    venue: "대한 뇌혈관외과학회 인천지회",
+    date: "2026년 5월 11일",
+    pdfPath: "/papers/paper-ai-sees.pdf",
+  },
+  {
+    type: "Oral Presentation",
+    titleParts: (
+      <>
         Development and Validation of an Integrated Deep Learning Framework for{" "}
         <span style={{ color: "#f97316" }}>
           3D Carotid Artery Reconstruction and Stenosis Detection
