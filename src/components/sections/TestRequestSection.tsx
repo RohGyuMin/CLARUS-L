@@ -548,6 +548,49 @@ export function TestRequestSection() {
                       </button>
                     );
                   })}
+
+                  <a
+                    className="cn-request-help-btn"
+                    href="/downloads/clarus-n-viewer.zip"
+                    download="CLARUS-N Viewer_실행하기.zip"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flex: 1,
+                      minWidth: 0,
+                      height: "2.7rem",
+                      gap: "0.35rem",
+                      padding: "0 1rem",
+                      borderRadius: "0.7rem",
+                      background: "rgba(96,165,250,0.07)",
+                      border: "1px solid rgba(96,165,250,0.25)",
+                      color: "#93c5fd",
+                      fontSize: "0.88rem",
+                      fontWeight: 600,
+                      lineHeight: 1,
+                      fontFamily: "'HYGraphic', sans-serif",
+                      whiteSpace: "nowrap",
+                      textDecoration: "none",
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = "rgba(96,165,250,0.15)";
+                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = "rgba(96,165,250,0.07)";
+                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)";
+                    }}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span>Viewer 다운로드</span>
+                  </a>
                 </div>
               </div>
             </div>
