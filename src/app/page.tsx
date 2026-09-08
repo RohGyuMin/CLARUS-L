@@ -9,6 +9,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection, AboutStrengthsSection } from "@/components/sections/AboutSection";
 import { BackgroundSection } from "@/components/sections/BackgroundSection";
 import { PerformanceSection } from "@/components/sections/PerformanceSection";
+import { PublicationsSection } from "@/components/sections/PublicationsSection";
 import { TestRequestSection } from "@/components/sections/TestRequestSection";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { Footer } from "@/components/sections/Footer";
@@ -16,9 +17,9 @@ import { Footer } from "@/components/sections/Footer";
 /* ─────────────────────────────────────────────
    메인 페이지
 ───────────────────────────────────────────── */
-const NAV_SECTIONS = ["about", "about-strengths", "background", "performance", "test-request", "contact"] as const;
+const NAV_SECTIONS = ["about", "about-strengths", "background", "performance", "publications", "test-request", "contact"] as const;
 type SectionId = typeof NAV_SECTIONS[number];
-const SNAP_SECTION_IDS = ["hero", "about", "about-strengths", "background", "performance", "test-request", "contact"];
+const SNAP_SECTION_IDS = ["hero", "about", "about-strengths", "background", "performance", "publications", "test-request", "contact"];
 
 type LegalModalKey = "privacy" | "terms" | "email-refusal";
 
@@ -353,6 +354,7 @@ export default function ClarusNPage() {
             <AboutStrengthsSection />
             <BackgroundSection />
             <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} isCompactLayout={isCompactLayout} />
+            <PublicationsSection />
             <TestRequestSection />
             <ContactSection
               onOpenPrivacy={() => setActiveLegalModal("privacy")}

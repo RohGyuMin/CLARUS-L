@@ -213,7 +213,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       theme: "blue",
       details: [
         "#Input: TOF images",
-        "#DICE: 0.872",
+        "#DICE: 0.942",
         "#Analysis time: 6.8sec",
         "#View Manipulation: zoom in, zoom out, rotation, pan"
       ]
@@ -815,7 +815,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               textShadow: "0 0 10px rgba(255,255,255,0.06)",
               pointerEvents: "none",
             }}>
-              Click a card to view the related graph
+              Click a card to view the related video
             </p>
           )}
 
