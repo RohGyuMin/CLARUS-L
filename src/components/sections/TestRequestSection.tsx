@@ -30,6 +30,7 @@ const REQUEST_COPY: Record<RequestLanguage, {
   error: string;
   requestCountLabel: string;
   helpButtons: { dicom: string; analysis: string };
+  viewerDownload: string;
   pdfTitles: { dicom: string; analysis: string };
   alerts: {
     size: (files: string) => string;
@@ -73,6 +74,7 @@ const REQUEST_COPY: Record<RequestLanguage, {
     error: "✕ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.",
     requestCountLabel: "ANALYSIS REQUEST",
     helpButtons: { dicom: "DICOM 파일 추출 방법", analysis: "분석영상 확인방법" },
+    viewerDownload: "Viewer 다운로드",
     pdfTitles: { dicom: "DICOM 파일 추출 방법", analysis: "분석영상 확인방법" },
     alerts: {
       size: (files) => `파일 크기는 500MB 이하여야 합니다.\n초과 파일: ${files}`,
@@ -115,6 +117,7 @@ const REQUEST_COPY: Record<RequestLanguage, {
     error: "✕ Submission failed. Please try again later.",
     requestCountLabel: "ANALYSIS REQUEST",
     helpButtons: { dicom: "How to extract DICOM files", analysis: "How to Review the Results" },
+    viewerDownload: "Download Viewer",
     pdfTitles: { dicom: "How to extract DICOM files", analysis: "How to Review the Results" },
     alerts: {
       size: (files) => `Files must be 500MB or smaller.\nOversized files: ${files}`,
@@ -746,7 +749,7 @@ export function TestRequestSection() {
                       <polyline points="7 10 12 15 17 10" />
                       <line x1="12" y1="15" x2="12" y2="3" />
                     </svg>
-                    <span>Viewer 다운로드</span>
+                    <span>{copy.viewerDownload}</span>
                   </a>
                 </div>
               </div>
