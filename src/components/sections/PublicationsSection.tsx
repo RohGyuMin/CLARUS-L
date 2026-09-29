@@ -13,6 +13,7 @@ interface Publication {
   venue: string;
   date: string;
   pdfPath?: string;
+  imagePath?: string;
   articleUrl?: string;
 }
 
@@ -32,6 +33,7 @@ const publications: Publication[] = [
     ),
     venue: "KJJC 2026, 일본 오사카",
     date: "2026년 9월 18~19일",
+    imagePath: "/posters/poster-vascular-aneurysm.png",
   },
   {
     type: "Poster Presentation",
@@ -44,6 +46,7 @@ const publications: Publication[] = [
     ),
     venue: "KJJC 2026, 일본 오사카",
     date: "2026년 9월 18~19일",
+    imagePath: "/posters/poster-steno-occlusive.png",
   },
   {
     type: "Poster Presentation",
@@ -58,6 +61,7 @@ const publications: Publication[] = [
     ),
     venue: "KJJC 2026, 일본 오사카",
     date: "2026년 9월 18~19일",
+    imagePath: "/posters/poster-carotid.png",
   },
   {
     type: "Oral Presentation",
@@ -563,85 +567,19 @@ export function PublicationsSection() {
                 />
               )}
 
-              {/* 카드 선택 시: PDF 없는 발표는 정보 카드 (장소 · 기간) */}
-              {activeCard !== null && !publications[activeCard].pdfPath && (
-                <>
-                  <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-                    <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.35} />
-                  </div>
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "2rem",
-                      zIndex: 2,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "100%",
-                        padding: "2rem 2.1rem",
-                        borderRadius: "1rem",
-                        background: "rgba(15,23,42,0.72)",
-                        border: "1px solid rgba(96,165,250,0.28)",
-                        backdropFilter: "blur(12px)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          display: "inline-block",
-                          marginBottom: "1.1rem",
-                          padding: "0.22rem 0.8rem",
-                          borderRadius: "0.4rem",
-                          background: "rgba(30,58,138,0.65)",
-                          border: "1px solid rgba(96,165,250,0.4)",
-                          color: "rgba(147,197,253,0.95)",
-                          fontSize: "0.75rem",
-                          fontWeight: 700,
-                          letterSpacing: "0.06em",
-                          fontFamily: "'Arial Unicode MS', sans-serif",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {publications[activeCard].type}
-                      </span>
-
-                      <p
-                        style={{
-                          fontSize: "1.05rem",
-                          fontWeight: 600,
-                          color: "#e2e8f0",
-                          lineHeight: 1.65,
-                          margin: "0 0 1.4rem",
-                          letterSpacing: "-0.01em",
-                        }}
-                      >
-                        {publications[activeCard].titleParts}
-                      </p>
-
-                      <div
-                        style={{
-                          paddingTop: "1.1rem",
-                          borderTop: "1px solid rgba(96,165,250,0.18)",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "0.5rem",
-                          fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
-                        }}
-                      >
-                        <span style={{ fontSize: "1rem", fontWeight: 600, color: "rgba(147,197,253,0.95)" }}>
-                          {publications[activeCard].venue}
-                        </span>
-                        <span style={{ fontSize: "0.92rem", fontWeight: 500, color: "rgba(148,163,184,0.85)" }}>
-                          {publications[activeCard].date}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </>
+              {/* 카드 선택 시: 포스터 이미지 (세로로 긴 이미지라 패널 안에서 스크롤) */}
+              {activeCard !== null && publications[activeCard].imagePath && (
+                <div
+                  key={activeCard}
+                  style={{ width: "100%", height: `${cardsHeight}px`, overflowY: "auto" }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={publications[activeCard].imagePath}
+                    alt={`${publications[activeCard].type} poster`}
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                </div>
               )}
             </div>
           )}
