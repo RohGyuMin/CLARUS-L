@@ -154,7 +154,23 @@ export default function ClarusNPage() {
     const container = scrollRef.current;
     if (!container) return;
 
+    // 휠 위치에 아직 더 내려갈(올라갈) 수 있는 스크롤 상자가 있으면 그 상자를 먼저 스크롤
+    const innerCanScroll = (target: EventTarget | null, deltaY: number) => {
+      let el = target instanceof HTMLElement ? target : null;
+      while (el && el !== container) {
+        const { overflowY } = getComputedStyle(el);
+        if ((overflowY === "auto" || overflowY === "scroll") && el.scrollHeight > el.clientHeight) {
+          if (deltaY > 0 && el.scrollTop + el.clientHeight < el.scrollHeight - 1) return true;
+          if (deltaY < 0 && el.scrollTop > 0) return true;
+        }
+        el = el.parentElement;
+      }
+      return false;
+    };
+
     const handleWheel = (e: WheelEvent) => {
+      if (innerCanScroll(e.target, e.deltaY)) return;
+
       const maxScrollTop = container.scrollHeight - container.clientHeight;
       const atTop = container.scrollTop <= 0;
       const atBottom = container.scrollTop >= maxScrollTop - 2;
