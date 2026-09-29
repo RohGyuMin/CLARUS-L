@@ -7,16 +7,58 @@ import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 
 interface Publication {
-  type: "Oral Presentation" | "Poster" | "Journal";
+  type: "Oral Presentation" | "Poster Presentation" | "Journal";
   titleParts: React.ReactNode;
-  koreanDesc: string;
+  koreanDesc?: string;
   venue: string;
   date: string;
   pdfPath?: string;
   articleUrl?: string;
 }
 
+const CARDS_PER_PAGE = 4;
+
 const publications: Publication[] = [
+  {
+    type: "Poster Presentation",
+    titleParts: (
+      <>
+        Diagnostic Performance of an Integrated{" "}
+        <span style={{ color: "#ef4444" }}>
+          3D Vascular Reconstruction and Aneurysm Detection
+        </span>{" "}
+        AI Model using MR angiography
+      </>
+    ),
+    venue: "KJJC 2026, 일본 오사카",
+    date: "2026년 9월 18~19일",
+  },
+  {
+    type: "Poster Presentation",
+    titleParts: (
+      <>
+        Clinical Validation of a Deep Learning Model for Automated Detection of
+        Cerebrovascular{" "}
+        <span style={{ color: "#facc15" }}>Steno-occlusive Disease</span> on MRA
+      </>
+    ),
+    venue: "KJJC 2026, 일본 오사카",
+    date: "2026년 9월 18~19일",
+  },
+  {
+    type: "Poster Presentation",
+    titleParts: (
+      <>
+        Development and Validation of an Integrated Deep Learning Framework for{" "}
+        <span style={{ color: "#f97316" }}>
+          3D Carotid Artery Reconstruction and Stenosis Detection
+        </span>{" "}
+        using MR angiography
+      </>
+    ),
+    venue: "KJJC 2026, 일본 오사카",
+    date: "2026년 9월 18~19일",
+  },
   {
     type: "Oral Presentation",
     titleParts: (
@@ -190,21 +232,23 @@ function PublicationCard({
             borderLeft: "3px solid rgba(96,165,250,0.6)",
           }}
         >
-          {/* 한글 설명 - 크고 눈에 띄게 */}
-          <p
-            style={{
-              fontSize: "1.1rem",
-              fontWeight: 700,
-              color: "#e2e8f0",
-              fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
-              lineHeight: 1.6,
-              margin: "0 0 0.6rem",
-              letterSpacing: "0.01em",
-              wordBreak: "keep-all",
-            }}
-          >
-            {pub.koreanDesc}
-          </p>
+          {/* 한글 설명 - 크고 눈에 띄게 (포스터는 한글 제목 없음) */}
+          {pub.koreanDesc && (
+            <p
+              style={{
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                color: "#e2e8f0",
+                fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
+                lineHeight: 1.6,
+                margin: "0 0 0.6rem",
+                letterSpacing: "0.01em",
+                wordBreak: "keep-all",
+              }}
+            >
+              {pub.koreanDesc}
+            </p>
+          )}
 
           {/* 장소 + 날짜 */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
@@ -282,9 +326,20 @@ function PublicationCard({
 
 export function PublicationsSection() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
+  const [pageIndex, setPageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [cardsHeight, setCardsHeight] = useState<number>(600);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
+
+  const pageCount = Math.ceil(publications.length / CARDS_PER_PAGE);
+  const pageStart = pageIndex * CARDS_PER_PAGE;
+  const pageItems = publications.slice(pageStart, pageStart + CARDS_PER_PAGE);
+
+  const goToPage = (next: number) => {
+    setPageIndex(Math.min(pageCount - 1, Math.max(0, next)));
+    setActiveCard(null);
+  };
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768);
@@ -342,6 +397,7 @@ export function PublicationsSection() {
       <RevealSection style={{ transitionDelay: "0.1s" }}>
         <div
           style={{
+            position: "relative",
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
             gap: isMobile ? "1.5rem" : "3.5rem",
@@ -349,7 +405,79 @@ export function PublicationsSection() {
             alignItems: isMobile ? "stretch" : "flex-start",
             margin: "0 auto",
           }}
+          onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+          onTouchEnd={e => {
+            if (touchStartX.current === null) return;
+            const dx = e.changedTouches[0].clientX - touchStartX.current;
+            touchStartX.current = null;
+            if (Math.abs(dx) < 40) return;
+            goToPage(pageIndex + (dx < 0 ? 1 : -1));
+          }}
         >
+          {/* 좌측 화살표 */}
+          <button
+            onClick={() => goToPage(pageIndex - 1)}
+            disabled={pageIndex === 0}
+            aria-label="이전 발표 목록"
+            style={{
+              position: "absolute",
+              left: isMobile ? "0.3rem" : "-5rem",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 10,
+              background: isMobile ? "rgba(0,0,0,0.35)" : "none",
+              backdropFilter: isMobile ? "blur(6px)" : "none",
+              borderRadius: isMobile ? "50%" : "0",
+              border: "none",
+              color: "#60a5fa",
+              cursor: pageIndex === 0 ? "default" : "pointer",
+              opacity: pageIndex === 0 ? 0.08 : 0.75,
+              transition: "all 0.3s ease",
+              padding: isMobile ? "0.4rem" : "1rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onMouseEnter={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={e => pageIndex !== 0 && (e.currentTarget.style.opacity = "0.75")}
+          >
+            <svg width={isMobile ? 32 : 64} height={isMobile ? 32 : 64} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          {/* 우측 화살표 */}
+          <button
+            onClick={() => goToPage(pageIndex + 1)}
+            disabled={pageIndex === pageCount - 1}
+            aria-label="다음 발표 목록"
+            style={{
+              position: "absolute",
+              right: isMobile ? "0.3rem" : "-5rem",
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 10,
+              background: isMobile ? "rgba(0,0,0,0.35)" : "none",
+              backdropFilter: isMobile ? "blur(6px)" : "none",
+              borderRadius: isMobile ? "50%" : "0",
+              border: "none",
+              color: "#60a5fa",
+              cursor: pageIndex === pageCount - 1 ? "default" : "pointer",
+              opacity: pageIndex === pageCount - 1 ? 0.08 : 0.75,
+              transition: "all 0.3s ease",
+              padding: isMobile ? "0.4rem" : "1rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onMouseEnter={e => pageIndex !== pageCount - 1 && (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={e => pageIndex !== pageCount - 1 && (e.currentTarget.style.opacity = "0.75")}
+          >
+            <svg width={isMobile ? 32 : 64} height={isMobile ? 32 : 64} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+
           {/* 왼쪽: 카드 목록 */}
           <div
             ref={cardsRef}
@@ -361,15 +489,18 @@ export function PublicationsSection() {
               minWidth: 0,
             }}
           >
-            {publications.map((pub, i) => (
-              <PublicationCard
-                key={i}
-                pub={pub}
-                index={i}
-                isActive={activeCard === i}
-                onClick={() => handleCardClick(i)}
-              />
-            ))}
+            {pageItems.map((pub, i) => {
+              const globalIndex = pageStart + i;
+              return (
+                <PublicationCard
+                  key={globalIndex}
+                  pub={pub}
+                  index={globalIndex}
+                  isActive={activeCard === globalIndex}
+                  onClick={() => handleCardClick(globalIndex)}
+                />
+              );
+            })}
           </div>
 
           {/* 오른쪽: PDF 패널 - PC only */}
@@ -431,9 +562,120 @@ export function PublicationsSection() {
                   title={`Publication PDF ${activeCard + 1}`}
                 />
               )}
+
+              {/* 카드 선택 시: PDF 없는 발표는 정보 카드 (장소 · 기간) */}
+              {activeCard !== null && !publications[activeCard].pdfPath && (
+                <>
+                  <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+                    <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.35} />
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "2rem",
+                      zIndex: 2,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "100%",
+                        padding: "2rem 2.1rem",
+                        borderRadius: "1rem",
+                        background: "rgba(15,23,42,0.72)",
+                        border: "1px solid rgba(96,165,250,0.28)",
+                        backdropFilter: "blur(12px)",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          marginBottom: "1.1rem",
+                          padding: "0.22rem 0.8rem",
+                          borderRadius: "0.4rem",
+                          background: "rgba(30,58,138,0.65)",
+                          border: "1px solid rgba(96,165,250,0.4)",
+                          color: "rgba(147,197,253,0.95)",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          letterSpacing: "0.06em",
+                          fontFamily: "'Arial Unicode MS', sans-serif",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {publications[activeCard].type}
+                      </span>
+
+                      <p
+                        style={{
+                          fontSize: "1.05rem",
+                          fontWeight: 600,
+                          color: "#e2e8f0",
+                          lineHeight: 1.65,
+                          margin: "0 0 1.4rem",
+                          letterSpacing: "-0.01em",
+                        }}
+                      >
+                        {publications[activeCard].titleParts}
+                      </p>
+
+                      <div
+                        style={{
+                          paddingTop: "1.1rem",
+                          borderTop: "1px solid rgba(96,165,250,0.18)",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.5rem",
+                          fontFamily: "'HYGraphic', 'Noto Sans KR', sans-serif",
+                        }}
+                      >
+                        <span style={{ fontSize: "1rem", fontWeight: 600, color: "rgba(147,197,253,0.95)" }}>
+                          {publications[activeCard].venue}
+                        </span>
+                        <span style={{ fontSize: "0.92rem", fontWeight: 500, color: "rgba(148,163,184,0.85)" }}>
+                          {publications[activeCard].date}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           )}
 
+        </div>
+
+        {/* 페이지 인디케이터 */}
+        <div
+          style={{
+            display: "flex",
+            gap: "0.85rem",
+            alignItems: "center",
+            justifyContent: isMobile ? "center" : "flex-start",
+            maxWidth: "1440px",
+            margin: isMobile ? "1.5rem auto 0" : "2.5rem auto 0",
+          }}
+        >
+          {Array.from({ length: pageCount }, (_, idx) => (
+            <button
+              key={idx}
+              onClick={() => goToPage(idx)}
+              aria-label={`발표 목록 ${idx + 1}페이지`}
+              style={{
+                width: idx === pageIndex ? "1.75rem" : "0.5rem",
+                height: "0.5rem",
+                borderRadius: "0.25rem",
+                background: idx === pageIndex ? "#60a5fa" : "rgba(255,255,255,0.15)",
+                border: "none",
+                cursor: "pointer",
+                transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                padding: 0,
+              }}
+            />
+          ))}
         </div>
       </RevealSection>
     </section>
