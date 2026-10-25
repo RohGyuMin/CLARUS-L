@@ -239,18 +239,20 @@ export default function ClarusSidebar({
 
         {/* 로고 */}
         <div style={{
-          paddingTop: "1.75rem",
+          paddingTop: "1.5rem",
           paddingLeft: "1.5rem",
           paddingRight: "1.5rem",
           paddingBottom: "1rem",
           borderBottom: "1px solid rgba(59,130,246,0.1)",
           display: "flex",
           alignItems: "center",
-          justifyContent: "flex-end",
+          justifyContent: "center", // 사이드바 가로 중앙
+          height: "2.5rem", // 닫기 버튼(2.5rem)과 세로 중심을 맞춤
+          boxSizing: "content-box",
         }}>
           <div
             style={{
-              fontSize: "1.1rem",
+              fontSize: "1.43rem", // 1.1rem × 1.3
               letterSpacing: "-0.01em",
               color: "rgba(96,165,250,0.95)",
               textTransform: "uppercase",
@@ -357,13 +359,13 @@ export default function ClarusSidebar({
                 }}>
                   <h3 style={{
                     color: isPerformanceOpen ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
-                    fontWeight: 700,
-                    fontSize: "1rem",
+                    fontWeight: 400,
+                    fontSize: "1.2rem", // 1rem × 1.2
                     lineHeight: 1.4,
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    fontFamily: "'Arial Unicode MS', sans-serif",
+                    fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain MRI</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -389,13 +391,13 @@ export default function ClarusSidebar({
                 }}>
                   <h3 style={{
                     color: isPerformanceOpen ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
-                    fontWeight: 700,
-                    fontSize: "1rem",
+                    fontWeight: 400,
+                    fontSize: "1.2rem", // 1rem × 1.2
                     lineHeight: 1.4,
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
-                    fontFamily: "'Arial Unicode MS', sans-serif",
+                    fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain CT</h3>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.125rem" }}>
@@ -483,9 +485,9 @@ function NavBtn({
           ? "0 4px 15px rgba(0,0,0,0.3)"
           : "none",
         color: active ? "#ffffff" : hovered ? "#ffffff" : "rgba(226,232,240,0.85)",
-        fontSize: "1.25rem",
-        fontWeight: active ? 600 : 500,
-        fontFamily: "'Arial Black', 'Arial Unicode MS', sans-serif",
+        fontSize: "1.5rem", // 1.25rem × 1.2
+        fontWeight: 400, // Varela Round는 굵기 400 하나뿐
+        fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",
         padding: "1rem 1.5rem",
         borderRadius: "0.75rem",
         textAlign: "left",
@@ -535,10 +537,10 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
           : "transparent",
         boxShadow: hovered ? "inset 2px 0 0 rgba(96,165,250,0.4)" : "none",
         color: hovered ? "#ffffff" : "rgba(203,213,225,0.75)",
-        fontSize: "1.08rem",
+        fontSize: "1.3rem", // 1.08rem × 1.2
         lineHeight: 1.5,
-        fontWeight: 500,
-        fontFamily: "'Arial Unicode MS', sans-serif",
+        fontWeight: 400,
+        fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",
         padding: "0.625rem 1.15rem",
         borderRadius: "0.375rem",
         textAlign: "left",
