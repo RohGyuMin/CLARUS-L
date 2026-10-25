@@ -54,10 +54,14 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
     <section
       id="contact"
       style={{
-        minHeight: isCompactLayout ? "auto" : "100vh",
+        // PC: 아래 회사 정보(Footer)와 함께 한 화면(100vh)을 채움 → page.tsx 래퍼에서 flex: 1
+        flex: isCompactLayout ? undefined : 1,
+        minHeight: "auto",
         display: "flex",
-        alignItems: isCompactLayout ? "flex-start" : "center",
-        paddingTop: isCompactLayout ? "4rem" : undefined,
+        alignItems: "flex-start",
+        // PC: 소제목·대제목 위치를 Publications와 동일하게
+        // (소제목 top = 화면 높이 50% − 407px, 1080 기준 y=133 / Publications처럼 최소 3.5rem)
+        paddingTop: isCompactLayout ? "4rem" : "max(3.5rem, calc(50vh - 407px))",
         paddingBottom: isCompactLayout ? "1.5rem" : undefined,
         position: "relative",
       }}
@@ -75,7 +79,7 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
       </FloatingDotBox>
 
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: isCompactLayout ? "2rem" : "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
           <RevealSection>
             <SectionLabel>Contact</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.2, marginBottom: "1.5rem" }}>

@@ -372,6 +372,8 @@ export default function ClarusNPage() {
             <PerformanceSection pageIndex={performancePageIndex} setPageIndex={setPerformancePageIndex} isCompactLayout={isCompactLayout} />
             <PublicationsSection />
             <TestRequestSection />
+            {/* Contact + 회사 정보(Footer)를 한 화면에 */}
+            <div style={{ minHeight: isCompactLayout ? undefined : "100vh", display: "flex", flexDirection: "column" }}>
             <ContactSection
               onOpenPrivacy={() => setActiveLegalModal("privacy")}
               privacyAgreed={privacyAgreed}
@@ -384,6 +386,7 @@ export default function ClarusNPage() {
               onOpenTerms={() => setActiveLegalModal("terms")}
               isCompactLayout={isCompactLayout}
             />
+            </div>
           </div>
 
           <LegalModal

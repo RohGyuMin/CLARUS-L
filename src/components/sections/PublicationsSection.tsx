@@ -453,38 +453,6 @@ export function PublicationsSection() {
             </svg>
           </button>
 
-          {/* 우측 화살표 */}
-          <button
-            onClick={() => goToPage(pageIndex + 1)}
-            disabled={pageIndex === pageCount - 1}
-            aria-label="다음 발표 목록"
-            style={{
-              position: "absolute",
-              right: isMobile ? "0.3rem" : "-5rem",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 10,
-              background: isMobile ? "rgba(0,0,0,0.35)" : "none",
-              backdropFilter: isMobile ? "blur(6px)" : "none",
-              borderRadius: isMobile ? "50%" : "0",
-              border: "none",
-              color: "#60a5fa",
-              cursor: pageIndex === pageCount - 1 ? "default" : "pointer",
-              opacity: pageIndex === pageCount - 1 ? 0.08 : 0.75,
-              transition: "all 0.3s ease",
-              padding: isMobile ? "0.4rem" : "1rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onMouseEnter={e => pageIndex !== pageCount - 1 && (e.currentTarget.style.opacity = "1")}
-            onMouseLeave={e => pageIndex !== pageCount - 1 && (e.currentTarget.style.opacity = "0.75")}
-          >
-            <svg width={isMobile ? 32 : 64} height={isMobile ? 32 : 64} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-
           {/* 왼쪽: 카드 목록 */}
           <div
             ref={cardsRef}
@@ -492,12 +460,45 @@ export function PublicationsSection() {
               display: "flex",
               flexDirection: "column",
               gap: "1rem",
+              position: "relative",
               flex: isMobile ? 1 : `0 1 ${SMALL_BOX_WIDTH}`,
               // 좁은 화면에서도 floating dot 박스(600px)와 겹치지 않도록
               maxWidth: isMobile ? undefined : `calc(100% - ${DOT_BOX_WIDTH}px - ${DOT_BOX_GAP})`,
               minWidth: 0,
             }}
           >
+            {/* 우측 화살표 — Performance처럼 카드 바로 오른쪽 */}
+            <button
+              onClick={() => goToPage(pageIndex + 1)}
+              disabled={pageIndex === pageCount - 1}
+              aria-label="다음 발표 목록"
+              style={{
+                position: "absolute",
+                right: isMobile ? "0.3rem" : "calc(-5rem - 1.5rem)",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 10,
+                background: isMobile ? "rgba(0,0,0,0.35)" : "none",
+                backdropFilter: isMobile ? "blur(6px)" : "none",
+                borderRadius: isMobile ? "50%" : "0",
+                border: "none",
+                color: "#60a5fa",
+                cursor: pageIndex === pageCount - 1 ? "default" : "pointer",
+                opacity: pageIndex === pageCount - 1 ? 0.08 : 0.75,
+                transition: "all 0.3s ease",
+                padding: isMobile ? "0.4rem" : "1rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onMouseEnter={e => pageIndex !== pageCount - 1 && (e.currentTarget.style.opacity = "1")}
+              onMouseLeave={e => pageIndex !== pageCount - 1 && (e.currentTarget.style.opacity = "0.75")}
+            >
+              <svg width={isMobile ? 32 : 64} height={isMobile ? 32 : 64} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+
             {pageItems.map((pub, i) => {
               const globalIndex = pageStart + i;
               return (

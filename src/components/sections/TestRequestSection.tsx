@@ -6,6 +6,22 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 import FloatingDotBox, { DotLayer, DotBoxSpacer, SMALL_BOX_WIDTH, DOT_BOX_GAP } from "@/components/FloatingDotBox";
+
+/* 하단 버튼 색: 윗줄(도움말 버튼) = navy, 아랫줄(요청 수) = 보라 */
+const HELP_BTN = {
+  bg: "rgba(30,58,138,0.55)",
+  bgHover: "rgba(30,64,175,0.8)",
+  bgActive: "rgba(37,99,235,0.6)",
+  border: "rgba(96,165,250,0.4)",
+  borderHover: "rgba(147,197,253,0.75)",
+  text: "#dbeafe",
+};
+const COUNT_PILL = {
+  bg: "rgba(109,40,217,0.22)",
+  border: "rgba(167,139,250,0.5)",
+  text: "#c4b5fd",
+  dot: "#a78bfa",
+};
 import PdfModal from "@/components/PdfModal";
 
 type RequestLanguage = "ko" | "en";
@@ -606,16 +622,17 @@ export function TestRequestSection() {
                 className="cn-request-meta-row"
                 style={{
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: "column",
+                  alignItems: "stretch",
                   justifyContent: "flex-start",
-                  gap: "0.45rem",
+                  gap: "0.7rem",
                   marginTop: "1.2rem",
                   flexWrap: "nowrap",
                   width: "100%",
                   minWidth: 0,
                 }}
               >
-                <div className="cn-request-meta-count-wrap" style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }}>
+                <div className="cn-request-meta-count-wrap" style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0, order: 2 }}>
                   <span
                     className="cn-request-count-pill"
                     style={{
@@ -625,15 +642,15 @@ export function TestRequestSection() {
                       whiteSpace: "nowrap",
                       padding: "0 0.9rem",
                       borderRadius: "2rem",
-                      background: "rgba(59,130,246,0.08)",
-                      border: "1px solid rgba(59,130,246,0.3)",
-                      color: "#60a5fa",
+                      background: COUNT_PILL.bg,
+                      border: `1px solid ${COUNT_PILL.border}`,
+                      color: COUNT_PILL.text,
                       fontSize: "0.9rem",
                       fontFamily: "'Inter', sans-serif",
                       fontWeight: 600,
                       lineHeight: 1,
                       letterSpacing: "0.06em",
-                      textShadow: "0 0 12px rgba(96,165,250,0.4)",
+                      textShadow: "0 0 12px rgba(167,139,250,0.4)",
                       boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
                     }}
                   >
@@ -642,15 +659,15 @@ export function TestRequestSection() {
                       width: "8px",
                       height: "8px",
                       borderRadius: "50%",
-                      background: "#60a5fa",
+                      background: COUNT_PILL.dot,
                       marginRight: "0.75rem",
-                      boxShadow: "0 0 8px #60a5fa"
+                      boxShadow: `0 0 8px ${COUNT_PILL.dot}`
                     }} />
                     {copy.requestCountLabel}: {String(requestCount).padStart(4, '0')}
                   </span>
                 </div>
 
-                <div className="cn-request-meta-actions" style={{ display: "flex", gap: "0.28rem", flexWrap: "nowrap", flex: 1, minWidth: 0 }}>
+                <div className="cn-request-meta-actions" style={{ display: "flex", gap: "0.5rem", flexWrap: "nowrap", width: "100%", minWidth: 0, order: 1 }}>
                   {([
                     { label: copy.helpButtons.dicom, key: "dicom" as const },
                     { label: copy.helpButtons.analysis, key: "analysis" as const },
@@ -667,41 +684,42 @@ export function TestRequestSection() {
                           justifyContent: "center",
                           flex: 1,
                           minWidth: 0,
-                          height: "2.7rem",
-                          gap: "0.35rem",
-                          padding: "0 1rem",
-                          borderRadius: "0.7rem",
-                          background: isActive ? "rgba(96,165,250,0.2)" : "rgba(96,165,250,0.07)",
-                          border: `1px solid ${isActive ? "rgba(96,165,250,0.6)" : "rgba(96,165,250,0.25)"}`,
-                          color: isActive ? "#bfdbfe" : "#93c5fd",
-                          fontSize: "0.88rem",
+                          minHeight: "3.2rem",
+                          gap: "0.45rem",
+                          padding: "0.4rem 0.75rem",
+                          borderRadius: "0.75rem",
+                          background: isActive ? HELP_BTN.bgActive : HELP_BTN.bg,
+                          border: `1px solid ${isActive ? HELP_BTN.borderHover : HELP_BTN.border}`,
+                          color: HELP_BTN.text,
+                          fontSize: "0.98rem",
                           fontWeight: 600,
-                          lineHeight: 1,
+                          lineHeight: 1.25,
                           fontFamily: "'HYGraphic', sans-serif",
-                          whiteSpace: "nowrap",
+                          whiteSpace: "normal",
+                          textAlign: "center",
                           cursor: "pointer",
                           transition: "all 0.2s ease",
                         }}
                         onMouseEnter={e => {
                           if (!isActive) {
-                            e.currentTarget.style.background = "rgba(96,165,250,0.15)";
-                            e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
+                            e.currentTarget.style.background = HELP_BTN.bgHover;
+                            e.currentTarget.style.borderColor = HELP_BTN.borderHover;
                           }
                         }}
                         onMouseLeave={e => {
                           if (!isActive) {
-                            e.currentTarget.style.background = "rgba(96,165,250,0.07)";
-                            e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)";
+                            e.currentTarget.style.background = HELP_BTN.bg;
+                            e.currentTarget.style.borderColor = HELP_BTN.border;
                           }
                         }}
                       >
                         {key === "analysis" ? (
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="11" cy="11" r="8" />
                             <line x1="21" y1="21" x2="16.65" y2="16.65" />
                           </svg>
                         ) : (
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                           </svg>
                         )}
@@ -720,32 +738,33 @@ export function TestRequestSection() {
                       justifyContent: "center",
                       flex: 1,
                       minWidth: 0,
-                      height: "2.7rem",
-                      gap: "0.35rem",
-                      padding: "0 1rem",
-                      borderRadius: "0.7rem",
-                      background: "rgba(96,165,250,0.07)",
-                      border: "1px solid rgba(96,165,250,0.25)",
-                      color: "#93c5fd",
-                      fontSize: "0.88rem",
+                      minHeight: "3.2rem",
+                      gap: "0.45rem",
+                      padding: "0.4rem 0.75rem",
+                      borderRadius: "0.75rem",
+                      background: HELP_BTN.bg,
+                      border: `1px solid ${HELP_BTN.border}`,
+                      color: HELP_BTN.text,
+                      fontSize: "0.98rem",
                       fontWeight: 600,
-                      lineHeight: 1,
+                      lineHeight: 1.25,
                       fontFamily: "'HYGraphic', sans-serif",
-                      whiteSpace: "nowrap",
+                      whiteSpace: "normal",
+                          textAlign: "center",
                       textDecoration: "none",
                       cursor: "pointer",
                       transition: "all 0.2s ease",
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.background = "rgba(96,165,250,0.15)";
-                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.5)";
+                      e.currentTarget.style.background = HELP_BTN.bgHover;
+                      e.currentTarget.style.borderColor = HELP_BTN.borderHover;
                     }}
                     onMouseLeave={e => {
-                      e.currentTarget.style.background = "rgba(96,165,250,0.07)";
-                      e.currentTarget.style.borderColor = "rgba(96,165,250,0.25)";
+                      e.currentTarget.style.background = HELP_BTN.bg;
+                      e.currentTarget.style.borderColor = HELP_BTN.border;
                     }}
                   >
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                       <polyline points="7 10 12 15 17 10" />
                       <line x1="12" y1="15" x2="12" y2="3" />
