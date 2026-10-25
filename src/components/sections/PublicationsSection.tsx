@@ -35,7 +35,8 @@ const publications: Publication[] = [
     ),
     venue: "제 66회 대한신경외과학회 추계학술대회",
     date: "2026년 10월 15~17일",
-    pdfPath: "/papers/paper-carotid-internal-validation.pdf",
+    // 포스터 크기(2160×3838pt) 한 장이라 PDF 보기에서 확대되어 보임 → 폭에 맞는 이미지로 표시
+    imagePath: "/posters/poster-carotid-internal-validation.png",
   },
   {
     type: "Poster Presentation",
