@@ -21,6 +21,49 @@ interface Publication {
 const CARDS_PER_PAGE = 4;
 
 const publications: Publication[] = [
+  // ── 제66회 대한신경외과학회 추계학술대회 (2026.10.15~17) ──
+  {
+    type: "Oral Presentation",
+    titleParts: (
+      <>
+        Internal Validation of an Integrated Deep Learning models for{" "}
+        <span style={{ color: "#facc15" }}>
+          3D Carotid Artery Reconstruction and Stenosis Detection
+        </span>{" "}
+        using MRA
+      </>
+    ),
+    venue: "제 66회 대한신경외과학회 추계학술대회",
+    date: "2026년 10월 15~17일",
+    pdfPath: "/papers/paper-carotid-internal-validation.pdf",
+  },
+  {
+    type: "Poster Presentation",
+    titleParts: (
+      <>
+        Comparison of a Deep Learning Model and Radiologists for{" "}
+        <span style={{ color: "#f97316" }}>Cerebral Aneurysm Detection</span>{" "}
+        on TOF-MRA
+      </>
+    ),
+    venue: "제 66회 대한신경외과학회 추계학술대회",
+    date: "2026년 10월 15~17일",
+    imagePath: "/posters/poster-aneurysm-radiologists.png",
+  },
+  {
+    type: "Poster Presentation",
+    titleParts: (
+      <>
+        Clinical Validation of a Deep Learning Framework for the Automated Detection of
+        Intracranial Atherosclerotic{" "}
+        <span style={{ color: "#60a5fa" }}>Steno-Occlusive Disease</span> on TOF-MRA
+      </>
+    ),
+    venue: "제 66회 대한신경외과학회 추계학술대회",
+    date: "2026년 10월 15~17일",
+    imagePath: "/posters/poster-icas-steno-occlusive.png",
+  },
+  // ── 기존 ──
   {
     type: "Poster Presentation",
     titleParts: (
