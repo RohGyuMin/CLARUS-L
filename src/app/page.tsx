@@ -24,8 +24,9 @@ const SNAP_SECTION_IDS = ["hero", "about", "about-strengths", "background", "per
 type LegalModalKey = "privacy" | "terms" | "email-refusal";
 
 export default function ClarusNPage() {
-  const [showIntro, setShowIntro] = useState(true);
-  const [isIntroEnding, setIsIntroEnding] = useState(false);
+  // 오프닝 동영상 사용 안 함: 처음부터 본문 표시 (다시 켜려면 true / false 로 되돌림)
+  const [showIntro, setShowIntro] = useState(false);
+  const [isIntroEnding, setIsIntroEnding] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isCompactLayout, setIsCompactLayout] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth <= 1024 : false

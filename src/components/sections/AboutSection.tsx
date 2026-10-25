@@ -75,7 +75,7 @@ export function AboutSection({ isCompactLayout }: { isCompactLayout: boolean }) 
                 }}>
                   <span style={{ fontSize: "1.25rem", fontWeight: 800, color: "#a855f7" }}>-N</span>
                   <span style={{ fontSize: "0.93rem", color: "#94a3b8" }}>: &quot;hyphen N&quot; means</span>
-                  <span style={{ fontSize: "1.08rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>)</span>
+                  <span style={{ fontSize: "1.08rem", fontWeight: 700, color: "#ffffff" }}>AI (<span style={{ color: "#a855f7", position: "relative", display: "inline-block" }}>N<span style={{ position: "absolute", left: "0", right: "0", top: "52%", height: "2px", background: "#a855f7", transform: "translateY(-50%)", borderRadius: "1px" }} /></span>) &amp; Neuro</span>
                 </div>
               </div>
             </RevealSection>
