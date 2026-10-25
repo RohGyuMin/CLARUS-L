@@ -24,11 +24,6 @@ export default function NeuralSynapseVisual({
     let W = canvas.width = canvas.offsetWidth;
     let H = canvas.height = canvas.offsetHeight;
 
-    const onResize = () => {
-      W = canvas.width = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
-    };
-    window.addEventListener("resize", onResize);
 
     // 모드별 설정
     const config = {
@@ -54,6 +49,25 @@ export default function NeuralSynapseVisual({
       radius: Math.random() * 2 + 1,
       pulse: Math.random() * Math.PI,
     }));
+
+    // 박스 크기가 바뀌면 점 위치를 새 크기에 맞춤.
+    // 숨겨진 상태(크기 0)로 시작한 뒤 나타나면 점이 한쪽 모서리에 몰려 안 보이던 문제 방지.
+    const onResize = () => {
+      const oldW = W, oldH = H;
+      const newW = canvas.offsetWidth, newH = canvas.offsetHeight;
+      if (newW === oldW && newH === oldH) return;
+      W = canvas.width = newW;
+      H = canvas.height = newH;
+      if (W === 0 || H === 0) return;
+      for (const n of nodes) {
+        n.x = oldW > 0 ? (n.x / oldW) * W : Math.random() * W;
+        n.y = oldH > 0 ? (n.y / oldH) * H : Math.random() * H;
+      }
+    };
+    // 창 크기 변화뿐 아니라 박스가 숨겨졌다 나타나는 경우(display: none → block)도 감지
+    const resizeObserver = new ResizeObserver(onResize);
+    resizeObserver.observe(canvas);
+    window.addEventListener("resize", onResize);
 
 
     let raf: number;
@@ -144,6 +158,7 @@ export default function NeuralSynapseVisual({
 
     return () => {
       window.removeEventListener("resize", onResize);
+      resizeObserver.disconnect();
       cancelAnimationFrame(raf);
       observer.disconnect();
     };
