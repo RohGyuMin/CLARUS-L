@@ -204,7 +204,8 @@ export default function ClarusSidebar({
       <div style={{ height: "100%", display: "flex", flexDirection: "column", position: "relative" }}>
 
         {/* 닫기 버튼 */}
-        <div style={{ position: "absolute", top: "1.5rem", left: "1.5rem", zIndex: 10 }}>
+        {/* 오른쪽 끝을 About 박스 오른쪽 끝에 맞춤: nav 좌우 padding 1.25rem + 스크롤바 자리 6px */}
+        <div style={{ position: "absolute", top: "1.5rem", right: "calc(1.25rem + 6px)", zIndex: 10 }}>
           <button
             onClick={onToggle}
             style={{
@@ -246,7 +247,7 @@ export default function ClarusSidebar({
           borderBottom: "1px solid rgba(59,130,246,0.1)",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center", // 사이드바 가로 중앙
+          justifyContent: "flex-start", // 기존 닫기 버튼 자리(왼쪽 1.5rem)에서 시작
           height: "2.5rem", // 닫기 버튼(2.5rem)과 세로 중심을 맞춤
           boxSizing: "content-box",
         }}>
@@ -298,6 +299,7 @@ export default function ClarusSidebar({
           style={{
             flex: 1,
             overflowY: "auto",
+            scrollbarGutter: "stable", // 스크롤바 유무와 관계없이 메뉴 폭 고정 (닫기 버튼 정렬용)
             paddingTop: "1.5rem",
             paddingLeft: "1.25rem",
             paddingRight: "1.25rem",
@@ -365,6 +367,7 @@ export default function ClarusSidebar({
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
+                    paddingLeft: "1.25rem", // Performance 글자보다 한 칸 안쪽
                     fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain MRI</h3>
@@ -390,13 +393,14 @@ export default function ClarusSidebar({
                   transition: "transform 0.5s ease",
                 }}>
                   <h3 style={{
-                    color: isPerformanceOpen ? "rgba(96,165,250,1)" : "rgba(96,165,250,0.55)",
+                    color: isPerformanceOpen ? "#a855f7" : "rgba(168,85,247,0.55)", // 회사명 -N 보라색
                     fontWeight: 400,
                     fontSize: "1.2rem", // 1rem × 1.2
                     lineHeight: 1.4,
                     marginBottom: "0.625rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
+                    paddingLeft: "1.25rem", // Performance 글자보다 한 칸 안쪽
                     fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",
                     transition: "color 0.3s ease",
                   }}>Brain CT</h3>
@@ -541,7 +545,7 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
         lineHeight: 1.5,
         fontWeight: 400,
         fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",
-        padding: "0.625rem 1.15rem",
+        padding: "0.625rem 1.15rem 0.625rem 2.5rem", // 왼쪽: BRAIN MRI/CT 글자보다 한 칸 더
         borderRadius: "0.375rem",
         textAlign: "left",
         textDecoration: "none",

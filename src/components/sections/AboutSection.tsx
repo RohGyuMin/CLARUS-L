@@ -238,6 +238,13 @@ export function AboutStrengthsSection() {
       desc: "Our streamlined development process — from data curation to model deployment — enables faster iteration and delivery without compromising clinical rigor.",
       badge: "8 pipelines / 11 mo.",
     },
+    {
+      color: "#f87171",
+      title: <><span style={{ color: "#f87171" }}>User-centric AI</span> development</>,
+      sub: "AI developed from a neurosurgeon's perspective",
+      desc: "",
+      badge: null,
+    },
   ];
 
   const [hovered, setHovered] = useState<number | null>(null);
