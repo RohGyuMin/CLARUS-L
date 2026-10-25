@@ -5,6 +5,7 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
+import FloatingDotBox, { DotLayer, DotBoxSpacer, SMALL_BOX_WIDTH, DOT_BOX_GAP } from "@/components/FloatingDotBox";
 
 export function AboutSection({ isCompactLayout }: { isCompactLayout: boolean }) {
   return (
@@ -250,9 +251,9 @@ export function AboutStrengthsSection() {
   }, []);
 
   return (
-    <section id="about-strengths" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
-        <div style={{ flex: 1 }}>
+    <section id="about-strengths" style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", gap: DOT_BOX_GAP }}>
+        <div className="cn-small-box-col" style={{ flex: "0 1 auto", width: "100%", maxWidth: SMALL_BOX_WIDTH, minWidth: 0 }}>
           <RevealSection>
             <SectionLabel>Strengths</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
@@ -342,11 +343,16 @@ export function AboutStrengthsSection() {
           </div>
         </div>
 
-        {/* 우측 뉴런 장식 */}
-        <div style={{ flex: 1, height: "500px", position: "relative" }}>
-          <NeuralSynapseVisual mode="dense" color="147, 197, 253" opacity={0.55} />
-        </div>
+        {/* 우측 floating dot 박스 자리 */}
+        <DotBoxSpacer />
       </div>
+
+      {/* 우측 뉴런 장식 (공통 floating dot 박스) */}
+      <FloatingDotBox>
+        <DotLayer>
+          <NeuralSynapseVisual mode="dense" color="147, 197, 253" opacity={0.55} />
+        </DotLayer>
+      </FloatingDotBox>
     </section>
   );
 }

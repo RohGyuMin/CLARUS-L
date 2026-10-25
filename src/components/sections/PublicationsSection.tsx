@@ -5,6 +5,7 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
+import FloatingDotBox, { DotLayer, DotBoxPrompt, SMALL_BOX_WIDTH, DOT_BOX_WIDTH, DOT_BOX_GAP } from "@/components/FloatingDotBox";
 
 interface Publication {
   type: "Oral Presentation" | "Poster Presentation" | "Journal";
@@ -377,6 +378,7 @@ export function PublicationsSection() {
         justifyContent: "center",
         paddingTop: "3.5rem",
         paddingBottom: "6rem",
+        position: "relative",
       }}
     >
       <RevealSection>
@@ -407,6 +409,7 @@ export function PublicationsSection() {
             gap: isMobile ? "1.5rem" : "3.5rem",
             maxWidth: "1440px",
             alignItems: isMobile ? "stretch" : "flex-start",
+            justifyContent: isMobile ? undefined : "space-between",
             margin: "0 auto",
           }}
           onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
@@ -489,7 +492,9 @@ export function PublicationsSection() {
               display: "flex",
               flexDirection: "column",
               gap: "1rem",
-              flex: 1,
+              flex: isMobile ? 1 : `0 1 ${SMALL_BOX_WIDTH}`,
+              // 좁은 화면에서도 floating dot 박스(600px)와 겹치지 않도록
+              maxWidth: isMobile ? undefined : `calc(100% - ${DOT_BOX_WIDTH}px - ${DOT_BOX_GAP})`,
               minWidth: 0,
             }}
           >
@@ -520,37 +525,7 @@ export function PublicationsSection() {
                 transition: "border-color 0.3s ease",
               }}
             >
-              {/* 카드 미선택 시: Neural 배경 + 안내 문구 */}
-              {activeCard === null && (
-                <>
-                  <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-                    <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
-                  </div>
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      gap: "0.75rem",
-                      pointerEvents: "none",
-                      zIndex: 2,
-                    }}
-                  >
-                    <span style={{
-                      color: "rgba(226,232,240,0.55)",
-                      fontSize: "0.88rem",
-                      fontFamily: "'HYGraphic', sans-serif",
-                      fontWeight: 600,
-                      letterSpacing: "0.03em",
-                    }}>
-                      Click a card to view the paper
-                    </span>
-                  </div>
-                </>
-              )}
+              {/* 카드 미선택 시: Neural 배경 + 안내 문구 → 아래 공통 floating dot 박스 */}
 
               {/* 카드 선택 시: PDF iframe */}
               {activeCard !== null && publications[activeCard].pdfPath && (
@@ -616,6 +591,26 @@ export function PublicationsSection() {
           ))}
         </div>
       </RevealSection>
+
+      {/* 카드 미선택 시: 공통 floating dot 박스 + 가운데 안내 문구 - PC only */}
+      {!isMobile && activeCard === null && (
+        <FloatingDotBox hideOnCompact={false} style={{ borderRadius: "1.1rem", overflow: "hidden", pointerEvents: "none" }}>
+          <DotLayer>
+            <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
+          </DotLayer>
+          <DotBoxPrompt>
+            <span style={{
+              color: "rgba(226,232,240,0.55)",
+              fontSize: "0.88rem",
+              fontFamily: "'HYGraphic', sans-serif",
+              fontWeight: 600,
+              letterSpacing: "0.03em",
+            }}>
+              Click a card to view the paper
+            </span>
+          </DotBoxPrompt>
+        </FloatingDotBox>
+      )}
     </section>
   );
 }

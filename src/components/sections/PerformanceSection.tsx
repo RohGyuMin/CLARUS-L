@@ -5,6 +5,7 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
+import FloatingDotBox, { DotLayer, DotBoxPrompt, DotBoxSpacer } from "@/components/FloatingDotBox";
 
 interface CardData {
   title: string;
@@ -405,8 +406,9 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       ref={sectionRef}
       style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", paddingBottom: isCompactLayout ? "4rem" : "0" }}
     >
-      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "4rem" }}>
-        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", position: "relative" }}>
+      {/* gap 1.875rem: 왼쪽 열(42rem) + 간격 + 박스 자리(600px) = 1302px → 카드 폭 648px 유지 */}
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", gap: "1.875rem" }}>
+        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", minWidth: 0, position: "relative" }}>
           <RevealSection>
             <SectionLabel>Performance</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
@@ -773,11 +775,13 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
           </div>
         )}
 
-        {/* 우측 영역: 비디오 플레이어 */}
-        <div style={{
-          flex: 1.4,
-          height: "500px",
-          position: "relative",
+        {/* 우측 floating dot 박스 자리 */}
+        <DotBoxSpacer />
+      </div>
+
+        {/* 우측 영역: 비디오 플레이어 = 공통 floating dot 박스 */}
+        <FloatingDotBox
+        style={{
           background: activeVideo ? "rgba(0,0,0,0.85)" : "transparent",
           borderRadius: "1.5rem",
           overflow: "hidden",
@@ -790,22 +794,19 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
         onClick={activeVideo ? togglePlay : undefined}
         >
           {/* 뉴런 시각화 배경 */}
-          <div style={{
-            position: "absolute", inset: 0,
+          <DotLayer style={{
             opacity: activeVideo ? 0.15 : 1,
             filter: activeVideo ? "blur(4px)" : "none",
             transition: "opacity 0.6s ease, filter 0.6s ease",
           }}>
             <NeuralSynapseVisual mode="fast" color="110, 227, 175" opacity={0.5} />
-          </div>
+          </DotLayer>
 
           {/* 비디오 없을 때: 안내 텍스트 */}
           {!activeVideo && (
+            <DotBoxPrompt>
             <p style={{
-              position: "absolute",
-              bottom: "1.5rem",
-              left: 0, right: 0,
-              textAlign: "center",
+              margin: 0,
               color: "rgba(226,232,240,0.72)",
               fontSize: "0.94rem",
               letterSpacing: "0.03em",
@@ -817,6 +818,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
             }}>
               Click a card to view the related video
             </p>
+            </DotBoxPrompt>
           )}
 
           {/* 비디오 플레이어 */}
@@ -957,8 +959,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               )}
             </div>
           )}
-        </div>
-      </div>
+        </FloatingDotBox>
     </section>
   );
 }

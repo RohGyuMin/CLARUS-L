@@ -5,6 +5,7 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
+import FloatingDotBox, { DotLayer } from "@/components/FloatingDotBox";
 
 export type ContactSectionProps = {
   onOpenPrivacy: () => void;
@@ -58,8 +59,21 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
         alignItems: isCompactLayout ? "flex-start" : "center",
         paddingTop: isCompactLayout ? "4rem" : undefined,
         paddingBottom: isCompactLayout ? "1.5rem" : undefined,
+        position: "relative",
       }}
     >
+      {/* Background Visual (공통 floating dot 박스) - 폼 열리면 흐려짐, 폼보다 뒤에 그려지도록 먼저 배치 */}
+      <FloatingDotBox style={{
+        opacity: isFormOpen ? 0.05 : 1,
+        transition: "opacity 0.6s ease, transform 0.6s ease",
+        transform: isFormOpen ? "scale(0.95)" : "scale(1)",
+        pointerEvents: "none",
+      }}>
+        <DotLayer>
+          <NeuralSynapseVisual mode="fast" color="96, 165, 250" opacity={0.65} />
+        </DotLayer>
+      </FloatingDotBox>
+
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "stretch", gap: isCompactLayout ? "2rem" : "4rem" }}>
         <div style={{ flex: 1, maxWidth: "38rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <RevealSection>
@@ -258,15 +272,7 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
         {/* 우측 영역: Visual 또는 Form */}
         <div style={{ flex: 1, position: "relative", minHeight: "600px", display: "flex", alignItems: "center", transition: "all 0.5s ease" }}>
 
-          {/* Background Visual */}
-          <div style={{
-            position: "absolute", inset: 0, height: "100%",
-            opacity: isFormOpen ? 0.05 : 1,
-            transition: "opacity 0.6s ease",
-            transform: isFormOpen ? "scale(0.95)" : "scale(1)",
-          }}>
-            <NeuralSynapseVisual mode="fast" color="96, 165, 250" opacity={0.65} />
-          </div>
+          {/* Background Visual → 섹션 하단의 공통 floating dot 박스 */}
 
           {/* Contact Form */}
           <div style={{
@@ -583,6 +589,7 @@ export function ContactSection({ onOpenPrivacy, privacyAgreed, setPrivacyAgreed,
         </div>
         </div>
       )}
+
     </section>
   );
 }

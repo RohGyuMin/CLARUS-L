@@ -329,6 +329,14 @@ body::before {
   .cn-section-flex > div.cn-about-photo-panel {
     display: flex !important;
   }
+  /* 세로 배치에서는 가운데 박스 폭 제한 해제 */
+  .cn-small-box-col {
+    max-width: none !important;
+  }
+  /* 우측 floating dot 박스: 세로 배치에서는 숨김 */
+  .cn-floating-dot-box {
+    display: none !important;
+  }
 }
 
 /* 모바일 (768px 이하) */

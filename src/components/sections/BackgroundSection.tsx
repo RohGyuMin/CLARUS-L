@@ -6,6 +6,7 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
+import FloatingDotBox, { DotLayer, DotBoxPrompt, DotBoxSpacer, SMALL_BOX_WIDTH, DOT_BOX_GAP } from "@/components/FloatingDotBox";
 
 export function BackgroundSection() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -191,7 +192,7 @@ export function BackgroundSection() {
 
   return (
     <>
-    <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: isMobile ? "2rem 1.25rem" : undefined }}>
+    <section id="background" style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", padding: isMobile ? "2rem 1.25rem" : undefined }}>
       <div style={{ width: "100%" }}>
         <RevealSection>
           <SectionLabel>Background</SectionLabel>
@@ -210,8 +211,8 @@ export function BackgroundSection() {
         </RevealSection>
 
         <RevealSection style={{ transitionDelay: "0.1s" }}>
-          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? "1.5rem" : "3.5rem", maxWidth: "1440px", alignItems: "center", margin: "0 auto" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? "1.5rem" : DOT_BOX_GAP, maxWidth: "1440px", alignItems: "center", justifyContent: "space-between", margin: "0 auto" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem", flex: isMobile ? 1 : `0 1 ${SMALL_BOX_WIDTH}`, minWidth: 0 }}>
             {items.map((item, i) => {
               const isActive = activeIndex === i;
               const isPinned = pinnedCard === i;
@@ -348,68 +349,65 @@ export function BackgroundSection() {
               );
             })}
             </div>
-            {/* 이미지 패널 - PC only */}
-            {!isMobile && (
-              <div style={{
-                width: "600px",
-                flexShrink: 0,
-                position: "relative",
-                minHeight: "420px",
-                borderRadius: "1.1rem",
-                overflow: "hidden",
-                transition: "opacity 0.3s ease, transform 0.3s ease",
-                pointerEvents: "none",
-              }}>
-                <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-                  <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
-                </div>
-                {pinnedCard === null ? (
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: "50%",
-                      bottom: "2.5rem",
-                      transform: "translateX(-50%)",
-                      width: "min(100%, 380px)",
-                      color: "rgba(226,232,240,0.72)",
-                      fontSize: "0.94rem",
-                      lineHeight: 1.25,
-                      fontFamily: "'HYGraphic', sans-serif",
-                      fontWeight: 700,
-                      textAlign: "center",
-                      letterSpacing: "0.03em",
-                      textShadow: "0 0 10px rgba(255,255,255,0.06)",
-                      zIndex: 2,
-                      pointerEvents: "none",
-                    }}
-                  >
-                    Click a card to view the related graphic
-                  </div>
-                ) : items[pinnedCard].image && (
-                  <img
-                    src={items[pinnedCard].image}
-                    alt="Background Detail"
-                    style={{
-                      width: "auto",
-                      height: "auto",
-                      maxWidth: "95%",
-                      maxHeight: "420px",
-                      objectFit: "contain",
-                      objectPosition: "center",
-                      display: "block",
-                      margin: "auto",
-                      borderRadius: "0.75rem",
-                      border: `1px solid ${items[pinnedCard].color}30`,
-                      position: "relative",
-                      zIndex: 1,
-                    }}
-                  />
-                )}
-              </div>
-            )}
+            {/* 이미지 패널 자리 - PC only (패널 자체는 아래 공통 floating dot 박스) */}
+            {!isMobile && <DotBoxSpacer />}
           </div>
         </RevealSection>
       </div>
+
+      {/* 이미지 패널 = 공통 floating dot 박스 - PC only */}
+      {!isMobile && (
+        <FloatingDotBox
+          hideOnCompact={false}
+          style={{
+            borderRadius: "1.1rem",
+            overflow: "hidden",
+            transition: "opacity 0.3s ease, transform 0.3s ease",
+            pointerEvents: "none",
+          }}
+        >
+          <DotLayer>
+            <NeuralSynapseVisual mode="dense" color="96, 165, 250" opacity={0.55} />
+          </DotLayer>
+          {pinnedCard === null ? (
+            <DotBoxPrompt>
+              <span
+                style={{
+                  width: "min(100%, 380px)",
+                  color: "rgba(226,232,240,0.72)",
+                  fontSize: "0.94rem",
+                  lineHeight: 1.25,
+                  fontFamily: "'HYGraphic', sans-serif",
+                  fontWeight: 700,
+                  letterSpacing: "0.03em",
+                  textShadow: "0 0 10px rgba(255,255,255,0.06)",
+                }}
+              >
+                Click a card to view the related graphic
+              </span>
+            </DotBoxPrompt>
+          ) : items[pinnedCard].image && (
+            <img
+              src={items[pinnedCard].image}
+              alt="Background Detail"
+              style={{
+                width: "auto",
+                height: "auto",
+                maxWidth: "95%",
+                maxHeight: "420px",
+                objectFit: "contain",
+                objectPosition: "center",
+                display: "block",
+                margin: "auto",
+                borderRadius: "0.75rem",
+                border: `1px solid ${items[pinnedCard].color}30`,
+                position: "relative",
+                zIndex: 1,
+              }}
+            />
+          )}
+        </FloatingDotBox>
+      )}
     </section>
 
     {/* 모바일 이미지 모달 */}

@@ -5,6 +5,7 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
+import FloatingDotBox, { DotLayer, DotBoxSpacer, SMALL_BOX_WIDTH, DOT_BOX_GAP } from "@/components/FloatingDotBox";
 import PdfModal from "@/components/PdfModal";
 
 type RequestLanguage = "ko" | "en";
@@ -259,9 +260,9 @@ export function TestRequestSection() {
   };
 
   return (
-    <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
-      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", gap: "5rem" }}>
-        <div style={{ flex: 1, width: "100%", maxWidth: "42rem" }}>
+    <section id="test-request" style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative" }}>
+      <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", gap: DOT_BOX_GAP }}>
+        <div style={{ flex: "0 1 auto", width: "100%", maxWidth: SMALL_BOX_WIDTH, minWidth: 0 }}>
           <RevealSection>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem" }}>
               <div>
@@ -757,12 +758,17 @@ export function TestRequestSection() {
           </RevealSection>
         </div>
 
-        {/* 우측 뉴런 장식 */}
-        <div style={{ flex: 1, height: "500px", position: "relative" }}>
-          <NeuralSynapseVisual mode="dense" color="192, 132, 252" opacity={0.9} />
-        </div>
+        {/* 우측 floating dot 박스 자리 */}
+        <DotBoxSpacer />
 
       </div>
+
+      {/* 우측 뉴런 장식 (공통 floating dot 박스) */}
+      <FloatingDotBox>
+        <DotLayer>
+          <NeuralSynapseVisual mode="dense" color="192, 132, 252" opacity={0.9} />
+        </DotLayer>
+      </FloatingDotBox>
 
       {/* PDF 팝업 모달 */}
       {selectedPdf && (
