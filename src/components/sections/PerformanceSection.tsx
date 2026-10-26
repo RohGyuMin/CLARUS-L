@@ -408,7 +408,8 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
     >
       {/* gap 1.875rem: 왼쪽 열(42rem) + 간격 + 박스 자리(600px) = 1302px → 카드 폭 648px 유지 */}
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", gap: "1.875rem" }}>
-        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", minWidth: 0, position: "relative" }}>
+        {/* zIndex: 첫 슬라이드의 안내 이동(transform) 때 화살표가 floating dot 박스 아래로 깔려 클릭이 안 되던 문제 방지 */}
+        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", minWidth: 0, position: "relative", zIndex: 2 }}>
           <RevealSection>
             <SectionLabel>Performance</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
