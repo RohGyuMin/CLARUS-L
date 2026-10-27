@@ -301,7 +301,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       stackAside: {
         index: 1,
         ranking: {
-          totalVolume: "11331.0 mm³",
+          totalVolume: "11.3 mL",
           totalNote: "7554 voxels × 1.50 mm³/voxel",
           rows: [
             { name: "Left MCA", color: "#22c55e", volume: "5076.0", voxels: "3384", pct: "44.8%" },
@@ -453,12 +453,19 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
 
   // 영역별 경색 부피 순위 패널 (영상 칸 왼쪽, 영상과 같은 어두운 바탕에 이어 붙임)
   const renderRanking = (r: TerritoryRanking) => (
-    <div style={{
-      width: "232px", flexShrink: 0, height: "100%", boxSizing: "border-box",
-      padding: "0.75rem 0.75rem", display: "flex", flexDirection: "column", gap: "0.45rem",
-      background: "linear-gradient(180deg, rgba(15,23,42,0.96), rgba(10,16,32,0.96))",
-      borderRight: "1px solid rgba(96,165,250,0.18)", fontFamily: "'Inter', sans-serif",
-    }}>
+    <div
+      onClick={e => e.stopPropagation()}
+      style={{
+        // 위 동영상의 범례처럼 왼쪽 아래에 띄움, 80% 크기
+        position: "absolute", left: "1rem", bottom: "1rem", zIndex: 40,
+        transform: "scale(0.8)", transformOrigin: "left bottom",
+        width: "232px", boxSizing: "border-box",
+        padding: "0.75rem 0.75rem", display: "flex", flexDirection: "column", gap: "0.45rem",
+        background: "rgba(6, 11, 26, 0.82)", backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255,255,255,0.1)", borderRadius: "0.65rem",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.5)", fontFamily: "'Inter', sans-serif",
+      }}
+    >
       <div>
         <div style={{ color: "#60a5fa", fontWeight: 700, fontSize: "0.92rem", lineHeight: 1.2 }}>Vascular Territory Ranking</div>
         <div style={{ color: "#94a3b8", fontSize: "0.66rem", marginTop: "0.15rem" }}>Sorted by infarct volume</div>
@@ -1062,35 +1069,35 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
           )}
         </FloatingDotBox>
 
-        {/* 위아래 동영상 (예: DWI 축면 + 3D). 각 칸 650×423 (폭은 ADC 박스와 같고 높이는 90%) */}
-        {activeStack && (
-          <div style={{
-            position: "absolute",
-            right: "calc(-50px - 1cm)", // 기존 박스보다 오른쪽으로 1cm
-            top: "calc(50vh - 429px)", // 두 칸(423×2 + 간격 12) 전체를 화면 세로 가운데에
-            width: "650px",
-            display: "flex", flexDirection: "column", gap: "12px",
-            zIndex: 1,
-          }}>
-            {activeStack.map((src, i) => (
-              <div key={src} style={{
-                position: "relative", height: "423px", borderRadius: "1.35rem", overflow: "hidden", display: "flex",
-                background: "rgba(0,0,0,0.85)", border: "1px solid rgba(96,165,250,0.3)", boxShadow: "0 0 40px rgba(0,0,0,0.5)",
-              }}>
-                {activeStackAside && activeStackAside.index === i && renderRanking(activeStackAside.ranking)}
-                <div style={{ position: "relative", flex: 1, minWidth: 0 }}>
-                  <video
-                    src={src}
-                    autoPlay loop muted playsInline
-                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer" }}
-                    onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
-                  />
-                  {i === activeStackLegendIndex && activeLegendItems && activeLegendItems.length > 0 && renderLegend(activeLegendItems)}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* 위아래 동영상 (DWI 축면 + 3D). 두 칸 모두 650×423, 왼쪽 끝 = ADC 박스 왼쪽 끝
+            아래 칸은 박스는 그대로 두고 영상만 1.2배 확대 + 1cm 왼쪽 (박스 밖은 잘림)
+            두 칸(423 + 12 + 423 = 858px) 전체를 화면 세로 가운데에 */}
+        {activeStack && activeStack.map((src, i) => {
+          const lower = i === 1;
+          return (
+            <div key={src} style={{
+              position: "absolute",
+              right: "-50px", // ADC 박스와 같은 위치·폭
+              top: lower ? "calc(50vh - 429px + 435px)" : "calc(50vh - 429px)",
+              width: "650px",
+              height: "423px",
+              borderRadius: "1.35rem", overflow: "hidden", zIndex: 1,
+              background: "rgba(0,0,0,0.85)", border: "1px solid rgba(96,165,250,0.3)", boxShadow: "0 0 40px rgba(0,0,0,0.5)",
+            }}>
+              <video
+                src={src}
+                autoPlay loop muted playsInline
+                style={{
+                  width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer",
+                  transform: lower ? "translateX(-1cm) scale(1.2)" : undefined,
+                }}
+                onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
+              />
+              {i === activeStackLegendIndex && activeLegendItems && activeLegendItems.length > 0 && renderLegend(activeLegendItems)}
+              {activeStackAside && activeStackAside.index === i && renderRanking(activeStackAside.ranking)}
+            </div>
+          );
+        })}
 
         {/* 3D 박스 아래: 소견 (카드에 지정한 소견 또는 모델의 동맥류 소견, 모델이 뜬 뒤 PC에서만) */}
         {!isCompactLayout && activeModel3d && modelInfo?.src === activeModel3d && activeFindings?.length ? (
