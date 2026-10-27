@@ -1120,8 +1120,8 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
                 backdropFilter: "blur(12px)",
               }}>
                 <div style={{ color: "#facc15", fontWeight: 700, fontSize: "0.98rem", marginBottom: f.rows.length ? "0.5rem" : 0, fontFamily: "'Inter', sans-serif" }}>
-                  {/* 협착 소견처럼 표 없이 제목만 있으면 "Stenosis 1:" 뒤의 서술은 동맥류 서술과 같은 옅은 회색 */}
-                  {!f.rows.length && f.title.includes(": ")
+                  {/* "Stenosis 1:" / "Aneurysm 1:" 뒤의 서술(위치)은 동맥류 수치와 같은 옅은 회색 */}
+                  {f.title.includes(": ")
                     ? <>{f.title.slice(0, f.title.indexOf(": ") + 1)} <span style={{ color: "#e2e8f0" }}>{f.title.slice(f.title.indexOf(": ") + 2)}</span></>
                     : f.title}
                 </div>
