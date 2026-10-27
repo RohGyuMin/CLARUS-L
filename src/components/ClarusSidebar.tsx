@@ -541,7 +541,7 @@ function SubBtn({ label, onClick }: { label: string; onClick?: () => void }) {
           : "transparent",
         boxShadow: hovered ? "inset 2px 0 0 rgba(96,165,250,0.4)" : "none",
         color: hovered ? "#ffffff" : "rgba(203,213,225,0.75)",
-        fontSize: "1.3rem", // 1.08rem × 1.2
+        fontSize: "1.17rem", // 1.3rem × 0.9 (하위 메뉴 10% 축소)
         lineHeight: 1.5,
         fontWeight: 400,
         fontFamily: "'Varela Round', 'Arial Unicode MS', sans-serif",

@@ -783,6 +783,9 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
         {/* 우측 영역: 비디오 플레이어 = 공통 floating dot 박스 */}
         <FloatingDotBox
         style={{
+          // 동영상 박스가 오른쪽 화살표와 겹치지 않도록 Performance만 오른쪽 1cm, 위로 1cm 이동
+          right: "-1cm",
+          top: "calc(50vh - 136px - 1cm)",
           background: activeVideo ? "rgba(0,0,0,0.85)" : "transparent",
           borderRadius: "1.5rem",
           overflow: "hidden",
