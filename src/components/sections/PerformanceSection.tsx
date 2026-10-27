@@ -20,6 +20,10 @@ interface CardData {
   model3d?: string;
   /** 3D 박스 아래에 보여줄 소견. 없으면 모델에 들어 있는 동맥류 소견을 사용 */
   modelFindings?: ModelFinding[];
+  /** 있으면 PC에서 이 동영상들을 위아래로 배치 (박스 90% 크기) */
+  stackVideos?: string[];
+  /** 위아래 동영상 중 범례를 붙일 동영상 순서 (0부터) */
+  stackLegendIndex?: number;
 }
 
 function CharacteristicCard({ card, isActive, onClick, onLongPress }: { card: CardData; isActive: boolean; onClick: () => void; onLongPress?: () => void }) {
@@ -267,7 +271,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       id: "dwi-1",
       title: "DWI AI for Infarcted <span style='color: #c084fc'>Region</span> Detection",
       description: "Accurately identifies even minute infarct lesions",
-      videoSrc: "/videos/4-Infarction-region.mp4",
+      videoSrc: "/videos/4-Infarction-region-v2.mp4",
       theme: "purple",
       details: [
         "#Input: DWI images",
@@ -281,7 +285,10 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       id: "dwi-2",
       title: "DWI AI for Mapping <span style='color: #a3e635'>Vascular territories</span>",
       description: "Mapping the vascular territory that caused the cerebral infarction",
-      videoSrc: "/videos/5-infarction-territory.mp4",
+      videoSrc: "/videos/5-infarction-territory-dwi.mp4",
+      // 위: DWI 축면(범례), 아래: 3D 혈관 영역
+      stackVideos: ["/videos/5-infarction-territory-dwi.mp4", "/videos/5-infarction-territory-3d.mp4"],
+      stackLegendIndex: 0,
       theme: "purple",
       details: [
         "#Input: DWI images",
@@ -303,7 +310,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       id: "dwi-3",
       title: "ADC AI for Infarction <span style='color: #fdba74'>Onset</span> Detection",
       description: "Transferring DWI-predicted lesions to ADC to estimate time since onset.",
-      videoSrc: "/videos/6-Infarction-onset-ADC.mp4",
+      videoSrc: "/videos/6-Infarction-onset-ADC-v2.mp4",
       theme: "purple",
       details: [
         "#Input: ADC images",
@@ -382,6 +389,8 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
   const cardSets = [mraCards, infarctCards, carotidCards, ctCards];
   const activeLegendItems = cardSets.flat().find(c => c.videoSrc === activeVideo)?.legendItems;
   const activeModel3d = cardSets.flat().find(c => c.videoSrc === activeVideo)?.model3d;
+  const activeStack = isCompactLayout ? undefined : cardSets.flat().find(c => c.videoSrc === activeVideo)?.stackVideos;
+  const activeStackLegendIndex = cardSets.flat().find(c => c.videoSrc === activeVideo)?.stackLegendIndex;
   const activeFindings: ModelFinding[] | undefined =
     cardSets.flat().find(c => c.videoSrc === activeVideo)?.modelFindings ??
     (modelInfo && modelInfo.src === activeModel3d ? modelInfo.info.findings?.aneurysm : undefined);
@@ -416,6 +425,113 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       setIsPlaying(true);
     }
   };
+
+  // 동영상 범례 (단일 동영상, 위아래 동영상 공통)
+  const renderLegend = (items: { label: string; color: string }[]) => (
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          position: "absolute",
+          bottom: "1rem",
+          left: "1rem",
+          zIndex: 40,
+          background: "rgba(6, 11, 26, 0.82)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "0.65rem",
+          overflow: "hidden",
+          minWidth: "150px",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+        }}
+      >
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsLegendCollapsed(prev => !prev);
+          }}
+          style={{
+            width: "100%",
+            padding: "0.35rem 0.8rem",
+            border: "none",
+            borderBottom: isLegendCollapsed ? "none" : "1px solid rgba(255,255,255,0.07)",
+            background: "rgba(255,255,255,0.04)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            cursor: "pointer",
+          }}
+          aria-label={isLegendCollapsed ? "Expand legend" : "Collapse legend"}
+        >
+          <span style={{
+            color: "rgba(148,163,184,0.7)",
+            fontSize: "0.67rem",
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            fontFamily: "'Inter', sans-serif",
+            textTransform: "uppercase",
+          }}>
+            Legend
+          </span>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="rgba(148,163,184,0.85)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ transform: isLegendCollapsed ? "rotate(-90deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div
+          aria-hidden={isLegendCollapsed}
+          style={{
+            maxHeight: isLegendCollapsed
+              ? "0px"
+              : `${Math.max(96, items.length * 30 + 18)}px`,
+            opacity: isLegendCollapsed ? 0 : 1,
+            overflow: "hidden",
+            pointerEvents: isLegendCollapsed ? "none" : "auto",
+            transition: "max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease",
+          }}
+        >
+          <div
+            style={{
+              padding: isLegendCollapsed ? "0 0.8rem" : "0.5rem 0.8rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.3rem",
+              transform: isLegendCollapsed ? "translateY(-4px)" : "translateY(0)",
+              transition: "padding 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          >
+            {items.map(item => (
+              <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <div style={{
+                  width: "9px", height: "9px",
+                  borderRadius: "2px",
+                  background: item.color,
+                  flexShrink: 0,
+                  boxShadow: `0 0 6px ${item.color}88`,
+                }} />
+                <span style={{
+                  color: "rgba(226,232,240,0.88)",
+                  fontSize: "0.73rem",
+                  fontFamily: "'Inter', sans-serif",
+                  whiteSpace: "nowrap",
+                }}>
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+  );
 
   return (
     <section
@@ -806,6 +922,9 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
           height: "470px",
           right: "-50px", // 이전 위치(calc(-1cm - 50px))에서 1cm 왼쪽
           top: "calc(50vh - 136px - 1cm - 25px)",
+          // 위아래 동영상일 때는 박스를 숨기고 아래의 세로 배치 영역을 사용
+          opacity: activeStack ? 0 : 1,
+          pointerEvents: activeStack ? "none" : undefined,
           background: activeVideo ? "rgba(0,0,0,0.85)" : "transparent",
           borderRadius: "1.5rem",
           overflow: "hidden",
@@ -851,7 +970,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
           )}
 
           {/* 비디오 플레이어 */}
-          {activeVideo && !activeModel3d && (
+          {activeVideo && !activeModel3d && !activeStack && (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <video
                 ref={videoRef}
@@ -881,114 +1000,37 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               )}
 
               {/* 범례 */}
-              {activeLegendItems && activeLegendItems.length > 0 && (
-                <div
-                  onClick={e => e.stopPropagation()}
-                  style={{
-                    position: "absolute",
-                    bottom: "1rem",
-                    left: "1rem",
-                    zIndex: 40,
-                    background: "rgba(6, 11, 26, 0.82)",
-                    backdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "0.65rem",
-                    overflow: "hidden",
-                    minWidth: "150px",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsLegendCollapsed(prev => !prev);
-                    }}
-                    style={{
-                      width: "100%",
-                      padding: "0.35rem 0.8rem",
-                      border: "none",
-                      borderBottom: isLegendCollapsed ? "none" : "1px solid rgba(255,255,255,0.07)",
-                      background: "rgba(255,255,255,0.04)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      cursor: "pointer",
-                    }}
-                    aria-label={isLegendCollapsed ? "Expand legend" : "Collapse legend"}
-                  >
-                    <span style={{
-                      color: "rgba(148,163,184,0.7)",
-                      fontSize: "0.67rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.12em",
-                      fontFamily: "'Inter', sans-serif",
-                      textTransform: "uppercase",
-                    }}>
-                      Legend
-                    </span>
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="rgba(148,163,184,0.85)"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{ transform: isLegendCollapsed ? "rotate(-90deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}
-                    >
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </button>
-                  <div
-                    aria-hidden={isLegendCollapsed}
-                    style={{
-                      maxHeight: isLegendCollapsed
-                        ? "0px"
-                        : `${Math.max(96, activeLegendItems.length * 30 + 18)}px`,
-                      opacity: isLegendCollapsed ? 0 : 1,
-                      overflow: "hidden",
-                      pointerEvents: isLegendCollapsed ? "none" : "auto",
-                      transition: "max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease",
-                    }}
-                  >
-                    <div
-                      style={{
-                        padding: isLegendCollapsed ? "0 0.8rem" : "0.5rem 0.8rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.3rem",
-                        transform: isLegendCollapsed ? "translateY(-4px)" : "translateY(0)",
-                        transition: "padding 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)",
-                      }}
-                    >
-                      {activeLegendItems.map(item => (
-                        <div key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                          <div style={{
-                            width: "9px", height: "9px",
-                            borderRadius: "2px",
-                            background: item.color,
-                            flexShrink: 0,
-                            boxShadow: `0 0 6px ${item.color}88`,
-                          }} />
-                          <span style={{
-                            color: "rgba(226,232,240,0.88)",
-                            fontSize: "0.73rem",
-                            fontFamily: "'Inter', sans-serif",
-                            whiteSpace: "nowrap",
-                          }}>
-                            {item.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+              {activeLegendItems && activeLegendItems.length > 0 && renderLegend(activeLegendItems)}
             </div>
           )}
         </FloatingDotBox>
+
+        {/* 위아래 동영상 (예: DWI 축면 + 3D). 각 칸은 기존 박스(650×470)의 90% = 585×423 */}
+        {activeStack && (
+          <div style={{
+            position: "absolute",
+            right: "15px", // 왼쪽 끝을 기존 박스와 맞춤 (650 - 585 = 65px 좁음)
+            top: "calc(50vh - 429px)", // 두 칸(423×2 + 간격 12) 전체를 화면 세로 가운데에
+            width: "585px",
+            display: "flex", flexDirection: "column", gap: "12px",
+            zIndex: 1,
+          }}>
+            {activeStack.map((src, i) => (
+              <div key={src} style={{
+                position: "relative", height: "423px", borderRadius: "1.35rem", overflow: "hidden",
+                background: "rgba(0,0,0,0.85)", border: "1px solid rgba(96,165,250,0.3)", boxShadow: "0 0 40px rgba(0,0,0,0.5)",
+              }}>
+                <video
+                  src={src}
+                  autoPlay loop muted playsInline
+                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer" }}
+                  onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
+                />
+                {i === activeStackLegendIndex && activeLegendItems && activeLegendItems.length > 0 && renderLegend(activeLegendItems)}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* 3D 박스 아래: 소견 (카드에 지정한 소견 또는 모델의 동맥류 소견, 모델이 뜬 뒤 PC에서만) */}
         {!isCompactLayout && activeModel3d && modelInfo?.src === activeModel3d && activeFindings?.length ? (
