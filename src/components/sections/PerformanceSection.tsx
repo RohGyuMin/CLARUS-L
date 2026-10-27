@@ -456,9 +456,9 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
     <div
       onClick={e => e.stopPropagation()}
       style={{
-        // 위 동영상의 범례처럼 왼쪽 아래에 띄움, 80% 크기
+        // 위 동영상의 범례처럼 왼쪽 아래에 띄움, 원래 크기의 64% (80%에서 20% 더 축소)
         position: "absolute", left: "1rem", bottom: "1rem", zIndex: 40,
-        transform: "scale(0.8)", transformOrigin: "left bottom",
+        transform: "scale(0.64)", transformOrigin: "left bottom",
         width: "232px", boxSizing: "border-box",
         padding: "0.75rem 0.75rem", display: "flex", flexDirection: "column", gap: "0.45rem",
         background: "rgba(6, 11, 26, 0.82)", backdropFilter: "blur(10px)",
@@ -1070,7 +1070,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
         </FloatingDotBox>
 
         {/* 위아래 동영상 (DWI 축면 + 3D). 두 칸 모두 650×423, 왼쪽 끝 = ADC 박스 왼쪽 끝
-            아래 칸은 박스는 그대로 두고 영상만 1.2배 확대 + 1cm 왼쪽 (박스 밖은 잘림)
+            아래 칸은 박스는 그대로 두고 영상만 1.2배 확대 + 2cm 오른쪽 (왼쪽 아래 순위 패널에 가리지 않게, 박스 밖은 잘림)
             두 칸(423 + 12 + 423 = 858px) 전체를 화면 세로 가운데에 */}
         {activeStack && activeStack.map((src, i) => {
           const lower = i === 1;
@@ -1089,7 +1089,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
                 autoPlay loop muted playsInline
                 style={{
                   width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer",
-                  transform: lower ? "translateX(-1cm) scale(1.2)" : undefined,
+                  transform: lower ? "translateX(2cm) scale(1.2)" : undefined,
                 }}
                 onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
               />
