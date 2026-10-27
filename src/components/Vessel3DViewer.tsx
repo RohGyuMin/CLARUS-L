@@ -29,7 +29,7 @@ const PRESETS: Record<string, Record<string, number>> = {
   vessel: { skin: 0, skull: 0, brain: 0, vessel: 100 },
 };
 
-async function loadModel(src: string): Promise<ArrayBuffer> {
+export async function loadModel(src: string): Promise<ArrayBuffer> {
   // 오프라인 미리보기(단일 HTML)용: 페이지에 모델이 미리 실려 있으면 그것을 사용
   const inline = (globalThis as { __CLARUS_MODELS__?: Record<string, string> }).__CLARUS_MODELS__?.[src];
   if (inline) {
@@ -44,7 +44,7 @@ async function loadModel(src: string): Promise<ArrayBuffer> {
   return res.arrayBuffer();
 }
 
-function parseModel(buf: ArrayBuffer): { header: Header; data: ArrayBuffer; base: number } {
+export function parseModel(buf: ArrayBuffer): { header: Header; data: ArrayBuffer; base: number } {
   const dv = new DataView(buf);
   const magic = String.fromCharCode(dv.getUint8(0), dv.getUint8(1), dv.getUint8(2), dv.getUint8(3));
   if (magic !== "CLV1") throw new Error("bad model");

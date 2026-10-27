@@ -7,6 +7,7 @@ import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 import FloatingDotBox, { DotLayer, DotBoxPrompt, DotBoxSpacer } from "@/components/FloatingDotBox";
 import Vessel3DViewer, { type ModelInfo, type ModelFinding } from "@/components/Vessel3DViewer";
+import Infarct3DViewer from "@/components/Infarct3DViewer";
 
 /** 3D 혈관 영역 영상 옆에 붙이는 영역별 경색 부피 순위 (내림차순) */
 interface TerritoryRanking {
@@ -27,7 +28,7 @@ interface CardData {
   model3d?: string;
   /** 3D 박스 아래에 보여줄 소견. 없으면 모델에 들어 있는 동맥류 소견을 사용 */
   modelFindings?: ModelFinding[];
-  /** 있으면 PC에서 이 동영상들을 위아래로 배치 (박스 90% 크기) */
+  /** 있으면 PC에서 이 동영상들을 위아래로 배치 (박스 90% 크기). ".bin" 이면 동영상 대신 경색 3D 모델 */
   stackVideos?: string[];
   /** 위아래 동영상 중 범례를 붙일 동영상 순서 (0부터) */
   stackLegendIndex?: number;
@@ -295,8 +296,8 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       title: "DWI AI for Mapping <span style='color: #a3e635'>Vascular territories</span>",
       description: "Mapping the vascular territory that caused the cerebral infarction",
       videoSrc: "/videos/5-infarction-territory-dwi.mp4",
-      // 위: DWI 축면(범례), 아래: 3D 혈관 영역
-      stackVideos: ["/videos/5-infarction-territory-dwi.mp4", "/videos/5-infarction-territory-3d.mp4"],
+      // 위: DWI 축면(범례), 아래: 3D 혈관 영역 (직접 돌려보는 3D 모델)
+      stackVideos: ["/videos/5-infarction-territory-dwi.mp4", "/models/territory-demo.bin"],
       stackLegendIndex: 0,
       stackAside: {
         index: 1,
@@ -1070,29 +1071,29 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
         </FloatingDotBox>
 
         {/* 위아래 동영상 (DWI 축면 + 3D). 두 칸 모두 650×423, 왼쪽 끝 = ADC 박스 왼쪽 끝
-            아래 칸은 박스는 그대로 두고 영상만 1.2배 확대 + 2cm 오른쪽 (왼쪽 아래 순위 패널에 가리지 않게, 박스 밖은 잘림)
+            아래 칸은 3D 모델: 왼쪽 아래 순위 패널을 피해 오른쪽에 렌더링, 오른쪽 아래 [자동 회전]
             두 칸(423 + 12 + 423 = 858px) 전체를 화면 세로 가운데에 */}
         {activeStack && activeStack.map((src, i) => {
-          const lower = i === 1;
           return (
             <div key={src} style={{
               position: "absolute",
               right: "-50px", // ADC 박스와 같은 위치·폭
-              top: lower ? "calc(50vh - 429px + 435px)" : "calc(50vh - 429px)",
+              top: i === 1 ? "calc(50vh - 429px + 435px)" : "calc(50vh - 429px)",
               width: "650px",
               height: "423px",
               borderRadius: "1.35rem", overflow: "hidden", zIndex: 1,
               background: "rgba(0,0,0,0.85)", border: "1px solid rgba(96,165,250,0.3)", boxShadow: "0 0 40px rgba(0,0,0,0.5)",
             }}>
-              <video
-                src={src}
-                autoPlay loop muted playsInline
-                style={{
-                  width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer",
-                  transform: lower ? "translateX(2cm) scale(1.2)" : undefined,
-                }}
-                onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
-              />
+              {src.endsWith(".bin") ? (
+                <Infarct3DViewer src={src} />
+              ) : (
+                <video
+                  src={src}
+                  autoPlay loop muted playsInline
+                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer" }}
+                  onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
+                />
+              )}
               {i === activeStackLegendIndex && activeLegendItems && activeLegendItems.length > 0 && renderLegend(activeLegendItems)}
               {activeStackAside && activeStackAside.index === i && renderRanking(activeStackAside.ranking)}
             </div>
