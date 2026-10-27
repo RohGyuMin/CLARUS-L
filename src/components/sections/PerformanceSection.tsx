@@ -8,6 +8,13 @@ import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 import FloatingDotBox, { DotLayer, DotBoxPrompt, DotBoxSpacer } from "@/components/FloatingDotBox";
 import Vessel3DViewer, { type ModelInfo, type ModelFinding } from "@/components/Vessel3DViewer";
 
+/** 3D 혈관 영역 영상 옆에 붙이는 영역별 경색 부피 순위 (내림차순) */
+interface TerritoryRanking {
+  totalVolume: string;
+  totalNote: string;
+  rows: { name: string; color: string; volume: string; voxels: string; pct: string }[];
+}
+
 interface CardData {
   title: string;
   description: string;
@@ -24,6 +31,8 @@ interface CardData {
   stackVideos?: string[];
   /** 위아래 동영상 중 범례를 붙일 동영상 순서 (0부터) */
   stackLegendIndex?: number;
+  /** 위아래 동영상 중 index 번째 칸의 왼쪽에 붙일 영역별 순위 패널 */
+  stackAside?: { index: number; ranking: TerritoryRanking };
 }
 
 function CharacteristicCard({ card, isActive, onClick, onLongPress }: { card: CardData; isActive: boolean; onClick: () => void; onLongPress?: () => void }) {
@@ -289,6 +298,21 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       // 위: DWI 축면(범례), 아래: 3D 혈관 영역
       stackVideos: ["/videos/5-infarction-territory-dwi.mp4", "/videos/5-infarction-territory-3d.mp4"],
       stackLegendIndex: 0,
+      stackAside: {
+        index: 1,
+        ranking: {
+          totalVolume: "11331.0 mm³",
+          totalNote: "7554 voxels × 1.50 mm³/voxel",
+          rows: [
+            { name: "Left MCA", color: "#22c55e", volume: "5076.0", voxels: "3384", pct: "44.8%" },
+            { name: "Right PCA", color: "#fb923c", volume: "1872.0", voxels: "1248", pct: "16.5%" },
+            { name: "Right ACA", color: "#d946ef", volume: "1794.0", voxels: "1196", pct: "15.8%" },
+            { name: "Right BA & VA", color: "#a855f7", volume: "1656.0", voxels: "1104", pct: "14.6%" },
+            { name: "Left PCA", color: "#fb923c", volume: "399.0", voxels: "266", pct: "3.5%" },
+            { name: "Left BA & VA", color: "#a855f7", volume: "324.0", voxels: "216", pct: "2.9%" },
+          ],
+        },
+      },
       theme: "purple",
       details: [
         "#Input: DWI images",
@@ -391,6 +415,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
   const activeModel3d = cardSets.flat().find(c => c.videoSrc === activeVideo)?.model3d;
   const activeStack = isCompactLayout ? undefined : cardSets.flat().find(c => c.videoSrc === activeVideo)?.stackVideos;
   const activeStackLegendIndex = cardSets.flat().find(c => c.videoSrc === activeVideo)?.stackLegendIndex;
+  const activeStackAside = cardSets.flat().find(c => c.videoSrc === activeVideo)?.stackAside;
   const activeFindings: ModelFinding[] | undefined =
     cardSets.flat().find(c => c.videoSrc === activeVideo)?.modelFindings ??
     (modelInfo && modelInfo.src === activeModel3d ? modelInfo.info.findings?.aneurysm : undefined);
@@ -425,6 +450,38 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       setIsPlaying(true);
     }
   };
+
+  // 영역별 경색 부피 순위 패널 (영상 칸 왼쪽, 영상과 같은 어두운 바탕에 이어 붙임)
+  const renderRanking = (r: TerritoryRanking) => (
+    <div style={{
+      width: "232px", flexShrink: 0, height: "100%", boxSizing: "border-box",
+      padding: "0.75rem 0.75rem", display: "flex", flexDirection: "column", gap: "0.45rem",
+      background: "linear-gradient(180deg, rgba(15,23,42,0.96), rgba(10,16,32,0.96))",
+      borderRight: "1px solid rgba(96,165,250,0.18)", fontFamily: "'Inter', sans-serif",
+    }}>
+      <div>
+        <div style={{ color: "#60a5fa", fontWeight: 700, fontSize: "0.92rem", lineHeight: 1.2 }}>Vascular Territory Ranking</div>
+        <div style={{ color: "#94a3b8", fontSize: "0.66rem", marginTop: "0.15rem" }}>Sorted by infarct volume</div>
+      </div>
+      <div style={{ padding: "0.45rem 0.6rem", borderRadius: "0.6rem", background: "rgba(30,58,138,0.25)", border: "1px solid rgba(96,165,250,0.25)" }}>
+        <div style={{ color: "#94a3b8", fontSize: "0.62rem" }}>Total Infarct Volume</div>
+        <div style={{ color: "#f87171", fontWeight: 700, fontSize: "1.05rem", fontVariantNumeric: "tabular-nums" }}>{r.totalVolume}</div>
+        <div style={{ color: "#60a5fa", fontSize: "0.6rem", fontVariantNumeric: "tabular-nums" }}>{r.totalNote}</div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.22rem", minHeight: 0 }}>
+        {r.rows.map(row => (
+          <div key={row.name} style={{ padding: "0.2rem 0.5rem", borderRadius: "0.45rem", background: "rgba(30,41,59,0.55)", border: "1px solid rgba(148,163,184,0.12)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: row.color, flexShrink: 0 }} />
+              <span style={{ color: "#e2e8f0", fontSize: "0.72rem", fontWeight: 600, flex: 1, minWidth: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.name}</span>
+              <span style={{ color: "#e2e8f0", fontSize: "0.72rem", fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{row.pct}</span>
+            </div>
+            <div style={{ color: "#7dd3fc", fontSize: "0.6rem", marginTop: "0.1rem", paddingLeft: "0.9rem", fontVariantNumeric: "tabular-nums" }}>{row.volume} mm³ · {row.voxels} voxel</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
   // 동영상 범례 (단일 동영상, 위아래 동영상 공통)
   const renderLegend = (items: { label: string; color: string }[]) => (
@@ -975,7 +1032,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               <video
                 ref={videoRef}
                 src={activeVideo}
-                loop muted playsInline
+                autoPlay loop muted playsInline
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
@@ -1005,28 +1062,31 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
           )}
         </FloatingDotBox>
 
-        {/* 위아래 동영상 (예: DWI 축면 + 3D). 각 칸은 기존 박스(650×470)의 90% = 585×423 */}
+        {/* 위아래 동영상 (예: DWI 축면 + 3D). 각 칸 650×423 (폭은 ADC 박스와 같고 높이는 90%) */}
         {activeStack && (
           <div style={{
             position: "absolute",
-            right: "15px", // 왼쪽 끝을 기존 박스와 맞춤 (650 - 585 = 65px 좁음)
+            right: "calc(-50px - 1cm)", // 기존 박스보다 오른쪽으로 1cm
             top: "calc(50vh - 429px)", // 두 칸(423×2 + 간격 12) 전체를 화면 세로 가운데에
-            width: "585px",
+            width: "650px",
             display: "flex", flexDirection: "column", gap: "12px",
             zIndex: 1,
           }}>
             {activeStack.map((src, i) => (
               <div key={src} style={{
-                position: "relative", height: "423px", borderRadius: "1.35rem", overflow: "hidden",
+                position: "relative", height: "423px", borderRadius: "1.35rem", overflow: "hidden", display: "flex",
                 background: "rgba(0,0,0,0.85)", border: "1px solid rgba(96,165,250,0.3)", boxShadow: "0 0 40px rgba(0,0,0,0.5)",
               }}>
-                <video
-                  src={src}
-                  autoPlay loop muted playsInline
-                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer" }}
-                  onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
-                />
-                {i === activeStackLegendIndex && activeLegendItems && activeLegendItems.length > 0 && renderLegend(activeLegendItems)}
+                {activeStackAside && activeStackAside.index === i && renderRanking(activeStackAside.ranking)}
+                <div style={{ position: "relative", flex: 1, minWidth: 0 }}>
+                  <video
+                    src={src}
+                    autoPlay loop muted playsInline
+                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", cursor: "pointer" }}
+                    onClick={e => { const v = e.currentTarget; if (v.paused) { void v.play(); } else { v.pause(); } }}
+                  />
+                  {i === activeStackLegendIndex && activeLegendItems && activeLegendItems.length > 0 && renderLegend(activeLegendItems)}
+                </div>
               </div>
             ))}
           </div>
