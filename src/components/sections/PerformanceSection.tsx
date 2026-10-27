@@ -6,6 +6,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Divider } from "@/components/ui/Divider";
 import NeuralSynapseVisual from "@/components/NeuralSynapseVisual";
 import FloatingDotBox, { DotLayer, DotBoxPrompt, DotBoxSpacer } from "@/components/FloatingDotBox";
+import Vessel3DViewer, { type ModelInfo, type ModelFinding } from "@/components/Vessel3DViewer";
 
 interface CardData {
   title: string;
@@ -15,6 +16,10 @@ interface CardData {
   details: string[];
   id?: string;
   legendItems?: { label: string; color: string }[];
+  /** 있으면 PC에서 동영상 대신 이 3D 모델을 직접 돌려볼 수 있게 표시 */
+  model3d?: string;
+  /** 3D 박스 아래에 보여줄 소견. 없으면 모델에 들어 있는 동맥류 소견을 사용 */
+  modelFindings?: ModelFinding[];
 }
 
 function CharacteristicCard({ card, isActive, onClick, onLongPress }: { card: CardData; isActive: boolean; onClick: () => void; onLongPress?: () => void }) {
@@ -184,6 +189,8 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
   isCompactLayout?: boolean;
 }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  // 3D 모델에 들어 있는 소견(동맥류 등). 카드가 바뀌면 지움
+  const [modelInfo, setModelInfo] = useState<{ src: string; info: ModelInfo } | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLegendCollapsed, setIsLegendCollapsed] = useState(false);
   const [hasNudged, setHasNudged] = useState(false);
@@ -223,6 +230,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       title: "MRA AI for <span style='color: #ef4444'>Aneurysm</span> detection",
       description: "Detects more accurately than a neuro-specialists.",
       videoSrc: "/videos/2-Aneurysm-3D-cube.mp4",
+      model3d: "/models/aneurysm-demo.bin",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -237,6 +245,11 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       title: "MRA AI for <span style='color: #38bdf8'>Stenosis</span> detection",
       description: "Detects stenosis up to the A2 and M2 segments.",
       videoSrc: "/videos/3-Stenosis-3D-cube.mp4",
+      model3d: "/models/vessel-demo.bin",
+      modelFindings: [
+        { title: "Stenosis 1: Left ICA stenosis (cavernous segment)", rows: [] },
+        { title: "Stenosis 2: Right MCA stenosis (M1 segment)", rows: [] },
+      ],
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -368,6 +381,10 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
 
   const cardSets = [mraCards, infarctCards, carotidCards, ctCards];
   const activeLegendItems = cardSets.flat().find(c => c.videoSrc === activeVideo)?.legendItems;
+  const activeModel3d = cardSets.flat().find(c => c.videoSrc === activeVideo)?.model3d;
+  const activeFindings: ModelFinding[] | undefined =
+    cardSets.flat().find(c => c.videoSrc === activeVideo)?.modelFindings ??
+    (modelInfo && modelInfo.src === activeModel3d ? modelInfo.info.findings?.aneurysm : undefined);
 
   const handleCardClick = (videoSrc: string) => {
     if (isCompactLayout) {
@@ -409,7 +426,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       {/* gap 1.875rem: 왼쪽 열(42rem) + 간격 + 박스 자리(600px) = 1302px → 카드 폭 648px 유지 */}
       <div className="cn-section-flex" style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", gap: "1.875rem" }}>
         {/* zIndex: 첫 슬라이드의 안내 이동(transform) 때 화살표가 floating dot 박스 아래로 깔려 클릭이 안 되던 문제 방지 */}
-        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", minWidth: 0, position: "relative", zIndex: 2 }}>
+        <div style={{ flex: 1, maxWidth: "42rem", width: "100%", minWidth: 0, position: "relative", zIndex: 2, transform: isCompactLayout ? "none" : "translateX(-1cm)" }}>
           <RevealSection>
             <SectionLabel>Performance</SectionLabel>
             <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", fontWeight: 700, color: "#e2e8f0", marginBottom: "0.75rem", lineHeight: 1.2 }}>
@@ -464,7 +481,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
               disabled={pageIndex === cardSets.length - 1}
               style={{
                 position: "absolute",
-                right: isCompactLayout ? "0.3rem" : "-5rem",
+                right: isCompactLayout ? "0.3rem" : "calc(-5rem + 0.5cm)", // 패널 이동 1cm + 0.5cm = 화면 기준 1.5cm 왼쪽
                 top: "50%",
                 transform: "translateY(-50%)",
                 zIndex: 10,
@@ -784,18 +801,21 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
         <FloatingDotBox
         style={{
           // 동영상 박스가 오른쪽 화살표와 겹치지 않도록 Performance만 오른쪽 1cm, 위로 1cm 이동
-          right: "-1cm",
-          top: "calc(50vh - 136px - 1cm)",
+          // 크기 650×470: 왼쪽 끝은 그대로 두고 오른쪽으로 50px, 위아래로 25px씩 키움
+          width: "650px",
+          height: "470px",
+          right: "-50px", // 이전 위치(calc(-1cm - 50px))에서 1cm 왼쪽
+          top: "calc(50vh - 136px - 1cm - 25px)",
           background: activeVideo ? "rgba(0,0,0,0.85)" : "transparent",
           borderRadius: "1.5rem",
           overflow: "hidden",
           border: activeVideo ? "1px solid rgba(96,165,250,0.3)" : "none",
           boxShadow: activeVideo ? "0 0 40px rgba(0,0,0,0.5)" : "none",
           transition: "all 0.6s ease",
-          cursor: activeVideo ? "pointer" : "default",
+          cursor: activeVideo && !activeModel3d ? "pointer" : "default",
           display: "flex", alignItems: "center", justifyContent: "center",
         }}
-        onClick={activeVideo ? togglePlay : undefined}
+        onClick={activeVideo && !activeModel3d ? togglePlay : undefined}
         >
           {/* 뉴런 시각화 배경 */}
           <DotLayer style={{
@@ -825,8 +845,13 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
             </DotBoxPrompt>
           )}
 
+          {/* 3D 모델 (직접 회전) */}
+          {activeVideo && activeModel3d && (
+            <Vessel3DViewer key={activeModel3d} src={activeModel3d} onLoaded={info => setModelInfo({ src: activeModel3d, info })} />
+          )}
+
           {/* 비디오 플레이어 */}
-          {activeVideo && (
+          {activeVideo && !activeModel3d && (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <video
                 ref={videoRef}
@@ -964,6 +989,39 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
             </div>
           )}
         </FloatingDotBox>
+
+        {/* 3D 박스 아래: 소견 (카드에 지정한 소견 또는 모델의 동맥류 소견, 모델이 뜬 뒤 PC에서만) */}
+        {!isCompactLayout && activeModel3d && modelInfo?.src === activeModel3d && activeFindings?.length ? (
+          <div style={{
+            position: "absolute",
+            right: "-50px", // 3D 박스와 같은 오른쪽 끝·같은 폭
+            top: "calc(50vh - 136px - 1cm - 25px + 470px + 0.75rem)",
+            width: "650px",
+            display: "flex", flexDirection: "column", gap: "0.6rem",
+            zIndex: 1,
+          }}>
+            {activeFindings.map(f => (
+              <div key={f.title} style={{
+                padding: "0.85rem 1.1rem",
+                borderRadius: "1rem",
+                background: "rgba(15,23,42,0.78)",
+                border: "1px solid rgba(96,165,250,0.25)",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+                backdropFilter: "blur(12px)",
+              }}>
+                <div style={{ color: "#facc15", fontWeight: 700, fontSize: "0.98rem", marginBottom: f.rows.length ? "0.5rem" : 0, fontFamily: "'Inter', sans-serif" }}>{f.title}</div>
+                {f.rows.length > 0 && <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", columnGap: "1rem", rowGap: "0.35rem" }}>
+                  {f.rows.map(([label, value]) => (
+                    <div key={label} style={{ gridColumn: label === "DDx" || label === "Size" ? "1 / -1" : undefined, display: "flex", gap: "0.4rem", alignItems: "baseline", minWidth: 0 }}>
+                      <span style={{ color: "#fcd34d", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{label}</span>
+                      <span style={{ color: "#e2e8f0", fontSize: "0.88rem", fontVariantNumeric: "tabular-nums" }}>{value}</span>
+                    </div>
+                  ))}
+                </div>}
+              </div>
+            ))}
+          </div>
+        ) : null}
     </section>
   );
 }
