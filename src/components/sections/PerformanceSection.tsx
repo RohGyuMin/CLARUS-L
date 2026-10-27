@@ -1119,7 +1119,12 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
                 boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
                 backdropFilter: "blur(12px)",
               }}>
-                <div style={{ color: "#facc15", fontWeight: 700, fontSize: "0.98rem", marginBottom: f.rows.length ? "0.5rem" : 0, fontFamily: "'Inter', sans-serif" }}>{f.title}</div>
+                <div style={{ color: "#facc15", fontWeight: 700, fontSize: "0.98rem", marginBottom: f.rows.length ? "0.5rem" : 0, fontFamily: "'Inter', sans-serif" }}>
+                  {/* 협착 소견처럼 표 없이 제목만 있으면 "Stenosis 1:" 뒤의 서술은 동맥류 서술과 같은 옅은 회색 */}
+                  {!f.rows.length && f.title.includes(": ")
+                    ? <>{f.title.slice(0, f.title.indexOf(": ") + 1)} <span style={{ color: "#e2e8f0" }}>{f.title.slice(f.title.indexOf(": ") + 2)}</span></>
+                    : f.title}
+                </div>
                 {f.rows.length > 0 && <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", columnGap: "1rem", rowGap: "0.35rem" }}>
                   {f.rows.map(([label, value]) => (
                     <div key={label} style={{ gridColumn: label === "DDx" || label === "Size" ? "1 / -1" : undefined, display: "flex", gap: "0.4rem", alignItems: "baseline", minWidth: 0 }}>
