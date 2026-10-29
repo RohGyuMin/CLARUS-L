@@ -26,6 +26,8 @@ interface CardData {
   legendItems?: { label: string; color: string }[];
   /** 있으면 PC에서 동영상 대신 이 3D 모델을 직접 돌려볼 수 있게 표시 */
   model3d?: string;
+  /** 3D 박스 배경 (CSS background). 없으면 기본 파랑-보라 그라데이션 */
+  model3dBackground?: string;
   /** 3D 박스 아래에 보여줄 소견. 없으면 모델에 들어 있는 동맥류 소견을 사용 */
   modelFindings?: ModelFinding[];
   /** 있으면 PC에서 이 동영상들을 위아래로 배치 (박스 90% 크기). ".bin" 이면 동영상 대신 경색 3D 모델 */
@@ -245,6 +247,8 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       description: "Detects more accurately than a neuro-specialists.",
       videoSrc: "/videos/2-Aneurysm-3D-cube.mp4",
       model3d: "/models/aneurysm-demo.bin",
+      // 가운데 #1b2434(짙은 네이비) → 바깥 #07090e(거의 검정) 원형 그라데이션
+      model3dBackground: "radial-gradient(circle at center, #1b2434 0%, #07090e 100%)",
       theme: "blue",
       details: [
         "#Input: TOF images",
@@ -1031,7 +1035,7 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
 
           {/* 3D 모델 (직접 회전) */}
           {activeVideo && activeModel3d && (
-            <Vessel3DViewer key={activeModel3d} src={activeModel3d} onLoaded={info => setModelInfo({ src: activeModel3d, info })} />
+            <Vessel3DViewer key={activeModel3d} src={activeModel3d} background={cardSets.flat().find(c => c.model3d === activeModel3d)?.model3dBackground} onLoaded={info => setModelInfo({ src: activeModel3d, info })} />
           )}
 
           {/* 비디오 플레이어 */}

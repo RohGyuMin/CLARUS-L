@@ -53,7 +53,14 @@ export function parseModel(buf: ArrayBuffer): { header: Header; data: ArrayBuffe
   return { header, data: buf, base: 8 + hlen };
 }
 
-export default function Vessel3DViewer({ src, onLoaded }: { src: string; onLoaded?: (info: ModelInfo) => void }) {
+const LIGHT_BG = "linear-gradient(to bottom, rgb(124,127,194), rgb(185,187,228))";
+
+export default function Vessel3DViewer({ src, onLoaded, background }: {
+  src: string;
+  onLoaded?: (info: ModelInfo) => void;
+  /** 박스 배경 (CSS background). 없으면 3D Slicer 풍 파랑-보라 그라데이션 */
+  background?: string;
+}) {
   const onLoadedRef = useRef(onLoaded);
   useEffect(() => { onLoadedRef.current = onLoaded; }, [onLoaded]);
   const mountRef = useRef<HTMLDivElement>(null);
@@ -215,13 +222,13 @@ export default function Vessel3DViewer({ src, onLoaded }: { src: string; onLoade
   return (
     <div
       ref={wrapRef}
-      style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgb(124,127,194), rgb(185,187,228))" }}
+      style={{ position: "absolute", inset: 0, background: background ?? LIGHT_BG }}
       onClick={e => e.stopPropagation()}
     >
       <div ref={mountRef} style={{ position: "absolute", inset: 0 }} />
 
       {status !== "ready" && (
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#1e2150", fontWeight: 600, fontSize: "0.9rem" }}>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: background ? "#cbd5e1" : "#1e2150", fontWeight: 600, fontSize: "0.9rem" }}>
           {status === "loading" ? "3D 모델을 불러오는 중…" : "3D 모델을 불러오지 못했습니다"}
         </div>
       )}
