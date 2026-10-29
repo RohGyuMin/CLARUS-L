@@ -264,6 +264,8 @@ export function PerformanceSection({ pageIndex, setPageIndex, isCompactLayout }:
       description: "Detects stenosis up to the A2 and M2 segments.",
       videoSrc: "/videos/3-Stenosis-3D-cube.mp4",
       model3d: "/models/vessel-demo.bin",
+      // Aneurysm 카드와 같은 배경: 가운데 #1b2434 → 바깥 #07090e
+      model3dBackground: "radial-gradient(circle at center, #1b2434 0%, #07090e 100%)",
       modelFindings: [
         { title: "Stenosis 1: Left ICA stenosis (cavernous segment)", rows: [] },
         { title: "Stenosis 2: Right MCA stenosis (M1 segment)", rows: [] },
